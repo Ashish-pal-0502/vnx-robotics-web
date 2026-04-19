@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <main className="">
-      <section className="bg-secondary-400 py-20 px-4 md:px-8 text-center">
+      <section className="bg-secondary-400 py-22 px-4 md:px-8 text-center">
         <h1 className="text-4xl md:text-6xl font-bold text-[#9E5413] mb-6">
           Building the Future with Robotics
         </h1>
