@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  /* BREAKPOINTS */
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 976px;
+  --breakpoint-xl: 1440px;
+
+
+
+  /* =============================
+     BRAND COLORS
+  ============================== */
+
+  /* PRIMARY COLOR (Muted Taupe) */
+  --color-primary-400: #F79E1C;
+
+
+  /* SECONDARY COLOR (Caramel) */
+  --color-secondary-400: #FBDBA0;
+
+
+  /* SHADOW / BACKGROUND COLOR (Light Buttermilk) */
+  --color-shadow-400: #9E5413;
+
+
+  /* ACCENT COLOR (Warm Coral) */
+  --color-accent-400: #9E5413;
+
+
+  /* NEUTRAL COLORS (Grays) */
+
+  --color-gray-100: #ffffff;
+
+
+  /* =============================
+     SEMANTIC COLORS
+  ============================== */
+
+  /*  Success (Soft Green) */
+  --color-success: #6BAA75;
+
+  /*  Error (Muted Coral Red) */
+  --color-error: #C85A5A;
+
+  /*  Warning (Amber Warm) */
+  --color-warning: #E8A865;
+
+  /*  Info (Muted Slate Blue) */
+  --color-info: #4A8095;
+
+  /* FONT FAMILY */
+  --font-primary: var(--font-figtree);
+
+  /* FONT SIZES */
+  --text-h1-desktop: 65px;
+  --text-h2-desktop: 50px;
+  --text-h3-desktop: 30px;
+  --text-h4-desktop: 28px;
+  --text-p-desktop: 18px;
+
+  --text-h1-mobile: 32px;
+  --text-h2-mobile: 30px;
+  --text-h3-mobile: 28px;
+  --text-h4-mobile: 24px;
+  --text-p1-mobile: 18px;
+  --text-p2-mobile: 16px;
+
+  --backdrop-blur-13: 1.5px;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
