@@ -28,7 +28,7 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="bg-secondary-400 py-16 px-4 md:px-8">
+      <section className="bg-secondary-400 py-12 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-semibold text-[#9E5413] mb-10 text-center">
             Our Services
