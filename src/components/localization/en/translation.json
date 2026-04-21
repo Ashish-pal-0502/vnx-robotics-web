@@ -1,0 +1,12 @@
+{
+  "navbar": {
+    "home": "Home",
+    "products": "Products",
+    "services": "Services",
+    "technologies": "Technologies",
+    "prototype": "3D Prototype",
+    "blogs": "Blogs",
+    "about": "About",
+    "careers": "Careers"
+  }
+}

@@ -1,21 +1,38 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { BsGlobe } from "react-icons/bs";
+import { FaCheck } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [isLangOpen, setIsLangOpen] = useState(false);
+
+  const languages = [
+    { code: "en", label: "ENG" },
+    { code: "vi", label: "VIE" },
+    { code: "ja", label: "JPN" },
+  ];
+  const changeLanguage = (lng) => {
+    console.log("lang", lng);
+
+    setIsLangOpen(false);
+    i18n.changeLanguage(lng);
+  };
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Products", href: "/products" },
-    { name: "Services", href: "/services" },
-    { name: "Technologies", href: "/technologies" },
-    { name: "3D Prototype", href: "/3d-prototype" },
-    { name: "Blogs", href: "/blogs" },
-    { name: "About", href: "/about" },
-    { name: "Careers", href: "/careers" },
+    { name: t("navbar.home"), href: "/" },
+    { name: t("navbar.products"), href: "/products" },
+    { name: t("navbar.services"), href: "/services" },
+    { name: t("navbar.technologies"), href: "/technologies" },
+    { name: t("navbar.prototype"), href: "/3d-prototype" },
+    { name: t("navbar.blogs"), href: "/blogs" },
+    { name: t("navbar.about"), href: "/about" },
+    { name: t("navbar.careers"), href: "/careers" },
   ];
 
   return (
@@ -40,6 +57,38 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+
+          <div
+            className="relative"
+            onMouseEnter={() => setIsLangOpen(true)}
+            onMouseLeave={() => setIsLangOpen(false)}
+          >
+            <button className="p-2 rounded-full hover:bg-gray-100">
+              <BsGlobe size={18} />
+            </button>
+
+            {isLangOpen && (
+              <div className="absolute right-0 -mt-2 w-24 bg-white border rounded-lg shadow-md overflow-hidden">
+                {languages.map((lang) => {
+                  const isActive = i18n.language === lang.code;
+                  return (
+                    <div
+                      key={lang.code}
+                      onClick={() => changeLanguage(lang.code)}
+                      className={`flex justify-between px-3 py-2 text-sm cursor-pointer ${
+                        isActive
+                          ? "bg-gray-100 font-semibold"
+                          : "hover:bg-gray-100"
+                      }`}
+                    >
+                      {lang.label}
+                      {isActive && <FaCheck size={12} />}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
 
           <div className="hidden lg:block">
             <Link

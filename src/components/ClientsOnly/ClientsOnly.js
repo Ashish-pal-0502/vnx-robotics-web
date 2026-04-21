@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Footer from "./../Footer/Footer";
 import Header from "./../Header/Header";
 import ScrollToTop from "./../Utility/ScrollToTop";
-
+import "../../app/i18n";
 const ClientOnly = ({ children }) => {
   const [user, setUser] = useState();
   const [hasMounted, setHasMounted] = useState(false);
