@@ -1,12 +1,9 @@
 {
   "navbar": {
     "home": "Trang chủ",
+    "about": "Về chúng tôi",
     "products": "Sản phẩm",
-    "services": "Dịch vụ",
-    "technologies": "Công nghệ",
-    "prototype": "Nguyên mẫu 3D",
-    "blogs": "Blog",
-    "about": "Giới thiệu",
-    "careers": "Tuyển dụng"
+    "careers": "Cơ hội nghề nghiệp",
+    "blogs": "Bài viết"
   }
 }

@@ -37,7 +37,7 @@ const ClientOnly = ({ children }) => {
         }}
       >
         <Header />
-        <main className="relative overflow-hidden mt-16">
+        <main className="relative overflow-hidden">
           {children}
           <ScrollToTop />
         </main>

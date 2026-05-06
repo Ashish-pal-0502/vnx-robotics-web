@@ -6,6 +6,7 @@ import apiClient from "@/api/client";
 
 function Page() {
   const { accessToken } = useParams();
+  console.log("AccessToken", accessToken);
 
   const router = useRouter();
 
@@ -16,7 +17,7 @@ function Page() {
 
     const verifyUser = async () => {
       try {
-        const res = await apiClient.get(`/verify/${accessToken}`);
+        const res = await apiClient.post(`/user/verify/${accessToken}`);
 
         console.log("verify res", res);
 

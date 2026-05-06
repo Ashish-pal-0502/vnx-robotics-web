@@ -1,12 +1,9 @@
 {
   "navbar": {
     "home": "ホーム",
-    "products": "製品",
-    "services": "サービス",
-    "technologies": "技術",
-    "prototype": "3Dプロトタイプ",
-    "blogs": "ブログ",
     "about": "会社概要",
-    "careers": "採用情報"
+    "products": "製品",
+    "careers": "採用情報",
+    "blogs": "ブログ"
   }
 }
