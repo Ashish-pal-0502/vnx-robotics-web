@@ -4,7 +4,6 @@ import BlogCard from "./BlogCard";
 
 import Link from "next/link";
 import Loader from "../loader/Loader";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import apiClient from "./../../api/client";
 import Loader from "./../Utility/Loader";
