@@ -14,9 +14,12 @@ import {
   FiFileText,
 } from "react-icons/fi";
 import apiClient from "@/api/client";
+import BlogForm from './../../components/Blogs/BlogForm';
+import BlogList from './../../components/Blogs/BlogList';
 
 const DashboardPage = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [editingBlog, setEditingBlog] = useState(null);
 
   // Dropdown states
   const [openMenus, setOpenMenus] = useState({
@@ -279,7 +282,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF6ED] p-4 md:p-8 mt-20">
+    <div className="min-h-screen bg-[#FAF6ED] p-4 md:p-8 ">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
         {/* Sidebar */}
         <div className="w-full md:w-[280px] bg-white rounded-2xl p-5 shadow-sm">
@@ -423,146 +426,22 @@ const DashboardPage = () => {
 
           {/* Add Blog */}
           {activeTab === "add-blog" && (
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h2 className="text-2xl font-semibold mb-6">
-                {editingBlogId ? "Update Blog" : "Add Blog"}
-              </h2>
-
-              <div className="space-y-4">
-                {error && <p className="text-sm text-red-500">{error}</p>}
-                {message && <p className="text-sm text-green-600">{message}</p>}
-
-                <input
-                  name="heading"
-                  value={blogForm.heading}
-                  onChange={handleBlogFormChange}
-                  type="text"
-                  placeholder="Blog Title"
-                  className="w-full border rounded-xl px-4 py-3 outline-none"
-                />
-
-                <textarea
-                  name="content"
-                  value={blogForm.content}
-                  onChange={handleBlogFormChange}
-                  rows="5"
-                  placeholder="Write blog content..."
-                  className="w-full border rounded-xl px-4 py-3 outline-none"
-                />
-
-                <input
-                  name="mtitle"
-                  value={blogForm.mtitle}
-                  onChange={handleBlogFormChange}
-                  type="text"
-                  placeholder="Meta Title"
-                  className="w-full border rounded-xl px-4 py-3 outline-none"
-                />
-
-                <input
-                  name="mdesc"
-                  value={blogForm.mdesc}
-                  onChange={handleBlogFormChange}
-                  type="text"
-                  placeholder="Meta Description"
-                  className="w-full border rounded-xl px-4 py-3 outline-none"
-                />
-
-                <input
-                  name="imageUrl"
-                  value={blogForm.imageUrl}
-                  onChange={handleBlogFormChange}
-                  type="text"
-                  placeholder="Image URL"
-                  className="w-full border rounded-xl px-4 py-3 outline-none"
-                />
-                {!editingBlogId && (
-                  <p className="text-xs text-gray-400">
-                    Image URL is required to create a new blog post.
-                  </p>
-                )}
-
-                {(!isAuthenticated || !editingBlogId) && !isAuthenticated && (
-                  <p className="text-sm text-red-500">
-                    Login required to create or edit blog posts.
-                  </p>
-                )}
-                <button
-                  type="button"
-                  onClick={handleSubmitBlog}
-                  disabled={submitting || !isAuthenticated}
-                  className="bg-[#1f3b57] text-white px-6 py-3 rounded-xl disabled:opacity-50"
-                >
-                  {editingBlogId ? "Update Blog" : "Publish Blog"}
-                </button>
-              </div>
-            </div>
+             <BlogForm
+    editData={editingBlog}
+    onSuccess={() => {
+      setEditingBlog(null);
+    }}
+  />
           )}
 
           {/* List Blogs */}
           {activeTab === "list-blog" && (
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold">All Blogs</h2>
-                <button
-                  type="button"
-                  onClick={() => {
-                    resetBlogForm();
-                    setActiveTab("add-blog");
-                  }}
-                  className="text-sm px-4 py-2 rounded-lg bg-[#1f3b57] text-white"
-                >
-                  New Blog
-                </button>
-              </div>
-
-              {loadingBlogs ? (
-                <p>Loading blogs...</p>
-              ) : blogs.length === 0 ? (
-                <p className="text-sm text-gray-500">No blogs found.</p>
-              ) : (
-                <div className="space-y-4">
-                  {blogs.map((blog) => (
-                    <div
-                      key={blog._id}
-                      className="border rounded-xl p-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
-                    >
-                      <div>
-                        <h3 className="font-semibold text-lg">
-                          {blog.heading}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {blog.mdesc ||
-                            blog.content?.slice(0, 80) ||
-                            "No description"}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-2">
-                          Created:{" "}
-                          {new Date(blog.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleStartEditBlog(blog)}
-                          className="text-sm px-4 py-2 rounded-lg bg-gray-100"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteBlog(blog._id)}
-                          className="text-sm px-4 py-2 rounded-lg bg-red-50 text-red-600"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+             <BlogList
+    onEdit={(blog) => {
+      setEditingBlog(blog);
+      setActiveTab("add-blog");
+    }}
+  />
           )}
 
           {/* Add Career */}

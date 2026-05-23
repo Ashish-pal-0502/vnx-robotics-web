@@ -65,18 +65,18 @@ export default function Header() {
       description:
         "Engineering culture, robotics, automation, embedded systems growth.",
     },
-    {
-      name: t("navbar.contact"),
-      href: "/contact",
-      description:
-        "Industrial projects, partnerships, robotics collaboration, recruitment.",
-    },
+    // {
+    //   name: t("navbar.contact"),
+    //   href: "/contact",
+    //   description:
+    //     "Industrial projects, partnerships, robotics collaboration, recruitment.",
+    // },
   ];
 
   return (
     <>
       {/* HEADER */}
-      <header className="fixed top-4 left-0 z-50 flex w-full justify-center">
+      <header className="fixed top-4 left-0 z-50 font-heading flex w-full justify-center">
         
         {/* NAVBAR */}
         <div className="w-[95%] max-w-7xl rounded-full border border-white/15 bg-black/40 backdrop-blur-xl px-6 py-4 shadow-2xl">
@@ -96,7 +96,7 @@ export default function Header() {
             </Link>
 
             {/* DESKTOP NAV - CENTERED */}
-            <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-white absolute left-1/2 transform -translate-x-1/2">
+            <nav className="hidden lg:flex items-center gap-6 text-sm font-regular text-white absolute left-1/2 transform -translate-x-1/2">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}

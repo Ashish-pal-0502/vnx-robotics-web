@@ -17,7 +17,7 @@ export default function TrustedBy() {
   return (
     <section className="bg-black py-16 overflow-hidden">
       {/* TITLE */}
-      <h2 className="text-center text-gray-400 text-sm mb-10">Trusted by</h2>
+      <h2 className="text-center text-gray-400 text-sm mb-10 font-heading uppercase">Trusted by</h2>
 
       {/* MARQUEE */}
       <div className="relative w-full overflow-hidden">

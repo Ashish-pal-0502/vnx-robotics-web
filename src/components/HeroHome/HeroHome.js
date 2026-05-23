@@ -1,10 +1,8 @@
-
-
-
-
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+
 import { useEffect, useState } from "react";
 
 export default function HeroHome() {
@@ -65,40 +63,61 @@ export default function HeroHome() {
                 <div className="w-8 h-8 bg-[#083427] rounded-full border-2 border-white"></div>
                 <div className="w-8 h-8 bg-[#083427] rounded-full border-2 border-white"></div>
               </div>
-              <p className="text-sm text-gray-300">1K+ Trusted Customers</p>
+              <p className="text-sm font-heading text-gray-300">1K+ Trusted Customers</p>
             </div>
 
             {/* HEADING */}
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-2">
+            <h1 className="text-3xl font-logo uppercase md:text-4xl font-medium leading-tight mb-2">
               Control Redefined <br />
               Innovation Unleashed
             </h1>
 
             {/* DESCRIPTION */}
-            <p className="text-gray-300 mb-6 text-sm md:text-base">
+            <p className="text-gray-300 mb-6 font-mono text-sm md:text-base">
               We focus on building intelligent robots for real-world logistics
               and industrial inspection, starting with Warehouse AMRs and
               Quadruped Inspection Robots.
             </p>
 
             {/* BUTTON */}
-            <Link
+            {/* <Link
               href="/contact"
-              className="inline-block px-6 py-3 border border-white rounded-full hover:bg-white hover:text-black transition duration-300"
+              className="inline-block btn-primary "
             >
               Get Started
-            </Link>
+            </Link> */}
+
+            <Link
+  href="/contact"
+  className="
+    inline-flex
+    items-center
+    justify-center
+    btn-primary
+    group
+  "
+>
+  Get Started
+
+  <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
+    →
+  </span>
+</Link>
           </div>
         </div>
+      
 
-        {/* SCROLL INDICATOR */}
-        <div className="absolute right-6 md:right-10 bottom-8 md:bottom-20 hidden md:flex flex-col items-center">
-          <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/40 flex items-center justify-center animate-bounce">
-            <span className="text-xl md:text-2xl">↓</span>
+         <div className="absolute right-6 md:right-10 bottom-8 md:bottom-20 hidden md:flex flex-col items-center">
+          <div className="  flex items-center justify-center animate-bounce cursor-pointer">
+            <Image
+              src="/icons/scrolldown.png" 
+              alt="Scroll down"
+              width={70}
+              height={70}
+              className="w-12 h-12 md:w-20 md:h-20"
+            />
           </div>
-          <p className="text-xs tracking-widest mt-3 rotate-90 text-gray-300 whitespace-nowrap">
-            SCROLL DOWN
-          </p>
+        
         </div>
       </section>
     </main>

@@ -6,8 +6,7 @@ import OurWorldWideReach from './../components/Home/OurWorldWideReach';
 import useAuth from "@/auth/useAuth";
 export default function Home() {
   const {user} =useAuth()  
-  
-  console.log("Home page rendered", user);
+
   return (
     <main>
       <HeroHome />
