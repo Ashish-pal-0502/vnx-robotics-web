@@ -1,54 +1,47 @@
 @import "tailwindcss";
 
-@theme {
+:root {
   /* BREAKPOINTS */
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 976px;
   --breakpoint-xl: 1440px;
 
-
-
   /* =============================
      BRAND COLORS
   ============================== */
 
   /* PRIMARY COLOR (Muted Taupe) */
-  --color-primary-400: #F79E1C;
-
+  --color-primary-400: #f79e1c;
 
   /* SECONDARY COLOR (Caramel) */
-  --color-secondary-400: #FBDBA0;
-
+  --color-secondary-400: #fbdba0;
 
   /* SHADOW / BACKGROUND COLOR (Light Buttermilk) */
-  --color-shadow-400: #9E5413;
-
+  --color-shadow-400: #9e5413;
 
   /* ACCENT COLOR (Warm Coral) */
-  --color-accent-400: #9E5413;
-
+  --color-accent-400: #9e5413;
 
   /* NEUTRAL COLORS (Grays) */
 
   --color-gray-100: #ffffff;
-
 
   /* =============================
      SEMANTIC COLORS
   ============================== */
 
   /*  Success (Soft Green) */
-  --color-success: #6BAA75;
+  --color-success: #6baa75;
 
   /*  Error (Muted Coral Red) */
-  --color-error: #C85A5A;
+  --color-error: #c85a5a;
 
   /*  Warning (Amber Warm) */
-  --color-warning: #E8A865;
+  --color-warning: #e8a865;
 
   /*  Info (Muted Slate Blue) */
-  --color-info: #4A8095;
+  --color-info: #4a8095;
 
   /* FONT FAMILY */
   --font-primary: var(--font-figtree);

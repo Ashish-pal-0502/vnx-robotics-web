@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import {
   FiGrid,
@@ -282,7 +281,7 @@ const DashboardPage = () => {
     <div className="min-h-screen bg-[#FAF6ED] p-4 md:p-8 mt-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
         {/* Sidebar */}
-        <div className="w-full md:w-[280px] bg-white rounded-2xl p-5 shadow-sm">
+        <div className="w-full md:w-70 bg-white rounded-2xl p-5 shadow-sm">
           {/* User */}
           <div className="flex flex-col items-center border-b pb-5">
             <div className="w-16 h-16 rounded-full bg-[#1f3b57] text-white flex items-center justify-center text-2xl font-bold">
