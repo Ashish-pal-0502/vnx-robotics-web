@@ -1,54 +1,339 @@
+
+
+// "use client";
+
+// import Image from "next/image";
+// import Link from "next/link";
+// import { motion } from "framer-motion";
+
+// export default function AboutUs() {
+//   return (
+//     <section className="relative overflow-hidden bg-[var(--color-dark-100)] py-5">
+
+//       {/* BACKGROUND GLOW */}
+//       <div className="absolute left-[-120px] top-[-80px] h-72 w-72 rounded-full bg-[#006db1]/10 blur-3xl" />
+
+//       <div className="absolute bottom-[-100px] right-[-80px] h-72 w-72 rounded-full bg-[#ffba22]/10 blur-3xl" />
+
+//       {/* GRID */}
+//       <div className="absolute inset-0 opacity-[0.03]">
+//         <div
+//           className="h-full w-full"
+//           style={{
+//             backgroundImage: `
+//               linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+//               linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)
+//             `,
+//             backgroundSize: "70px 70px",
+//           }}
+//         />
+//       </div>
+
+//       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-20 px-6 md:grid-cols-2 md:px-12">
+
+//         {/* LEFT IMAGE */}
+//         <motion.div
+//           initial={{ opacity: 0, x: -40 }}
+//           whileInView={{ opacity: 1, x: 0 }}
+//           transition={{ duration: 0.6 }}
+//           viewport={{ once: true }}
+//           className="relative"
+//         >
+
+//           {/* OUTER FRAME */}
+//           <div className="absolute -left-5 -top-5 h-full w-full border border-[#006db1]/20" />
+
+//           {/* IMAGE CONTAINER */}
+//           <div className="relative overflow-hidden border border-white/8 bg-[var(--color-dark-300)]">
+
+//             {/* TOP BAR */}
+//             <div className="absolute left-0 top-0 z-20 flex w-full items-center justify-between border-b border-white/10 bg-black/30 px-5 py-3 backdrop-blur-md">
+
+//               <div className="flex items-center gap-2">
+//                 <div className="h-2.5 w-2.5 rounded-full bg-[#ffba22]" />
+//                 <div className="h-2.5 w-2.5 rounded-full bg-[#006db1]" />
+//               </div>
+
+//               <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-secondary)]">
+//                 VNX SYSTEMS
+//               </span>
+//             </div>
+
+//             <Image
+//               src="/images/contactus.png"
+//               alt="about robotics"
+//               width={700}
+//               height={600}
+//               className="
+//                 h-[520px]
+//                 w-full
+//                 object-cover
+//                 transition-transform
+//                 duration-700
+//                 hover:scale-[1.03]
+//               "
+//             />
+
+//             {/* OVERLAY */}
+//             <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-100)]/60 to-transparent" />
+//           </div>
+//         </motion.div>
+
+//         {/* RIGHT CONTENT */}
+//         <motion.div
+//           initial={{ opacity: 0, x: 40 }}
+//           whileInView={{ opacity: 1, x: 0 }}
+//           transition={{ duration: 0.6 }}
+//           viewport={{ once: true }}
+//         >
+
+//           {/* LABEL */}
+//           <div className="mb-5 flex items-center gap-3">
+
+//             <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+
+//             <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+//               About VNX
+//             </span>
+//           </div>
+
+//           {/* HEADING */}
+//           <h2
+//             className="
+//               font-heading
+//               text-4xl
+//               font-semibold
+//               uppercase
+//               leading-tight
+//               text-[var(--color-text-primary)]
+//               md:text-5xl
+//             "
+//           >
+//             Engineering Intelligent{" "}
+//             <span className="text-[var(--color-secondary-400)]">
+//               Robotics
+//             </span>{" "}
+//             For The Future
+//           </h2>
+
+//           {/* DESCRIPTION */}
+//           <div className="mt-8 space-y-6">
+
+//             <p
+//               className="
+//                 font-body
+//                 text-lg
+//                 leading-8
+//                 text-[var(--color-text-secondary)]
+//               "
+//             >
+//               We design and develop advanced robotics systems focused on
+//               industrial automation, AI-driven logistics, and intelligent
+//               inspection technologies.
+//             </p>
+
+           
+//           </div>
+
+//           {/* STATS */}
+//           <div className="mt-10 grid grid-cols-3 gap-5">
+
+//             <div className="border border-white/8 bg-white/[0.02] p-5">
+//               <h3 className="font-heading text-3xl font-semibold text-[var(--color-secondary-400)]">
+//                 20+
+//               </h3>
+
+//               <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+//                 Robotics Projects
+//               </p>
+//             </div>
+
+//             <div className="border border-white/8 bg-white/[0.02] p-5">
+//               <h3 className="font-heading text-3xl font-semibold text-[#4f79ff]">
+//                 AI
+//               </h3>
+
+//               <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+//                 Automation Systems
+//               </p>
+//             </div>
+
+//             <div className="border border-white/8 bg-white/[0.02] p-5">
+//               <h3 className="font-heading text-3xl font-semibold text-white">
+//                 24/7
+//               </h3>
+
+//               <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+//                 Intelligent Operations
+//               </p>
+//             </div>
+//           </div>
+
+//           {/* BUTTONS */}
+//           <div className="mt-12 flex flex-wrap items-center gap-5">
+
+//             <Link
+//               href="/about"
+//               className="btn-primary"
+//             >
+//               <span>Know More →</span>
+//             </Link>
+
+//           </div>
+//         </motion.div>
+//       </div>
+//     </section>
+//   );
+// }
+
+
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function AboutUs() {
   return (
-    <section className="bg-black text-white py-20 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-        {/* LEFT IMAGE SECTION */}
-        <div className="relative w-full flex justify-center">
-          {/* OUTER BORDER BOX */}
-          <div className="absolute -top-6 -right-6 w-[90%] h-[90%] border border-white/40 rounded-2xl"></div>
+    <section className="relative overflow-hidden bg-[var(--color-dark-100)] py-5">
+      {/* BACKGROUND GLOW - Industrial & Calm */}
+      <div className="absolute left-[-120px] top-[-80px] h-96 w-96 rounded-full bg-[#006db1]/5 blur-3xl" />
+      <div className="absolute bottom-[-100px] right-[-80px] h-96 w-96 rounded-full bg-[#ffba22]/5 blur-3xl" />
 
-          {/* IMAGE */}
-          <div className="relative w-full max-w-md rounded-2xl overflow-hidden">
-            <Image
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhLBrRWq1cK4oiLri1KNXBpqrrsoWrVKx2_w&s"
-              alt="about robotics"
-              width={500}
-              height={400}
-              className="object-cover w-full h-full"
-            />
-          </div>
-        </div>
+      {/* SUBTLE GRID - Engineering Foundation */}
+      <div className="absolute inset-0 opacity-[0.03]">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: "70px 70px",
+          }}
+        />
+      </div>
 
-        {/* RIGHT CONTENT */}
-        <div>
-          <h2 className="text-4xl md:text-5xl font-bold text-yellow-400 mb-6">
-            About Us
-          </h2>
-
-          <p className="text-gray-400 leading-relaxed mb-8">
-            We build intelligent robotics solutions designed for real-world
-            applications in industrial automation and smart systems. Our focus
-            is on delivering precision, efficiency, and innovation through
-            advanced AI-powered technologies.
-            <br />
-            <br />
-            From autonomous robots to scalable automation platforms, we help
-            businesses transform operations and stay ahead in the future of
-            technology.
-          </p>
-
-          {/* BUTTON */}
-          <Link
-            href="/about"
-            className="inline-block px-6 py-3 border border-white rounded-full hover:bg-white hover:text-black transition"
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12">
+        {/* MAIN GRID: Left Image + Right Content */}
+        <div className="grid items-center gap-16 md:grid-cols-2 md:gap-20">
+          {/* LEFT IMAGE - Cinematic Industrial Robotics */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="relative"
           >
-            Know More
-          </Link>
+            {/* OUTER FRAME - Architectural Maturity */}
+            <div className="absolute -left-5 -top-5 h-full w-full border border-[#006db1]/20" />
+
+            {/* IMAGE CONTAINER */}
+            <div className="relative overflow-hidden border border-white/8 bg-[var(--color-dark-300)]">
+              {/* TOP BAR - Systems Monitor Feel */}
+              <div className="absolute left-0 top-0 z-20 flex w-full items-center justify-between border-b border-white/10 bg-black/30 px-5 py-3 backdrop-blur-md">
+                <div className="flex items-center gap-2">
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#ffba22]" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#006db1]" />
+                </div>
+                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-secondary)]">
+                  INDUSTRIAL SYSTEMS
+                </span>
+              </div>
+
+              <Image
+                src="/images/contactus.png"
+                alt="VNX Robotics industrial automation and robotics systems"
+                width={700}
+                height={600}
+                className="h-[520px] w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+              />
+
+              {/* SUBTLE OVERLAY */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-100)]/50 to-transparent" />
+            </div>
+          </motion.div>
+
+          {/* RIGHT CONTENT - Engineering Philosophy & Layered Capability */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {/* LABEL */}
+            <div className="mb-6 flex items-center gap-3">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+                Engineering Philosophy
+              </span>
+            </div>
+
+            {/* HEADING - Aligned with Strategic Positioning */}
+            <h2 className="font-heading text-2xl font-semibold uppercase leading-tight text-[var(--color-text-primary)] md:text-4xl">
+              Building Intelligent{" "}
+              <span className="text-[var(--color-secondary-400)]">
+                Automation & Robotics
+              </span>{" "}
+              Systems
+            </h2>
+
+            {/* DESCRIPTION - Strategic Narrative from Docs */}
+            <div className="mt-8 space-y-5">
+              <p className="font-body text-lg leading-relaxed text-[var(--color-text-secondary)]">
+                VNX Robotics is developing intelligent industrial automation
+                and robotics technologies focused on scalable systems,
+                operational intelligence, and future autonomous infrastructure.
+              </p>
+              <p className="font-body text-base leading-relaxed text-[var(--color-text-muted)]">
+                Our approach combines industrial automation, robotics
+                engineering, embedded systems, and operational software to
+                build connected intelligent systems for modern industry.
+              </p>
+            </div>
+
+            {/* LAYERED CAPABILITY PILLARS - From Tech Architecture Section */}
+            <div className="mt-10 grid grid-cols-2 gap-4">
+              {[
+                "Industrial Automation",
+                "Warehouse Intelligence",
+                "Robotics Systems",
+                "Embedded & AI",
+              ].map((capability, idx) => (
+                <div
+                  key={capability}
+                  className="flex items-center gap-3 border-l-2 border-[#006db1]/40 bg-white/[0.02] px-4 py-3"
+                >
+                  <span className="text-sm font-medium uppercase tracking-wide text-[var(--color-text-primary)]">
+                    {capability}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* PHILOSOPHY STATEMENT - Leadership & Engineering Maturity */}
+            <div className="mt-10 rounded-md border border-white/8 bg-white/[0.02] p-5">
+              <p className="font-body text-sm italic leading-relaxed text-[var(--color-text-secondary)]">
+                &ldquo;VNX Robotics believes successful automation systems are
+                built through scalable architecture, operational reliability,
+                and disciplined engineering execution.&rdquo;
+              </p>
+            </div>
+
+            {/* CTA BUTTON */}
+          
+                       <div className="mt-5 flex flex-wrap items-center gap-5">
+
+             <Link
+               href="/about"
+               className="btn-primary"
+             >
+               <span>Explore our vision →</span>
+             </Link>
+
+          </div>
+            
+          </motion.div>
         </div>
       </div>
     </section>

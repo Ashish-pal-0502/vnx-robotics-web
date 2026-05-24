@@ -111,76 +111,63 @@
 
 /* ====================================
    PRIMARY BUTTON
+   VNX PREMIUM BUTTON
 ==================================== */
 
 .btn-primary {
   position: relative;
   overflow: hidden;
 
-  background:
-    linear-gradient(135deg,
-      #ffba22 0%,
-      #ffc93d 45%,
-      #ffe27a 100%);
-
-  color: #050816;
-
-  font-family: var(--font-heading);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
   padding: 14px 34px;
 
   border-radius: 9999px;
 
+  background:
+    linear-gradient(90deg,
+      #ffba22 0%,
+      #f7b321 72%,
+      #e5a11b 100%);
+
+  color: #050816;
+
+  font-family: var(--font-heading);
+
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.3px;
 
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: none;
 
   box-shadow:
-    0 10px 30px rgba(255, 186, 34, 0.18),
-    0 0 25px rgba(255, 186, 34, 0.15);
+    0 10px 24px rgba(255, 186, 34, 0.16);
 
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    filter 0.35s ease;
+    background 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-/* Glow Overlay */
-.btn-primary::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(120deg,
-      rgba(255, 255, 255, 0.28),
-      rgba(255, 255, 255, 0.02));
-
-  opacity: 0;
-
-  transition: opacity 0.35s ease;
+/* TEXT ABOVE */
+.btn-primary span {
+  position: relative;
+  z-index: 2;
 }
 
+/* ABB-LIKE HOVER MIX */
 .btn-primary:hover {
-  transform:
-    translateY(-3px) scale(1.02);
-
-  filter: brightness(1.04);
+  background:
+    linear-gradient(90deg,
+      #4f79ff 0%,
+      #006db1 18%,
+      #ffba22 58%,
+      #f5b01f 100%);
 
   box-shadow:
-    0 18px 45px rgba(255, 186, 34, 0.28),
-    0 0 45px rgba(255, 186, 34, 0.22);
-}
-
-.btn-primary:hover::before {
-  opacity: 1;
-}
-
-.btn-primary:active {
-  transform: scale(0.98);
+    0 14px 30px rgba(255, 186, 34, 0.18),
+    0 0 14px rgba(0, 109, 177, 0.10);
 }
 
 
@@ -192,76 +179,49 @@
   position: relative;
   overflow: hidden;
 
-  background:
-    linear-gradient(135deg,
-      rgba(0, 109, 177, 0.18),
-      rgba(255, 255, 255, 0.04));
-
-  color: var(--color-text-primary);
-
-  backdrop-filter: blur(16px);
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  font-family: var(--font-heading);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
   padding: 14px 34px;
 
   border-radius: 9999px;
 
+  background:
+    rgba(255, 255, 255, 0.03);
+
+  color: var(--color-text-primary);
+
+  font-family: var(--font-heading);
+
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: 0.3px;
 
-  box-shadow:
-    0 8px 25px rgba(0, 109, 177, 0.12);
+  border:
+    1px solid rgba(255, 255, 255, 0.14);
+
+  backdrop-filter: blur(10px);
 
   transition:
-    transform 0.35s ease,
-    border-color 0.35s ease,
-    background 0.35s ease,
-    box-shadow 0.35s ease;
-}
-
-.btn-secondary::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(120deg,
-      rgba(255, 255, 255, 0.12),
-      transparent);
-
-  opacity: 0;
-
-  transition: opacity 0.35s ease;
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .btn-secondary:hover {
-  transform:
-    translateY(-3px) scale(1.02);
+  background:
+    linear-gradient(90deg,
+      rgba(0, 109, 177, 0.18) 0%,
+      rgba(255, 255, 255, 0.06) 100%);
 
   border-color:
-    rgba(96, 165, 250, 0.4);
-
-  background:
-    linear-gradient(135deg,
-      rgba(0, 136, 219, 0.22),
-      rgba(255, 255, 255, 0.06));
+    rgba(0, 136, 219, 0.24);
 
   box-shadow:
-    0 16px 40px rgba(0, 136, 219, 0.18);
+    0 10px 24px rgba(0, 109, 177, 0.08);
 }
 
-.btn-secondary:hover::before {
-  opacity: 1;
-}
-
-.btn-secondary:active {
-  transform: scale(0.98);
-}
 
 /* =============================
    FONT UTILITY CLASSES
