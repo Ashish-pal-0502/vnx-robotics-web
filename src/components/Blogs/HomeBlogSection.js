@@ -65,7 +65,7 @@ function HomeBlogSection() {
     </div>
 
     {/* HEADING */}
-    <h2 className="font-heading text-2xl font-semibold leading-tight text-text-primary md:text-4xl">
+    <h2 className="font-heading text-2xl font-semibold leading-tight text-white md:text-4xl">
       Our Latest{" "}
       <span className="text-[var(--color-secondary-400)]">
         Stories
@@ -73,7 +73,7 @@ function HomeBlogSection() {
     </h2>
 
     {/* DESCRIPTION */}
-    <p className="mt-5 max-w-2xl font-mono text-sm leading-8 text-text-primary">
+    <p className="mt-5 max-w-2xl font-mono text-sm leading-8 text-white">
       Explore insights, innovations, and real-world stories shaping
       the future of robotics, AI systems, and intelligent automation.
     </p>
