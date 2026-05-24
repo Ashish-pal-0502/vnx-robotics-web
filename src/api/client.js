@@ -18,6 +18,7 @@ const setAccessToken = (token) => {
   localStorage.setItem("token", token);
 };
 
+
 const removeAccessToken = () => {
   if (typeof window === "undefined") return;
   localStorage.removeItem("token");

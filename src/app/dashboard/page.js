@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import {
   FiGrid,
@@ -14,10 +13,14 @@ import {
   FiFileText,
 } from "react-icons/fi";
 import apiClient from "@/api/client";
-import BlogForm from './../../components/Blogs/BlogForm';
-import BlogList from './../../components/Blogs/BlogList';
+import BlogForm from "./../../components/Blogs/BlogForm";
+import BlogList from "./../../components/Blogs/BlogList";
+import useAuth from "@/auth/useAuth";
+import { useRouter } from "next/navigation";
 
 const DashboardPage = () => {
+  const router = useRouter();
+  const { user, logOut } = useAuth();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [editingBlog, setEditingBlog] = useState(null);
 
@@ -32,9 +35,16 @@ const DashboardPage = () => {
   const [loadingBlogs, setLoadingBlogs] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [editingBlogId, setEditingBlogId] = useState(null);
+  const [careers, setCareers] = useState([]);
+  const [editingCareerId, setEditingCareerId] = useState(null);
+  const [careerForm, setCareerForm] = useState({
+    title: "",
+    description: "",
+    applyLink: "",
+  });
+  const [profile, setProfile] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [blogForm, setBlogForm] = useState({
     heading: "",
     content: "",
@@ -44,10 +54,9 @@ const DashboardPage = () => {
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsAuthenticated(!!localStorage.getItem("token"));
-    }
     fetchBlogs();
+    fetchCareers();
+    fetchProfile();
   }, []);
 
   const resetBlogForm = () => {
@@ -119,64 +128,124 @@ const DashboardPage = () => {
     }
   };
 
-  const handleSubmitBlog = async () => {
-    if (!blogForm.heading || !blogForm.content) {
-      setError("Heading and content are required.");
-      return;
+  const fetchProfile = async () => {
+    try {
+      const response = await apiClient.get("/user/me");
+      setProfile(response?.data?.data?.user || null);
+    } catch (err) {
+      console.error("Failed to load profile:", err);
     }
+  };
 
-    if (!editingBlogId && !blogForm.imageUrl) {
-      setError("Image URL is required for a new blog.");
+  const fetchCareers = async () => {
+    try {
+      const response = await apiClient.get("/career/get-all");
+      setCareers(response?.data?.data?.data || []);
+    } catch (err) {
+      console.error("Failed to load careers:", err);
+      const serverMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message;
+      setError(serverMessage || "Unable to load careers. Please try again.");
+    }
+  };
+
+  const handleSubmitCareer = async () => {
+    setError("");
+    setMessage("");
+
+    if (!careerForm.title || !careerForm.description) {
+      setError("Job title and description are required.");
       return;
     }
 
     const payload = {
-      heading: blogForm.heading,
-      content: blogForm.content,
-      mtitle: blogForm.mtitle,
-      mdesc: blogForm.mdesc,
+      title: careerForm.title,
+      description: careerForm.description,
+      applyLink: careerForm.applyLink,
     };
-
-    if (blogForm.imageUrl) {
-      payload.images = [
-        {
-          url: blogForm.imageUrl,
-          key: `dashboard-${Date.now()}`,
-        },
-      ];
-    }
 
     try {
       setSubmitting(true);
-      if (editingBlogId) {
-        await apiClient.put(`/blog/update/${editingBlogId}`, payload);
-        setMessage("Blog updated successfully.");
+      if (editingCareerId) {
+        await apiClient.put(`/career/update/${editingCareerId}`, payload);
+        setMessage("Career updated successfully.");
       } else {
-        await apiClient.post("/blog/create", payload);
-        setMessage("Blog created successfully.");
+        await apiClient.post("/career/create", payload);
+        setMessage("Career created successfully.");
       }
-      resetBlogForm();
-      fetchBlogs();
+      setCareerForm({ title: "", description: "", applyLink: "" });
+      setEditingCareerId(null);
+      fetchCareers();
     } catch (err) {
-      console.error("Submit blog failed:", err);
+      console.error("Submit career failed:", err);
       const serverMessage =
         err?.response?.data?.message ||
         err?.response?.data?.error ||
         err?.message;
       setError(
         serverMessage ||
-          "Unable to save blog. Please check your inputs and try again.",
+          "Unable to save career. Please check your inputs and try again.",
       );
     } finally {
       setSubmitting(false);
     }
   };
 
-  // Dummy User
-  const user = {
-    name: "Dharmendra Kumar",
-    email: "dharmendra@gmail.com",
+  const handleStartEditCareer = (career) => {
+    setActiveTab("add-career");
+    setEditingCareerId(career._id);
+    setCareerForm({
+      title: career.title || "",
+      description: career.description || "",
+      applyLink: career.applyLink || "",
+    });
+    setError("");
+    setMessage("");
   };
+
+  const handleDeleteCareer = async (id) => {
+    if (
+      !window.confirm("Are you sure you want to delete this career listing?")
+    ) {
+      return;
+    }
+
+    try {
+      await apiClient.delete(`/career/delete/${id}`);
+      setMessage("Career deleted successfully.");
+      fetchCareers();
+    } catch (err) {
+      console.error("Delete career failed:", err);
+      setError("Unable to delete career. Please try again.");
+    }
+  };
+
+  const handleLogout = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to logout from the dashboard?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await apiClient.post("/user/logout");
+    } catch (err) {
+      console.error("Logout request failed:", err);
+    }
+
+    logOut();
+    router.replace("/login");
+  };
+
+  const activeUser = profile ||
+    user || {
+      name: "Dharmendra Kumar",
+      email: "dharmendra@gmail.com",
+    };
 
   // Sidebar Menu
   const menuItems = [
@@ -245,20 +314,6 @@ const DashboardPage = () => {
     },
   ];
 
-  // Dummy Career Data
-  const careers = [
-    {
-      id: 1,
-      title: "Frontend Developer",
-      type: "Full Time",
-    },
-    {
-      id: 2,
-      title: "UI/UX Designer",
-      type: "Remote",
-    },
-  ];
-
   // Dummy Robot Data
   const robots = [
     {
@@ -285,16 +340,16 @@ const DashboardPage = () => {
     <div className="min-h-screen bg-[#FAF6ED] p-4 md:p-8 ">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
         {/* Sidebar */}
-        <div className="w-full md:w-[280px] bg-white rounded-2xl p-5 shadow-sm">
+        <div className="w-full md:w-70 bg-white rounded-2xl p-5 shadow-sm">
           {/* User */}
           <div className="flex flex-col items-center border-b pb-5">
             <div className="w-16 h-16 rounded-full bg-[#1f3b57] text-white flex items-center justify-center text-2xl font-bold">
-              {user.name.charAt(0)}
+              {activeUser.name.charAt(0)}
             </div>
 
-            <h2 className="mt-3 font-semibold text-lg">{user.name}</h2>
+            <h2 className="mt-3 font-semibold text-lg">{activeUser.name}</h2>
 
-            <p className="text-sm text-gray-500">{user.email}</p>
+            <p className="text-sm text-gray-500">{activeUser.email}</p>
           </div>
 
           {/* Menu */}
@@ -361,7 +416,10 @@ const DashboardPage = () => {
             })}
 
             {/* Logout */}
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-sm">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-sm"
+            >
               <FiLogOut size={18} />
               Logout
             </button>
@@ -426,44 +484,78 @@ const DashboardPage = () => {
 
           {/* Add Blog */}
           {activeTab === "add-blog" && (
-             <BlogForm
-    editData={editingBlog}
-    onSuccess={() => {
-      setEditingBlog(null);
-    }}
-  />
+            <BlogForm
+              editData={editingBlog}
+              onSuccess={() => {
+                setEditingBlog(null);
+              }}
+            />
           )}
 
           {/* List Blogs */}
           {activeTab === "list-blog" && (
-             <BlogList
-    onEdit={(blog) => {
-      setEditingBlog(blog);
-      setActiveTab("add-blog");
-    }}
-  />
+            <BlogList
+              onEdit={(blog) => {
+                setEditingBlog(blog);
+                setActiveTab("add-blog");
+              }}
+            />
           )}
 
           {/* Add Career */}
           {activeTab === "add-career" && (
             <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h2 className="text-2xl font-semibold mb-6">Add Career</h2>
+              <h2 className="text-2xl font-semibold mb-6">
+                {editingCareerId ? "Edit Career" : "Add Career"}
+              </h2>
 
               <div className="space-y-4">
                 <input
                   type="text"
+                  name="title"
+                  value={careerForm.title}
+                  onChange={(e) =>
+                    setCareerForm((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }))
+                  }
                   placeholder="Job Title"
                   className="w-full border rounded-xl px-4 py-3 outline-none"
                 />
 
+                <textarea
+                  name="description"
+                  value={careerForm.description}
+                  onChange={(e) =>
+                    setCareerForm((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
+                  placeholder="Job Description"
+                  className="w-full border rounded-xl px-4 py-3 outline-none h-32"
+                />
+
                 <input
-                  type="text"
-                  placeholder="Job Type"
+                  type="url"
+                  name="applyLink"
+                  value={careerForm.applyLink}
+                  onChange={(e) =>
+                    setCareerForm((prev) => ({
+                      ...prev,
+                      applyLink: e.target.value,
+                    }))
+                  }
+                  placeholder="Apply Link (optional)"
                   className="w-full border rounded-xl px-4 py-3 outline-none"
                 />
 
-                <button className="bg-[#1f3b57] text-white px-6 py-3 rounded-xl">
-                  Add Career
+                <button
+                  onClick={handleSubmitCareer}
+                  className="bg-[#1f3b57] text-white px-6 py-3 rounded-xl"
+                >
+                  {editingCareerId ? "Update Career" : "Save Career"}
                 </button>
               </div>
             </div>
@@ -474,23 +566,52 @@ const DashboardPage = () => {
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <h2 className="text-2xl font-semibold mb-6">Career Listings</h2>
 
-              <div className="space-y-4">
-                {careers.map((career) => (
-                  <div
-                    key={career.id}
-                    className="border rounded-xl p-4 flex items-center justify-between"
-                  >
-                    <div>
-                      <h3 className="font-semibold">{career.title}</h3>
-                      <p className="text-sm text-gray-500">{career.type}</p>
-                    </div>
+              {careers.length === 0 ? (
+                <p className="text-gray-500">No career listings found.</p>
+              ) : (
+                <div className="space-y-4">
+                  {careers.map((career) => (
+                    <div
+                      key={career._id}
+                      className="border rounded-xl p-4 flex flex-col gap-4"
+                    >
+                      <div>
+                        <h3 className="font-semibold text-lg">
+                          {career.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 mt-1">
+                          {career.description}
+                        </p>
+                        {career.applyLink && (
+                          <a
+                            href={career.applyLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-sm text-blue-600 hover:underline"
+                          >
+                            Apply link
+                          </a>
+                        )}
+                      </div>
 
-                    <button className="text-sm px-4 py-2 rounded-lg bg-gray-100">
-                      Edit
-                    </button>
-                  </div>
-                ))}
-              </div>
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          onClick={() => handleStartEditCareer(career)}
+                          className="text-sm px-4 py-2 rounded-lg bg-[#1f3b57] text-white"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCareer(career._id)}
+                          className="text-sm px-4 py-2 rounded-lg bg-red-100 text-red-600"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -551,12 +672,32 @@ const DashboardPage = () => {
 
               <div className="space-y-3">
                 <p>
-                  <span className="font-semibold">Name:</span> {user.name}
+                  <span className="font-semibold">Name:</span> {activeUser.name}
                 </p>
 
                 <p>
-                  <span className="font-semibold">Email:</span> {user.email}
+                  <span className="font-semibold">Email:</span>{" "}
+                  {activeUser.email}
                 </p>
+
+                {activeUser.phone && (
+                  <p>
+                    <span className="font-semibold">Phone:</span>{" "}
+                    {activeUser.phone}
+                  </p>
+                )}
+
+                <p>
+                  <span className="font-semibold">Role:</span>{" "}
+                  {activeUser.role || activeUser.userType || "user"}
+                </p>
+
+                {typeof activeUser.is_verified !== "undefined" && (
+                  <p>
+                    <span className="font-semibold">Verified:</span>{" "}
+                    {activeUser.is_verified ? "Yes" : "No"}
+                  </p>
+                )}
               </div>
             </div>
           )}

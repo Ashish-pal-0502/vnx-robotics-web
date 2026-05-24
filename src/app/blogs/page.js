@@ -1,12 +1,12 @@
-import React from "react";
-import BlogsDetails from "./../../components/Blog/BlogsDetails";
+// import React from "react";
+// import BlogsDetails from "./../../components/Blog/BlogsDetails";
 
-const page = () => {
-  return (
-    <>
-      <BlogsDetails />
-    </>
-  );
-};
+// const page = () => {
+//   return (
+//     <>
+//       <BlogsDetails />
+//     </>
+//   );
+// };
 
-export default page;
+// export default page;

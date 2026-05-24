@@ -4,13 +4,13 @@ import apiClient from "@/api/client";
 import React, { useState } from "react";
 import Link from "next/link";
 import VerifyOtpModal from "./../../components/Modals/VerifyOtpModal";
-import useAuth from './../../auth/useAuth';
+import useAuth from "./../../auth/useAuth";
 import { GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 function Page() {
-  const {logIn} = useAuth()
+  const { logIn } = useAuth();
   const router = useRouter();
   const [form, setForm] = useState({
     name: "",
@@ -39,20 +39,18 @@ function Page() {
       setLoading(true);
       setMessage("");
 
-      console.log("payload", form)
+      console.log("payload", form);
 
       const response = await apiClient.post("/user/register", form);
       console.log("response", response);
-if(response.ok){
-  
+      if (response.ok) {
+        setMessage("OTP sent to your email");
 
-      setMessage("OTP sent to your email");
-
-      // ✅ OPEN OTP MODAL
-      setIsOtpOpen(true);
-}else {
-    toast.error(response?.data?.message || "Login failed");
-}
+        // ✅ OPEN OTP MODAL
+        setIsOtpOpen(true);
+      } else {
+        toast.error(response?.data?.message || "Login failed");
+      }
     } catch (err) {
       console.error(err);
       setMessage(err?.response?.data?.message || "Something went wrong");
@@ -66,13 +64,10 @@ if(response.ok){
     try {
       setVerifyLoading(true);
 
-      console.log(
-        "verify email", 
-        {
+      console.log("verify email", {
         email: form.email,
         otp: otpValue,
-      }
-      )
+      });
 
       const response = await apiClient.post("/user/verify", {
         email: form.email,
@@ -83,15 +78,15 @@ if(response.ok){
       if (response?.status !== 200) {
         throw new Error(response?.data?.message);
       }
-       if (response?.ok) {
-      toast.success(response?.data?.message || "Login successful");
+      if (response?.ok) {
+        toast.success(response?.data?.message || "Login successful");
 
-      logIn(response?.data?.data?.accessToken);
+        logIn(response?.data?.data?.accessToken);
 
-      router.replace("/"); //  redirect to home
-    } else {
-      toast.error(response?.data?.message || "Login failed");
-    }
+        router.replace("/"); //  redirect to home
+      } else {
+        toast.error(response?.data?.message || "Login failed");
+      }
       setIsOtpOpen(false);
     } catch (err) {
       console.error(err);
@@ -102,8 +97,7 @@ if(response.ok){
 
   // ✅ RESEND OTP
   const handleResendOtp = async () => {
-
-    console.log("email", form.email )
+    console.log("email", form.email);
     try {
       const response = await apiClient.post("/user/send-otp", {
         email: form.email,
@@ -114,34 +108,33 @@ if(response.ok){
     }
   };
 
-
   const handleGoogleLogin = async (credentialResponse) => {
-  const idToken = credentialResponse?.credential;
+    const idToken = credentialResponse?.credential;
 
-  try {
-    const response = await apiClient.post(`/user/google-auth`, {
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      tokenId: idToken,
-    });
+    try {
+      const response = await apiClient.post(`/user/google-auth`, {
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        tokenId: idToken,
+      });
 
-    if (response?.ok) {
-      toast.success(response?.data?.message || "Login successful");
+      if (response?.ok) {
+        toast.success(response?.data?.message || "Login successful");
 
-      logIn(response?.data?.data?.accessToken);
+        logIn(response?.data?.data?.accessToken);
 
-      router.replace("/"); // ✅ redirect
-    } else {
-      toast.error(response.data.message || "Google login failed");
+        router.replace("/"); // ✅ redirect
+      } else {
+        toast.error(response.data.message || "Google login failed");
+      }
+    } catch (error) {
+      console.error("Google login failed:", error);
+      toast.error("Google login failed. Please try again.");
     }
-  } catch (error) {
-    console.error("Google login failed:", error);
-    toast.error("Google login failed. Please try again.");
-  }
-};
+  };
 
-const handleGoogleLoginError = () => {
-  toast.error("Google Login Failed");
-};
+  const handleGoogleLoginError = () => {
+    toast.error("Google Login Failed");
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
@@ -211,27 +204,25 @@ const handleGoogleLoginError = () => {
           >
             {loading ? "Registering..." : "Register"}
           </button>
-
-
         </form>
 
         {/* DIVIDER */}
-<div className="flex items-center gap-3 my-6">
-  <div className="flex-1 h-px bg-white/20"></div>
-  <span className="text-xs text-gray-400">OR</span>
-  <div className="flex-1 h-px bg-white/20"></div>
-</div>
+        <div className="flex items-center gap-3 my-6">
+          <div className="flex-1 h-px bg-white/20"></div>
+          <span className="text-xs text-gray-400">OR</span>
+          <div className="flex-1 h-px bg-white/20"></div>
+        </div>
 
-{/* GOOGLE BUTTON */}
-<div className="w-full flex justify-center">
-  <GoogleLogin
-    onSuccess={handleGoogleLogin}
-    onError={handleGoogleLoginError}
-    size="large"
-    text="signup_with"   
-    shape="rectangular"
-  />
-</div>
+        {/* GOOGLE BUTTON */}
+        <div className="w-full flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={handleGoogleLoginError}
+            size="large"
+            text="signup_with"
+            shape="rectangular"
+          />
+        </div>
 
         {/* LOGIN CTA */}
         <div className="text-center mt-6 text-sm text-gray-400">
