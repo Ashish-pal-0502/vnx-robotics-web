@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  /* BREAKPOINTS */
+  /* =============================
+     BREAKPOINTS
+  ============================== */
+
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 976px;
@@ -11,42 +14,78 @@
      BRAND COLORS
   ============================== */
 
-  /* PRIMARY COLOR (Muted Taupe) */
-  --color-primary-400: #f79e1c;
+  /* VNX BLUE */
+  --color-primary-400: #006db1;
+  --color-primary-500: #0088db;
 
-  /* SECONDARY COLOR (Caramel) */
-  --color-secondary-400: #fbdba0;
+  /* VNX YELLOW */
+  --color-secondary-400: #ffba22;
+  --color-secondary-500: #ffc93d;
 
-  /* SHADOW / BACKGROUND COLOR (Light Buttermilk) */
-  --color-shadow-400: #9e5413;
+  /* ACCENT / GLOW */
+  --color-accent-400: #3b82f6;
+  --color-accent-500: #60a5fa;
 
-  /* ACCENT COLOR (Warm Coral) */
-  --color-accent-400: #9e5413;
+  /* =============================
+     DARK THEME COLORS
+  ============================== */
 
-  /* NEUTRAL COLORS (Grays) */
+  /* MAIN BACKGROUND */
+  --color-dark-100: #050816;
 
+  /* SECONDARY BACKGROUND */
+  --color-dark-200: #0b1020;
+
+  /* CARD / SECTION */
+  --color-dark-300: #111827;
+
+  /* ELEVATED SURFACE */
+  --color-dark-400: #161f32;
+
+  /* BORDER */
+  --color-border-100: #27324a;
+
+  /* =============================
+     TEXT COLORS
+  ============================== */
+
+  /* PRIMARY TEXT */
+  --color-text-primary: #f3f4f6;
+
+  /* SECONDARY TEXT */
+  --color-text-secondary: #a1a1aa;
+
+  /* MUTED TEXT */
+  --color-text-muted: #71717a;
+
+  /* PURE WHITE */
   --color-gray-100: #ffffff;
+
+  /* LOGO GRAY */
+  --color-gray-400: #4e4e4e;
 
   /* =============================
      SEMANTIC COLORS
   ============================== */
 
-  /*  Success (Soft Green) */
-  --color-success: #6baa75;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
 
-  /*  Error (Muted Coral Red) */
-  --color-error: #c85a5a;
+  /* =============================
+     FONT FAMILY
+  ============================== */
 
-  /*  Warning (Amber Warm) */
-  --color-warning: #e8a865;
+  --font-logo: var(--font-orbitron);
+  --font-heading: var(--font-sora);
+  --font-body: var(--font-roboto-slab);
+  --font-mono: var(--font-roboto-mono);
 
-  /*  Info (Muted Slate Blue) */
-  --color-info: #4a8095;
+  /* =============================
+     FONT SIZES
+  ============================== */
 
-  /* FONT FAMILY */
-  --font-primary: var(--font-figtree);
-
-  /* FONT SIZES */
   --text-h1-desktop: 65px;
   --text-h2-desktop: 50px;
   --text-h3-desktop: 30px;
@@ -60,10 +99,186 @@
   --text-p1-mobile: 18px;
   --text-p2-mobile: 16px;
 
+  /* =============================
+     EFFECTS
+  ============================== */
+
   --backdrop-blur-13: 1.5px;
 }
+
+/* ====================================
+   PRIMARY BUTTON
+==================================== */
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(135deg, #ffba22 0%, #ffc93d 45%, #ffe27a 100%);
+
+  color: #050816;
+
+  font-family: var(--font-heading);
+
+  padding: 14px 34px;
+
+  border-radius: 9999px;
+
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 10px 30px rgba(255, 186, 34, 0.18),
+    0 0 25px rgba(255, 186, 34, 0.15);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+}
+
+/* Glow Overlay */
+.btn-primary::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.02)
+  );
+
+  opacity: 0;
+
+  transition: opacity 0.35s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 18px 45px rgba(255, 186, 34, 0.28),
+    0 0 45px rgba(255, 186, 34, 0.22);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* ====================================
+   SECONDARY BUTTON
+==================================== */
+
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    rgba(0, 109, 177, 0.18),
+    rgba(255, 255, 255, 0.04)
+  );
+
+  color: var(--color-text-primary);
+
+  backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  font-family: var(--font-heading);
+
+  padding: 14px 34px;
+
+  border-radius: 9999px;
+
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+
+  box-shadow: 0 8px 25px rgba(0, 109, 177, 0.12);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.btn-secondary::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.12), transparent);
+
+  opacity: 0;
+
+  transition: opacity 0.35s ease;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-3px) scale(1.02);
+
+  border-color: rgba(96, 165, 250, 0.4);
+
+  background: linear-gradient(
+    135deg,
+    rgba(0, 136, 219, 0.22),
+    rgba(255, 255, 255, 0.06)
+  );
+
+  box-shadow: 0 16px 40px rgba(0, 136, 219, 0.18);
+}
+
+.btn-secondary:hover::before {
+  opacity: 1;
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+/* =============================
+   FONT UTILITY CLASSES
+============================== */
+
+.font-logo {
+  font-family: var(--font-logo);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* =============================
+   UTILITIES
+============================== */
 
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

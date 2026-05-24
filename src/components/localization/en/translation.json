@@ -1,9 +1,12 @@
 {
   "navbar": {
-    "home": "Home",
-    "about": "About",
-    "products": "Products",
+    "homepage": "Homepage",
+    "industries": "Industries",
+    "solutions": "Solutions",
+    "robotics": "Robotics",
+    "about": "About Us",
     "careers": "Careers",
-    "blogs": "Blogs"
+    "contact": "Contact",
+    "contactBtn": "Contact us"
   }
 }

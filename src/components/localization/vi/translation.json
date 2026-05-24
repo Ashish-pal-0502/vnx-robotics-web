@@ -1,9 +1,12 @@
 {
   "navbar": {
-    "home": "Trang chủ",
+    "homepage": "Trang chủ",
+    "industries": "Ngành nghề",
+    "solutions": "Giải pháp",
+    "robotics": "Robot",
     "about": "Về chúng tôi",
-    "products": "Sản phẩm",
     "careers": "Cơ hội nghề nghiệp",
-    "blogs": "Bài viết"
+    "contact": "Liên hệ",
+    "contactBtn": "Liên hệ ngay"
   }
 }
