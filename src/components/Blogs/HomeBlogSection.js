@@ -1,41 +1,56 @@
 "use client";
 import Link from "next/link";
+import react, { useEffect, useState } from "react";
 
 import BlogCard from "./../Cards/BlogCard";
+import apiClient from "./../../api/client";
 
-const blogs = [
-  {
-    id: 1,
-    image:
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1400&auto=format&fit=crop",
-    date: "April 29, 2026",
-    title: "Blog Heading",
-    description:
-      "Opening our new Tokyo hub to better serve entertainment and sports markets in Asia-Pacific.",
-  },
+// const blogs = [
+//   {
+//     id: 1,
+//     image:
+//       "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1400&auto=format&fit=crop",
+//     date: "April 29, 2026",
+//     title: "Blog Heading",
+//     description:
+//       "Opening our new Tokyo hub to better serve entertainment and sports markets in Asia-Pacific.",
+//   },
 
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=1400&auto=format&fit=crop",
-    date: "April 29, 2026",
-    title: "Blog Heading",
-    description:
-      "A deep dive into the technology that keeps authenticity intact when translating across languages.",
-  },
+//   {
+//     id: 2,
+//     image:
+//       "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=1400&auto=format&fit=crop",
+//     date: "April 29, 2026",
+//     title: "Blog Heading",
+//     description:
+//       "A deep dive into the technology that keeps authenticity intact when translating across languages.",
+//   },
 
-  {
-    id: 3,
-    image:
-      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1400&auto=format&fit=crop",
-    date: "April 29, 2026",
-    title: "Blog Heading",
-    description:
-      "Lessons from the Australian Open partnership and what it means for the future of fan engagement.",
-  },
-];
+//   {
+//     id: 3,
+//     image:
+//       "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1400&auto=format&fit=crop",
+//     date: "April 29, 2026",
+//     title: "Blog Heading",
+//     description:
+//       "Lessons from the Australian Open partnership and what it means for the future of fan engagement.",
+//   },
+// ];
 
 function HomeBlogSection() {
+  const [blogs, setBlogs] = useState([]);
+
+  const getAllBlogs = async () => {
+    const response = await apiClient.get("/blog/get");
+
+    if (response.ok) {
+      setBlogs(response?.data?.data?.blogs || []);
+    }
+  };
+
+  useEffect(() => {
+    getAllBlogs();
+  }, []);
   return (
     <section className="relative overflow-hidden bg-black py-5">
       {/* DARK BG GRADIENT */}
@@ -81,8 +96,8 @@ function HomeBlogSection() {
 
         {/* BLOG GRID */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-3">
-          {blogs.map((blog, index) => (
-            <BlogCard key={blog.id} blog={blog} index={index} />
+          {blogs?.slice(0, 3)?.map((blog, index) => (
+            <BlogCard key={blog._id} blog={blog} index={index} />
           ))}
         </div>
       </div>

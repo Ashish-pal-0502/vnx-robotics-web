@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
@@ -7,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { BsGlobe } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
-
 import MobileMenu from "./MobileMenu";
 
 export default function Header() {
@@ -16,7 +14,6 @@ export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
-
   const { t, i18n } = useTranslation();
 
   useEffect(() => {

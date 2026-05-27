@@ -17,7 +17,6 @@ import toast from "react-hot-toast";
 export default function Footer() {
   const router = useRouter();
   const { user, logOut } = useAuth();
-  console.log("user", user);
 
   const handleLogout = async () => {
     try {
@@ -51,7 +50,7 @@ export default function Footer() {
       links: [
         { name: "Blogs", href: "/blogs" },
         { name: "Careers", href: "/careers" },
-        { name: "Support", href: "/support" },
+        { name: "Terms & Conditions", href: "/terms-conditions" },
       ],
     },
     {
@@ -59,7 +58,7 @@ export default function Footer() {
       links: [
         { name: "About", href: "/aboutus" },
         { name: "Contact", href: "/contact" },
-        { name: "Privacy", href: "/privacy-policy" },
+        { name: "Privacy Policy", href: "/privacy-policy" },
       ],
     },
   ];
@@ -104,14 +103,16 @@ export default function Footer() {
                   </div>
 
                   {/* DASHBOARD */}
-                  <button
-                    onClick={() => router.push("/dashboard")}
-                    className="btn-primary cursor-pointer flex items-center gap-2"
-                  >
-                    <span>Dashboard</span>
+                  {user && user.userType === "admin" && (
+                    <button
+                      onClick={() => router.push("/dashboard")}
+                      className="btn-primary cursor-pointer flex items-center gap-2"
+                    >
+                      <span>Dashboard</span>
 
-                    <FaArrowRight size={12} className="opacity-80" />
-                  </button>
+                      <FaArrowRight size={12} className="opacity-80" />
+                    </button>
+                  )}
 
                   {/* LOGOUT */}
                   <button

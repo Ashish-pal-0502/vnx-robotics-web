@@ -1,12 +1,5 @@
-
-
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import {
-  Orbitron,
-  Sora,
-  Roboto_Slab,
-  Roboto_Mono,
-} from "next/font/google";
+import { Orbitron, Sora, Roboto_Slab, Roboto_Mono } from "next/font/google";
 
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
