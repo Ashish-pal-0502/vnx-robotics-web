@@ -1,59 +1,91 @@
 @import "tailwindcss";
 
-@theme {
-  /* BREAKPOINTS */
+:root {
+  /* =============================
+     BREAKPOINTS
+  ============================== */
+
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 976px;
   --breakpoint-xl: 1440px;
 
-
-
   /* =============================
      BRAND COLORS
   ============================== */
 
-  /* PRIMARY COLOR (Muted Taupe) */
-  --color-primary-400: #F79E1C;
+  /* VNX BLUE */
+  --color-primary-400: #006db1;
+  --color-primary-500: #0088db;
 
+  /* VNX YELLOW */
+  --color-secondary-400: #ffba22;
+  --color-secondary-500: #ffc93d;
 
-  /* SECONDARY COLOR (Caramel) */
-  --color-secondary-400: #FBDBA0;
+  /* ACCENT / GLOW */
+  --color-accent-400: #3b82f6;
+  --color-accent-500: #60a5fa;
 
+  /* =============================
+     DARK THEME COLORS
+  ============================== */
 
-  /* SHADOW / BACKGROUND COLOR (Light Buttermilk) */
-  --color-shadow-400: #9E5413;
+  /* MAIN BACKGROUND */
+  --color-dark-100: #050816;
 
+  /* SECONDARY BACKGROUND */
+  --color-dark-200: #0b1020;
 
-  /* ACCENT COLOR (Warm Coral) */
-  --color-accent-400: #9E5413;
+  /* CARD / SECTION */
+  --color-dark-300: #111827;
 
+  /* ELEVATED SURFACE */
+  --color-dark-400: #161f32;
 
-  /* NEUTRAL COLORS (Grays) */
+  /* BORDER */
+  --color-border-100: #27324a;
 
+  /* =============================
+     TEXT COLORS
+  ============================== */
+
+  /* PRIMARY TEXT */
+  --color-text-primary: #f3f4f6;
+
+  /* SECONDARY TEXT */
+  --color-text-secondary: #a1a1aa;
+
+  /* MUTED TEXT */
+  --color-text-muted: #71717a;
+
+  /* PURE WHITE */
   --color-gray-100: #ffffff;
 
+  /* LOGO GRAY */
+  --color-gray-400: #4e4e4e;
 
   /* =============================
      SEMANTIC COLORS
   ============================== */
 
-  /*  Success (Soft Green) */
-  --color-success: #6BAA75;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
 
-  /*  Error (Muted Coral Red) */
-  --color-error: #C85A5A;
+  /* =============================
+     FONT FAMILY
+  ============================== */
 
-  /*  Warning (Amber Warm) */
-  --color-warning: #E8A865;
+  --font-logo: var(--font-orbitron);
+  --font-heading: var(--font-sora);
+  --font-body: var(--font-roboto-slab);
+  --font-mono: var(--font-roboto-mono);
 
-  /*  Info (Muted Slate Blue) */
-  --color-info: #4A8095;
+  /* =============================
+     FONT SIZES
+  ============================== */
 
-  /* FONT FAMILY */
-  --font-primary: var(--font-figtree);
-
-  /* FONT SIZES */
   --text-h1-desktop: 65px;
   --text-h2-desktop: 50px;
   --text-h3-desktop: 30px;
@@ -67,10 +99,168 @@
   --text-p1-mobile: 18px;
   --text-p2-mobile: 16px;
 
+  /* =============================
+     EFFECTS
+  ============================== */
+
   --backdrop-blur-13: 1.5px;
 }
+
+/* ====================================
+   PRIMARY BUTTON
+   VNX PREMIUM BUTTON
+==================================== */
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 14px 34px;
+
+  border-radius: 9999px;
+
+  background:
+    linear-gradient(90deg,
+      #ffba22 0%,
+      #f7b321 72%,
+      #e5a11b 100%);
+
+  color: #050816;
+
+  font-family: var(--font-heading);
+
+  font-size: 16px;
+  font-weight: 600;
+
+  border: none;
+
+  box-shadow:
+    0 10px 24px rgba(255, 186, 34, 0.16);
+
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* TEXT ABOVE */
+.btn-primary span {
+  position: relative;
+  z-index: 2;
+}
+
+/* ABB-LIKE HOVER MIX */
+.btn-primary:hover {
+  background:
+    linear-gradient(90deg,
+      #4f79ff 0%,
+      #006db1 18%,
+      #ffba22 58%,
+      #f5b01f 100%);
+
+  box-shadow:
+    0 14px 30px rgba(255, 186, 34, 0.18),
+    0 0 14px rgba(0, 109, 177, 0.10);
+}
+
+/* ====================================
+   SECONDARY BUTTON
+==================================== */
+
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 14px 34px;
+
+  border-radius: 9999px;
+
+  background:
+    rgba(255, 255, 255, 0.03);
+
+  color: var(--color-text-primary);
+
+  font-family: var(--font-heading);
+
+  font-size: 16px;
+  font-weight: 500;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.14);
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.btn-secondary:hover {
+  background:
+    linear-gradient(90deg,
+      rgba(0, 109, 177, 0.18) 0%,
+      rgba(255, 255, 255, 0.06) 100%);
+
+  border-color:
+    rgba(0, 136, 219, 0.24);
+
+  box-shadow:
+    0 10px 24px rgba(0, 109, 177, 0.08);
+}
+
+
+/* =============================
+   FONT UTILITY CLASSES
+============================== */
+
+.font-logo {
+  font-family: var(--font-logo);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* =============================
+   UTILITIES
+============================== */
 
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

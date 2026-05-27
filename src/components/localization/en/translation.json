@@ -1,0 +1,13 @@
+{
+  "navbar": {
+    "homepage": "Homepage",
+    "industries": "Industries",
+    "solutions": "Solutions",
+    "robotics": "Robotics",
+    "blogs": "Blogs",
+    "about": "About Us",
+    "careers": "Careers",
+    "contact": "Contact",
+    "contactBtn": "Contact us"
+  }
+}

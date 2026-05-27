@@ -12,6 +12,7 @@ const useAuth = () => {
     document.cookie = `token=${authToken}; path=/; max-age=2592000`;
   };
 
+
   const logOut = () => {
     setUser(null);
     localStorage.removeItem("token");
