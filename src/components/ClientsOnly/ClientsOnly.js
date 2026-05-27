@@ -25,13 +25,11 @@ const ClientOnly = ({ children }) => {
       }
     }
   }, []);
-
   if (!hasMounted) {
     return null;
   }
-
   const showHeader = !pathname?.startsWith("/dashboard");
-
+  const showFooter = !pathname?.startsWith("/dashboard");
   return (
     <>
       <AuthContext.Provider
@@ -45,7 +43,7 @@ const ClientOnly = ({ children }) => {
           {children}
           <ScrollToTop />
         </main>
-        <Footer />
+        {showFooter && <Footer />}
       </AuthContext.Provider>
     </>
   );
