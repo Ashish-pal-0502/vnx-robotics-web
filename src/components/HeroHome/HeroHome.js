@@ -12,7 +12,7 @@ export default function HeroHome() {
     const updateVideoSource = () => {
       const isMobile = window.innerWidth < 768; // Mobile: < 768px
       const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024; // Tablet: 768px - 1024px
-      
+
       if (isMobile) {
         setVideoSrc("/mp4/phone.mp4"); // Your mobile video
       } else if (isTablet) {
@@ -33,7 +33,7 @@ export default function HeroHome() {
   }, []);
 
   return (
-    <main className="text-white">
+    <main className="text-white bg-black/70">
       <section className="relative h-screen w-full flex items-center">
         {/* VIDEO BACKGROUND */}
         {videoSrc && (
@@ -63,7 +63,9 @@ export default function HeroHome() {
                 <div className="w-8 h-8 bg-[#083427] rounded-full border-2 border-white"></div>
                 <div className="w-8 h-8 bg-[#083427] rounded-full border-2 border-white"></div>
               </div>
-              <p className="text-sm font-heading text-white">1K+ Trusted Customers</p>
+              <p className="text-sm font-heading text-white">
+                1K+ Trusted Customers
+              </p>
             </div>
 
             {/* HEADING */}
@@ -86,28 +88,22 @@ export default function HeroHome() {
             >
               Get Started
             </Link> */}
-            <Link
-  href="/contact"
-  className="btn-primary"
->
-  Get Started →
-</Link>
-
+            <Link href="/contact" className="btn-primary">
+              Get Started →
+            </Link>
           </div>
         </div>
-      
 
-         <div className="absolute right-6 md:right-10 bottom-8 md:bottom-20 hidden md:flex flex-col items-center">
+        <div className="absolute right-6 md:right-10 bottom-8 md:bottom-20 hidden md:flex flex-col items-center">
           <div className="  flex items-center justify-center animate-bounce cursor-pointer">
             <Image
-              src="/icons/scrolldown.png" 
+              src="/icons/scrolldown.png"
               alt="Scroll down"
               width={100}
               height={100}
               className="w-12 h-12 md:w-32 md:h-32"
             />
           </div>
-        
         </div>
       </section>
     </main>

@@ -1,52 +1,42 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiArrowRight,
-} from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiArrowRight } from "react-icons/fi";
 
 const industries = [
   {
     title: "Warehouse & Logistics",
-    description:
-      "Intelligent warehouse systems and automation infrastructure.",
+    description: "Intelligent warehouse systems and automation infrastructure.",
     image:
       "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop",
   },
   {
     title: "Manufacturing",
-    description:
-      "Connected production systems and industrial intelligence.",
+    description: "Connected production systems and industrial intelligence.",
     image:
       "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?q=80&w=1200&auto=format&fit=crop",
   },
   {
     title: "Robotics & AI",
-    description:
-      "Advanced robotics platforms for future-ready operations.",
+    description: "Advanced robotics platforms for future-ready operations.",
     image:
       "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1200&auto=format&fit=crop",
   },
   {
     title: "Agriculture Systems",
-    description:
-      "Autonomous technologies powering modern agriculture.",
+    description: "Autonomous technologies powering modern agriculture.",
     image:
       "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1200&auto=format&fit=crop",
   },
   {
     title: "Embedded Devices",
-    description:
-      "Embedded systems driving next-generation automation.",
+    description: "Embedded systems driving next-generation automation.",
     image:
       "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
   },
   {
     title: "Industrial Infrastructure",
-    description:
-      "Integrated software and smart operational systems.",
+    description: "Integrated software and smart operational systems.",
     image:
       "https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=1200&auto=format&fit=crop",
   },
@@ -64,8 +54,8 @@ export default function IndustriesSection() {
       window.innerWidth < 768
         ? window.innerWidth * 0.72
         : window.innerWidth < 1024
-        ? window.innerWidth * 0.46
-        : window.innerWidth * 0.31;
+          ? window.innerWidth * 0.46
+          : window.innerWidth * 0.31;
 
     container.scrollBy({
       left: direction === "left" ? -(cardWidth + 20) : cardWidth + 20,
@@ -80,8 +70,7 @@ export default function IndustriesSection() {
     const interval = setInterval(() => {
       if (!container) return;
 
-      const maxScrollLeft =
-        container.scrollWidth - container.clientWidth;
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
 
       if (container.scrollLeft >= maxScrollLeft - 10) {
         container.scrollTo({
@@ -93,8 +82,8 @@ export default function IndustriesSection() {
           window.innerWidth < 768
             ? window.innerWidth * 0.72
             : window.innerWidth < 1024
-            ? window.innerWidth * 0.46
-            : window.innerWidth * 0.31;
+              ? window.innerWidth * 0.46
+              : window.innerWidth * 0.31;
 
         container.scrollBy({
           left: cardWidth + 20,
@@ -128,22 +117,21 @@ export default function IndustriesSection() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-[1600px] pl-5 md:pl-8 lg:pl-10">
+      <div className="relative z-10 mx-auto max-w-7xl pl-5 md:pl-8 lg:pl-10">
         {/* HEADER */}
         <div className="mb-14 flex flex-col gap-8 pr-5 md:pr-8 lg:flex-row lg:items-end lg:justify-between lg:pr-10">
           <div className="max-w-3xl">
-            
             {/* <p className="mb-5 font-mono text-xs uppercase tracking-[0.35em] text-[var(--color-secondary-400)]">
               Industries We Enable
             </p> */}
 
-              <div className="mb-5 flex items-center gap-3">
-          <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+            <div className="mb-5 flex items-center gap-3">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
 
-          <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
-           Industries We Enable
-          </span>
-        </div>
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+                Industries We Enable
+              </span>
+            </div>
 
             <h2 className="font-heading text-2xl font-semibold uppercase leading-[0.95] text-[var(--color-text-primary)] md:text-4xl">
               Intelligent Systems For

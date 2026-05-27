@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaLinkedinIn,
+  FaArrowRight,
+  FaFacebookF,
+} from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import useAuth from "@/auth/useAuth";
 import apiClient from "@/api/client";
@@ -10,147 +16,191 @@ import toast from "react-hot-toast";
 
 export default function Footer() {
   const router = useRouter();
-const { user, logOut } = useAuth();
+  const { user, logOut } = useAuth();
+  console.log("user", user);
 
+  const handleLogout = async () => {
+    try {
+      const response = await apiClient.post("/user/logout");
 
-const handleLogout = async () => {
-  try {
-    const response = await apiClient.post("/user/logout");
-    // console.log("resopsne of logout",response)
+      if (response?.ok) {
+        toast.success("Logged out successfully");
 
-    if (response?.ok) {
-      toast.success("Logged out successfully");
-
-      logOut();              //  clear frontend auth
-      router.replace("/");   //  redirect
-    } else {
-      toast.error(response?.data?.message || "Logout failed");
+        logOut();
+        router.replace("/");
+      } else {
+        toast.error(response?.data?.message || "Logout failed");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Logout failed");
     }
-  } catch (error) {
-    console.error(error);
-    toast.error("Logout failed");
-  }
-};
-  return (
-    <footer className=" bg-linear-to-r from-black via-[#0a0a23] to-[#2d0b5a] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* TOP SECTION */}
-        <div className="flex flex-col lg:flex-row justify-between gap-10">
-          {/* LEFT - SOCIAL */}
-          <div>
-            <div className="flex gap-4 mb-6">
-              <div className="border border-gray-600 p-3 rounded-full cursor-pointer hover:bg-white hover:text-black transition">
-                <FaXTwitter />
-              </div>
-              <div className="border border-gray-600 p-3 rounded-full cursor-pointer hover:bg-white hover:text-black transition">
-                <FaFacebookF />
-              </div>
-              <div className="border border-gray-600 p-3 rounded-full cursor-pointer hover:bg-white hover:text-black transition">
-                <FaInstagram />
-              </div>
-              <div className="border border-gray-600 p-3 rounded-full cursor-pointer hover:bg-white hover:text-black transition">
-                <FaLinkedinIn />
-              </div>
-            </div>
+  };
 
-            {/* LOGIN BUTTON */}
-       {user ? (
-  <button
-    onClick={handleLogout}
-    className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-red-600 transition"
-  >
-    Logout
-  </button>
-) : (
-  <button
-    onClick={() => router.push("/login")}
-    className="bg-white cursor-pointer text-black px-6 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition"
-  >
-    Login
-  </button>
-)}
+  const footerLinks = [
+    {
+      title: "Solutions",
+      links: [
+        { name: "Automation", href: "/solutions" },
+        { name: "Robotics", href: "/robotics" },
+        { name: "Industries", href: "/industries" },
+      ],
+    },
+    {
+      title: "Resources",
+      links: [
+        { name: "Blogs", href: "/blogs" },
+        { name: "Careers", href: "/careers" },
+        { name: "Support", href: "/support" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { name: "About", href: "/aboutus" },
+        { name: "Contact", href: "/contact" },
+        { name: "Privacy", href: "/privacy-policy" },
+      ],
+    },
+  ];
+
+  return (
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[var(--color-dark-100)] text-white">
+      {/* SUBTLE GLOW */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,136,219,0.08),transparent_35%)]" />
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-10 py-12">
+        {/* TOP */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
+          {/* LEFT */}
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[3px] text-[var(--color-secondary-400)] mb-5">
+              VNX Robotics
+            </p>
+
+            <h2 className="font-logo text-3xl md:text-5xl leading-none uppercase">
+              Engineered
+              <br />
+              To Outrun
+            </h2>
+
+            <p className="mt-5 max-w-md font-body text-sm leading-7 text-[var(--color-text-secondary)]">
+              Intelligent robotics and automation systems designed for
+              next-generation industries.
+            </p>
+
+            <div className="mt-8 flex items-center gap-3">
+              {user ? (
+                <>
+                  {/* USER INFO */}
+                  <div className="hidden sm:flex flex-col mr-2">
+                    <span className="text-sm font-semibold text-white leading-none">
+                      {user?.name}
+                    </span>
+
+                    <span className="text-[11px] uppercase tracking-[0.18em] text-white/40 mt-1">
+                      {user?.userType}
+                    </span>
+                  </div>
+
+                  {/* DASHBOARD */}
+                  <button
+                    onClick={() => router.push("/dashboard")}
+                    className="btn-primary cursor-pointer flex items-center gap-2"
+                  >
+                    <span>Dashboard</span>
+
+                    <FaArrowRight size={12} className="opacity-80" />
+                  </button>
+
+                  {/* LOGOUT */}
+                  <button
+                    onClick={handleLogout}
+                    className="btn-secondary cursor-pointer flex items-center gap-2"
+                  >
+                    <span>Logout</span>
+                    <HiOutlineLogout size={17} />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => router.push("/login")}
+                  className="btn-primary cursor-pointer flex items-center gap-2"
+                >
+                  <span>Login</span>
+
+                  <FaArrowRight size={12} className="opacity-80" />
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* RIGHT LINKS */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-10 text-sm">
-            {/* COMPANY */}
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li>
-                  <Link href="/about">About</Link>
-                </li>
-                <li>
-                  <Link href="/products">Products</Link>
-                </li>
-                <li>
-                  <Link href="/blogs">Blogs</Link>
-                </li>
-                <li>
-                  <Link href="/careers">Careers</Link>
-                </li>
-              </ul>
-            </div>
+          {/* RIGHT */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-10">
+            {footerLinks.map((section) => (
+              <div key={section.title}>
+                <h3 className="font-heading text-sm uppercase tracking-[2px] mb-5 text-white">
+                  {section.title}
+                </h3>
 
-            {/* CONTACT */}
-            <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>
-                  <Link href="/contact">Contact Form</Link>
-                </li>
-                <li>
-                  <Link href="/support">Help and Support</Link>
-                </li>
-                <li>
-                  <Link href="/faqs">FAQs</Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* LEGAL */}
-            <div>
-              <h3 className="font-semibold mb-4">Legal Links</h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>
-                  <Link href="/privacy-policy">Privacy Policy</Link>
-                </li>
-                <li>
-                  <Link href="/cookie-policy">Cookie Policy</Link>
-                </li>
-                <li>
-                  <Link href="/disclaimer">Disclaimer</Link>
-                </li>
-                <li>
-                  <Link href="/copyright">Copyright</Link>
-                </li>
-              </ul>
-            </div>
+                <ul className="space-y-3">
+                  {section.links.map((link) => (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        className="font-body text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-secondary-400)] transition"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* DIVIDER */}
-        <div className="border-t border-gray-700 my-8"></div>
+        <div className="my-8 border-t border-white/10" />
 
-        {/* BOTTOM BAR */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-300 gap-4">
-          {/* LOGO + COPYRIGHT */}
-          <div className="flex items-center gap-3">
-            <span className="text-xl font-bold text-blue-400">VNX</span>
-            <span className="text-xs tracking-widest">ROBOTICS</span>
-            <span className="ml-4">
-              © {new Date().getFullYear()} VNX Robotics. All Rights Reserved.
-            </span>
-          </div>
+        {/* BOTTOM */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          {/* COPYRIGHT */}
+          <p className="font-mono text-xs text-[var(--color-text-muted)]">
+            © {new Date().getFullYear()} VNX Robotics. All rights reserved.
+          </p>
 
-          {/* TERMS */}
-          <div className="flex gap-3">
-            <Link href="/terms">Terms & Conditions</Link>
-            <span>-</span>
-            <Link href="/privacy-policy">Privacy Policy</Link>
+          {/* SOCIAL + LINKS */}
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              {[
+                {
+                  icon: <FaLinkedinIn size={14} />,
+                  href: "https://linkedin.com",
+                },
+                {
+                  icon: <FaInstagram size={14} />,
+                  href: "https://instagram.com",
+                },
+                {
+                  icon: <FaXTwitter size={14} />,
+                  href: "https://x.com",
+                },
+                {
+                  icon: <FaFacebookF size={13} />,
+                  href: "https://facebook.com",
+                },
+              ].map((social, index) => (
+                <Link
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-[var(--color-text-secondary)] transition hover:border-[var(--color-primary-500)] hover:text-white"
+                >
+                  {social.icon}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

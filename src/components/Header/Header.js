@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import Image from "next/image";
@@ -27,30 +25,33 @@ export default function Header() {
       if (!ticking.current) {
         requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
-          
+
           // Don't hide header when at the very top
           if (currentScrollY <= 50) {
             setIsVisible(true);
           }
           // Scrolling down & past the header height (150px)
-          else if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
+          else if (
+            currentScrollY > lastScrollY.current &&
+            currentScrollY > 150
+          ) {
             setIsVisible(false); // Hide header
-          } 
+          }
           // Scrolling up
           else if (currentScrollY < lastScrollY.current) {
             setIsVisible(true); // Show header
           }
-          
+
           lastScrollY.current = currentScrollY;
           ticking.current = false;
         });
-        
+
         ticking.current = true;
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -69,8 +70,7 @@ export default function Header() {
     {
       name: t("navbar.homepage"),
       href: "/",
-      description:
-        "Identity, vision, and core capabilities.",
+      description: "Identity, vision, and core capabilities.",
     },
     {
       name: t("navbar.industries"),
@@ -87,14 +87,7 @@ export default function Header() {
     {
       name: t("navbar.robotics"),
       href: "/robotics",
-      description:
-        "Quadrupeds, autonomous systems, robotics platforms.",
-    },
-    {
-      name: t("navbar.about"),
-      href: "/about",
-      description:
-        "Vision, leadership philosophy, collaborations, team, latest updates.",
+      description: "Quadrupeds, autonomous systems, robotics platforms.",
     },
     {
       name: t("navbar.careers"),
@@ -102,22 +95,30 @@ export default function Header() {
       description:
         "Engineering culture, robotics, automation, embedded systems growth.",
     },
+    {
+      name: t("navbar.blogs"),
+      href: "/blogs",
+      description: "Latest insights, updates, and technical articles.",
+    },
+    {
+      name: t("navbar.about"),
+      href: "/aboutus",
+      description:
+        "Vision, leadership philosophy, collaborations, team, latest updates.",
+    },
   ];
 
   return (
     <>
       {/* HEADER */}
-      <header 
+      <header
         className={`fixed top-4 left-0 z-50 font-heading flex w-full justify-center transition-all duration-500 ease-in-out ${
           isVisible ? "translate-y-0 opacity-100" : "-translate-y-32 opacity-0"
         }`}
       >
-        
         {/* NAVBAR */}
         <div className="w-[95%] max-w-7xl rounded-full border border-white/15 bg-black/40 backdrop-blur-xl px-6 py-4 shadow-2xl">
-          
           <div className="flex items-center justify-between">
-            
             {/* LOGO */}
             <Link href="/" className="flex items-center">
               <Image
@@ -145,7 +146,6 @@ export default function Header() {
 
             {/* RIGHT SIDE */}
             <div className="flex items-center gap-4">
-              
               {/* LANGUAGE */}
               <div
                 className="relative hidden lg:block"
@@ -201,11 +201,7 @@ export default function Header() {
       </header>
 
       {/* MOBILE MENU */}
-      <MobileMenu
-        open={open}
-        setOpen={setOpen}
-        navLinks={navLinks}
-      />
+      <MobileMenu open={open} setOpen={setOpen} navLinks={navLinks} />
     </>
   );
 }

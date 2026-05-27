@@ -1,6 +1,7 @@
 "use client";
+import Link from "next/link";
 
-import BlogCard from './../Cards/BlogCard';
+import BlogCard from "./../Cards/BlogCard";
 
 const blogs = [
   {
@@ -44,57 +45,44 @@ function HomeBlogSection() {
 
       {/* CONTAINER */}
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-    
+        {/* TOP AREA */}
+        <div className="mb-16 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          {/* LEFT */}
+          <div className="max-w-3xl">
+            {/* TOP LABEL */}
+            <div className="mb-5 flex items-center gap-3">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
 
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+                Insights & Resources
+              </span>
+            </div>
 
+            {/* HEADING */}
+            <h2 className="font-heading text-2xl font-semibold leading-tight text-white md:text-4xl">
+              Our Latest{" "}
+              <span className="text-[var(--color-secondary-400)]">Stories</span>
+            </h2>
 
+            {/* DESCRIPTION */}
+            <p className="mt-5 max-w-2xl font-mono text-sm leading-8 text-white">
+              Explore insights, innovations, and real-world stories shaping the
+              future of robotics, AI systems, and intelligent automation.
+            </p>
+          </div>
 
-{/* TOP AREA */}
-<div className="mb-16 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-
-  {/* LEFT */}
-  <div className="max-w-3xl">
-
-    {/* TOP LABEL */}
-    <div className="mb-5 flex items-center gap-3">
-      <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
-
-      <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
-        Insights & Resources
-      </span>
-    </div>
-
-    {/* HEADING */}
-    <h2 className="font-heading text-2xl font-semibold leading-tight text-white md:text-4xl">
-      Our Latest{" "}
-      <span className="text-[var(--color-secondary-400)]">
-        Stories
-      </span>
-    </h2>
-
-    {/* DESCRIPTION */}
-    <p className="mt-5 max-w-2xl font-mono text-sm leading-8 text-white">
-      Explore insights, innovations, and real-world stories shaping
-      the future of robotics, AI systems, and intelligent automation.
-    </p>
-  </div>
-
-  {/* RIGHT CTA */}
-  <div className="flex items-center">
-    <button className="btn-primary">
-      <span>All Stories →</span>
-    </button>
-  </div>
-</div>
+          {/* RIGHT CTA */}
+          <div className="flex items-center">
+            <Link href="/blogs" className="btn-primary cursor-pointer">
+              <span>All Stories →</span>
+            </Link>
+          </div>
+        </div>
 
         {/* BLOG GRID */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-3">
           {blogs.map((blog, index) => (
-            <BlogCard
-              key={blog.id}
-              blog={blog}
-              index={index}
-            />
+            <BlogCard key={blog.id} blog={blog} index={index} />
           ))}
         </div>
       </div>
