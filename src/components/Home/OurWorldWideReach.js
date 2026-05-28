@@ -31,6 +31,7 @@ const points = [
     lng: 139.6503,
     label: "Tokyo",
   },
+
   {
     lat: 37.7749,
     lng: -122.4194,
@@ -95,6 +96,16 @@ const points = [
     lat: 39.9042,
     lng: 116.4074,
     label: "Beijing",
+  },
+  {
+    lat: 21.0285,
+    lng: 105.8542,
+    label: "Hanoi",
+  },
+  {
+    lat: 10.8231,
+    lng: 106.6297,
+    label: "Ho Chi Minh City",
   },
 ];
 
