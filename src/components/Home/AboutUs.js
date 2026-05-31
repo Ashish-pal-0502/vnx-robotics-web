@@ -55,9 +55,9 @@ export default function AboutUs() {
               <Image
                 src="/images/contactus.png"
                 alt="VNX Robotics industrial automation and robotics systems"
-                width={700}
-                height={600}
-                className="h-[520px] w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+                width={600}
+                height={500}
+                className="h-[500px] w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
               />
 
               {/* SUBTLE OVERLAY */}
@@ -82,34 +82,22 @@ export default function AboutUs() {
 
             {/* HEADING - Aligned with Strategic Positioning */}
             <h2 className="font-heading text-2xl font-semibold uppercase leading-tight text-[var(--color-text-primary)] md:text-4xl">
-              Building Intelligent{" "}
+              Solution{" "}
               <span className="text-[var(--color-secondary-400)]">
-                Automation & Robotics
+                Ecosystem
               </span>{" "}
-              Systems
             </h2>
 
             {/* DESCRIPTION - Strategic Narrative from Docs */}
-            <div className="mt-8 space-y-5">
-              <p className="font-mono text-sm  text-[var(--color-text-secondary)]">
-                VNX Robotics is developing intelligent industrial automation and
-                robotics technologies focused on scalable systems, operational
-                intelligence, and future autonomous infrastructure.
-              </p>
-              <p className="font-mono text-sm  text-[var(--color-text-secondary)]">
-                Our approach combines industrial automation, robotics
-                engineering, embedded systems, and operational software to build
-                connected intelligent systems for modern industry.
-              </p>
-            </div>
 
             {/* LAYERED CAPABILITY PILLARS - From Tech Architecture Section */}
             <div className="mt-10 grid grid-cols-2 gap-4">
               {[
-                "Industrial Automation",
-                "Warehouse Intelligence",
-                "Robotics Systems",
-                "Embedded & AI",
+                "Robots",
+                "Automation",
+                "Data",
+                "Intelligence",
+                "Operations",
               ].map((capability, idx) => (
                 <div
                   key={capability}

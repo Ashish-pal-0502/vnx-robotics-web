@@ -2,8 +2,8 @@ import { create } from "apisauce";
 
 // ---- Create API instance ----
 const apiClient = create({
-  // baseURL: "http://localhost:7071/api/v1",
-  baseURL: "https://vnx-robotics-server.onrender.com/api/v1",
+  baseURL: "http://localhost:7071/api/v1",
+  // baseURL: "https://vnx-robotics-server.onrender.com/api/v1",
   withCredentials: true, // send cookies (refresh token)
   headers: { Accept: "application/json" },
 });

@@ -56,6 +56,7 @@ function BlogCard({ blog, index }) {
           {/* TITLE */}
           <h3
             className="
+            line-clamp-2
     mt-3
     font-body
     text-lg
@@ -75,9 +76,7 @@ function BlogCard({ blog, index }) {
             className="
     mt-2
     max-w-[95%]
-    font-body
-    text-xs
-    text-white/80
+ font-mono text-sm  text-[var(--color-text-secondary)]
     line-clamp-3
   "
             dangerouslySetInnerHTML={{

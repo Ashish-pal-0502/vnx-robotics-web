@@ -157,7 +157,7 @@ export default function AboutPage() {
             </div>
 
             <h1 className="font-heading text-4xl md:text-5xl  font-bold uppercase leading-tight text-white mb-5">
-              Building Intelligent Automation & Robotics Systems
+              Intelligent Automation & Robotics Systems
             </h1>
 
             <p className="font-mono text-base md:text-lg text-[var(--color-text-secondary)] max-w-2xl">
@@ -184,12 +184,12 @@ export default function AboutPage() {
                   Intelligent Industry
                 </span>
               </h2>
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
+              {/* <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
                 VNX Robotics is an industrial automation and robotics systems
                 company focused on building intelligent operational technologies
                 for manufacturing, logistics, warehouse automation, and future
                 autonomous systems.
-              </p>
+              </p> */}
               <div className="space-y-3">
                 {[
                   "industrial automation",
@@ -494,7 +494,7 @@ export default function AboutPage() {
       </section>
 
       {/* ========== LATEST NEWS & UPDATES ========== */}
-      <section ref={sectionRefs.news} className="relative py-5">
+      {/* <section ref={sectionRefs.news} className="relative py-5">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -547,7 +547,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ========== FUTURE DIRECTION CTA ========== */}
       <section className="relative py-20 overflow-hidden border-t border-white/5">

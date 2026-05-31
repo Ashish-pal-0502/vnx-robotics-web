@@ -76,9 +76,7 @@ export default function HeroHome() {
 
             {/* DESCRIPTION */}
             <p className="text-gray-300 mb-6 font-mono text-xl  md:text-base">
-              We focus on building intelligent robots for real-world logistics
-              and industrial inspection, starting with Warehouse AMRs and
-              Quadruped Inspection Robots.
+              Industrial Automation. Robotics. Intelligent Operations.
             </p>
 
             {/* BUTTON */}

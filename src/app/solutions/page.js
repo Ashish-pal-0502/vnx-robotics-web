@@ -187,7 +187,7 @@ export default function SolutionsPage() {
             </div>
 
             <h1 className="font-heading max-w-xl md:max-w-full text-4xl md:text-5xl  font-bold uppercase leading-tight text-white mb-5">
-              Intelligent Automation Solutions
+              Automation Solutions
             </h1>
 
             <p className="font-mono text-base md:text-lg text-[var(--color-text-secondary)] max-w-2xl">

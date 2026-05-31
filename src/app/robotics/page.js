@@ -193,43 +193,6 @@ export default function RoboticsPage() {
       </section>
 
       {/* ========== ROBOTICS PHILOSOPHY ========== */}
-      <section ref={sectionRefs.philosophy} className="relative py-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView.philosophy ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
-              Robotics Built for{" "}
-              <span className="text-[var(--color-secondary-400)]">
-                Real Industrial Systems
-              </span>
-            </h2>
-            <p className="font-mono text-base text-[var(--color-text-secondary)] mb-8">
-              VNX Robotics approaches robotics as part of larger intelligent
-              operational ecosystems combining automation, embedded systems,
-              software infrastructure, and industrial intelligence.
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {[
-                "Operational Usefulness",
-                "Intelligent Mobility",
-                "Scalable Autonomy",
-                "Long-term Infrastructure",
-              ].map((focus, idx) => (
-                <span
-                  key={idx}
-                  className="rounded-full border border-[var(--color-primary-500)]/30 bg-[var(--color-primary-500)]/10 px-4 py-2 font-mono text-xs text-[var(--color-primary-400)]"
-                >
-                  {focus}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ========== CURRENT ROBOTICS PROGRAMS ========== */}
       <section
@@ -258,7 +221,7 @@ export default function RoboticsPage() {
             className="text-center mb-12"
           >
             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
-              Current Development{" "}
+              Development{" "}
               <span className="text-[var(--color-secondary-400)]">
                 Programs
               </span>
@@ -416,42 +379,6 @@ export default function RoboticsPage() {
       </section>
 
       {/* ========== ROBOTICS DEVELOPMENT APPROACH ========== */}
-      <section ref={sectionRefs.approach} className="relative py-10">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView.approach ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
-              Practical{" "}
-              <span className="text-[var(--color-secondary-400)]">
-                Robotics Development
-              </span>
-            </h2>
-            <p className="font-mono text-base text-[var(--color-text-secondary)] mb-8">
-              VNX Robotics follows a phased robotics development strategy
-              grounded in industrial applications, operational understanding,
-              embedded systems, and scalable engineering.
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {[
-                "Real-world deployment",
-                "Robotics infrastructure",
-                "Intelligent systems integration",
-                "Autonomous capability",
-              ].map((priority, idx) => (
-                <span
-                  key={idx}
-                  className="rounded-full border border-[var(--color-secondary-400)]/30 bg-[var(--color-secondary-400)]/10 px-4 py-2 font-mono text-xs text-[var(--color-secondary-400)]"
-                >
-                  {priority}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ========== CTA SECTION ========== */}
       <section className="relative py-15 overflow-hidden border-t border-white/5">
