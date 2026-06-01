@@ -10,6 +10,8 @@ import {
   FiFileText,
   FiChevronLeft,
   FiChevronRight,
+  FiSearch,
+  FiX,
 } from "react-icons/fi";
 
 const ITEMS_PER_PAGE = 5;
@@ -27,8 +29,8 @@ const stripHtml = (html) => {
 const BlogList = ({ onEdit }) => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
 
   /* =========================
      FETCH BLOGS
@@ -82,15 +84,33 @@ const BlogList = ({ onEdit }) => {
   };
 
   /* =========================
+     SEARCH FUNCTIONALITY
+  ========================= */
+  const filteredBlogs = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return blogs;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+    
+    return blogs.filter((blog) => {
+      const cleanHeading = stripHtml(blog.heading).toLowerCase();
+      const cleanDescription = stripHtml(blog.mdesc || blog.content).toLowerCase();
+      
+      return cleanHeading.includes(query) || cleanDescription.includes(query);
+    });
+  }, [blogs, searchQuery]);
+
+  /* =========================
      PAGINATION
   ========================= */
-  const totalPages = Math.ceil(blogs.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE);
 
   const paginatedBlogs = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 
-    return blogs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [blogs, currentPage]);
+    return filteredBlogs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredBlogs, currentPage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -99,6 +119,16 @@ const BlogList = ({ onEdit }) => {
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to first page when searching
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setCurrentPage(1);
   };
 
   /* =========================
@@ -181,33 +211,76 @@ const BlogList = ({ onEdit }) => {
             </div>
           </div>
 
-          {/* TOTAL */}
-          <div className="rounded-2xl border border-gray-200 bg-white px-5 py-3 shadow-sm w-fit">
+          {/* SEARCH BAR */}
+          <div className="relative w-full md:w-80">
+            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              placeholder="Search blogs by title or description..."
+              value={searchQuery}
+              onChange={handleSearch}
+              className="w-full pl-10 pr-10 py-2 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#1f3b57] focus:border-transparent transition"
+            />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <FiX size={18} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* STATS BAR */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4 pt-4 border-t border-gray-100">
+          <div className="rounded-2xl border border-gray-200 bg-white px-5 py-3 shadow-sm">
             <p className="text-xs uppercase tracking-wide text-gray-500">
               Total Blogs
             </p>
-
             <h3 className="text-2xl font-bold text-[#1f3b57]">
               {blogs.length}
             </h3>
           </div>
+          
+          {searchQuery && (
+            <div className="rounded-2xl border border-blue-200 bg-blue-50 px-5 py-3 shadow-sm">
+              <p className="text-xs uppercase tracking-wide text-blue-600">
+                Search Results
+              </p>
+              <h3 className="text-2xl font-bold text-blue-700">
+                {filteredBlogs.length}
+              </h3>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* EMPTY */}
-      {blogs.length === 0 ? (
+      {/* EMPTY STATE */}
+      {filteredBlogs.length === 0 ? (
         <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#eef5ff] mb-5">
-            <FiFileText className="text-4xl text-[#1f3b57]" />
+            {searchQuery ? <FiSearch className="text-4xl text-[#1f3b57]" /> : <FiFileText className="text-4xl text-[#1f3b57]" />}
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-            No Blogs Found
+            {searchQuery ? "No Matching Blogs Found" : "No Blogs Found"}
           </h3>
 
           <p className="text-gray-500">
-            There are currently no blogs available.
+            {searchQuery 
+              ? `No blogs match "${searchQuery}". Try a different search term.`
+              : "There are currently no blogs available."}
           </p>
+          
+          {searchQuery && (
+            <button
+              onClick={clearSearch}
+              className="mt-4 px-6 py-2 bg-[#1f3b57] text-white rounded-xl hover:bg-[#2a4d72] transition"
+            >
+              Clear Search
+            </button>
+          )}
         </div>
       ) : (
         <>
@@ -215,10 +288,27 @@ const BlogList = ({ onEdit }) => {
           <div className="p-4 md:p-6 space-y-4">
             {paginatedBlogs.map((blog) => {
               const cleanHeading = stripHtml(blog.heading);
-
               const cleanDescription = stripHtml(
                 blog.mdesc || blog.content,
               );
+
+              // Highlight matching text in search results
+              const highlightText = (text, query) => {
+                if (!query || !text) return text;
+                
+                const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                const parts = text.split(regex);
+                
+                return parts.map((part, index) => 
+                  regex.test(part) ? (
+                    <mark key={index} className="bg-yellow-200 text-gray-900 px-0.5 rounded">
+                      {part}
+                    </mark>
+                  ) : (
+                    part
+                  )
+                );
+              };
 
               return (
                 <div
@@ -238,12 +328,15 @@ const BlogList = ({ onEdit }) => {
                     {/* CONTENT */}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-base md:text-lg text-[#1f3b57] line-clamp-1">
-                        {cleanHeading || "Untitled Blog"}
+                        {searchQuery 
+                          ? highlightText(cleanHeading || "Untitled Blog", searchQuery)
+                          : (cleanHeading || "Untitled Blog")}
                       </h3>
 
                       <p className="text-sm text-gray-500 line-clamp-2 leading-6 mt-1">
-                        {cleanDescription?.slice(0, 120) ||
-                          "No description"}
+                        {searchQuery && cleanDescription
+                          ? highlightText(cleanDescription.slice(0, 120), searchQuery)
+                          : (cleanDescription?.slice(0, 120) || "No description")}
                       </p>
 
                       {/* FOOTER */}
@@ -293,6 +386,11 @@ const BlogList = ({ onEdit }) => {
                   <span className="font-semibold text-[#111827]">
                     {totalPages}
                   </span>
+                  {searchQuery && (
+                    <span className="ml-2 text-blue-600">
+                      (Filtered from {blogs.length} total)
+                    </span>
+                  )}
                 </p>
 
                 <div className="flex items-center gap-2 flex-wrap justify-center">

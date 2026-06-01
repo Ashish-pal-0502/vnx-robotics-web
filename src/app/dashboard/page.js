@@ -16,6 +16,7 @@ import {
   FiLogOut,
   FiPlusCircle,
   FiUser,
+  FiVideo,
 } from "react-icons/fi";
 
 import BlogForm from "@/components/Blogs/BlogForm";
@@ -29,10 +30,23 @@ import ListRobot from "@/components/Robot/ListRobot";
 
 import ProfilePage from "@/components/Profile/ProfilePage";
 import UsersList from "@/components/Users/UsersList";
+import AddHero from "@/components/Hero/AddHero";
 
 // SIDEBAR MENU
 const menuItems = [
   { key: "dashboard", label: "Dashboard", icon: FiGrid },
+  {
+    key: "hero",
+    label: "Hero",
+    icon: FiVideo,
+    children: [
+      {
+        key: "add-hero",
+        label: "Add Hero",
+        icon: FiPlusCircle,
+      },
+    ],
+  },
 
   { key: "users", label: "Users", icon: FiUser },
 
@@ -114,6 +128,8 @@ const DashboardPage = () => {
 
   // ROBOT
   const [editingRobot, setEditingRobot] = useState(null);
+
+  const [editingHero, setEditingHero] = useState(null);
 
   // STATS
   const [stats, setStats] = useState({
@@ -316,6 +332,8 @@ const DashboardPage = () => {
               ))}
             </div>
           )}
+          {/* HERO */}
+          {activeTab === "add-hero" && <AddHero editData={editingHero} />}
 
           {/* USERS */}
           {activeTab === "users" && <UsersList />}
