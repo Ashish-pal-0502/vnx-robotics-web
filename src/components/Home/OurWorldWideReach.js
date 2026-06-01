@@ -298,7 +298,7 @@ function OurWorldWideReach() {
       return;
     }
 
-    const targets = [127, 13, 6, 1250];
+    const targets = [3, 4, 6, 5];
     const intervals = targets.map((target, index) => {
       const duration = 2000;
       const increment = target / (duration / 30);
@@ -326,12 +326,11 @@ function OurWorldWideReach() {
           STABLE BACKGROUND BLUE GRADIENT
           Fixed position, stays behind all content
       ============================== */}
-
       <div
         className="pointer-events-none fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-2xl h-[30vh] max-h-[400px] rounded-full blur-3xl"
         style={{
           background:
-            "radial-gradient(circle, rgba(0,136,219,0.7) 0%, rgba(0,109,177,0.4) 50%, transparent 100%)",
+            "radial-gradient(circle, rgba(0,136,219,0.3) 0%, rgba(0,109,177,0.15) 50%, transparent 100%)",
         }}
       />
 
@@ -497,7 +496,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Data Points
+              Industry Categories
             </p>
           </div>
         </div>

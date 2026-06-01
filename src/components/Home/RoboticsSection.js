@@ -115,15 +115,15 @@ export default function RoboticsSection() {
               Robotics Systems
             </span>
           </h2>
-
+          {/* 
           <p className="mx-auto mt-6 max-w-2xl font-mono text-sm leading-relaxed text-[var(--color-text-secondary)] md:text-base">
             Developing intelligent robotics platforms for industrial automation,
             mobility, inspection, and future autonomous systems
-          </p>
+          </p> */}
         </motion.div>
 
         {/* Robotics Philosophy */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -156,13 +156,13 @@ export default function RoboticsSection() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         <div className="mb-20">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
             <div>
               <h3 className="font-heading text-2xl font-semibold text-white md:text-3xl">
-                Current Development Programs
+                Development Programs
               </h3>
               <p className="mt-2 font-mono text-sm text-[var(--color-text-muted)]">
                 Active robotics initiatives showing real engineering progress
@@ -179,7 +179,7 @@ export default function RoboticsSection() {
                       : "border border-white/20 text-[var(--color-text-secondary)] hover:border-white/40"
                   }`}
                 >
-                  {idx === 0 ? "Quadruped" : "Interactive Robot"}
+                  {idx === 0 ? "Reception Robot" : "Quadruped Robot"}
                 </button>
               ))}
             </div>
@@ -263,7 +263,7 @@ export default function RoboticsSection() {
         <div className="mb-20">
           <div className="mb-10 text-center">
             <h3 className="font-heading text-2xl font-semibold text-white md:text-3xl">
-              Robotics Technology Stack
+              Technology Stack
             </h3>
             <p className="mt-2 font-mono text-sm text-[var(--color-text-muted)]">
               Technical capabilities powering our robotics development
@@ -298,9 +298,6 @@ export default function RoboticsSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <h3 className="mb-4 font-heading text-2xl font-semibold text-white md:text-3xl">
-            Building the Future of Intelligent Robotics Systems
-          </h3>
           <p className="mx-auto mb-8 max-w-xl font-mono text-sm text-[var(--color-text-secondary)]">
             Explore collaboration opportunities and advanced robotics programs
           </p>

@@ -238,7 +238,7 @@ export default function RobotDetailPage() {
                   className="text-[var(--color-secondary-400)]"
                   size={24}
                 />
-                Key Features
+                Specifications
               </h3>
               <div className="space-y-3">
                 {robot.features.map((feature, idx) => (
@@ -265,9 +265,9 @@ export default function RobotDetailPage() {
             className="text-center mb-12"
           >
             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
-              Core{" "}
+              Potential{" "}
               <span className="text-[var(--color-secondary-400)]">
-                Technologies
+                Applications
               </span>
             </h2>
             <p className="font-mono text-sm text-[var(--color-text-secondary)]">
@@ -323,65 +323,6 @@ export default function RobotDetailPage() {
       </section>
 
       {/* Applications Section */}
-      <section className="relative py-15 px-6 md:px-12 ">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
-                Potential{" "}
-                <span className="text-[var(--color-secondary-400)]">
-                  Applications
-                </span>
-              </h2>
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
-                This robotics platform is being developed for a range of
-                industrial and commercial applications:
-              </p>
-              <div className="space-y-3">
-                {robot.applications.map((app, idx) => (
-                  <div key={idx} className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-[var(--color-secondary-400)]" />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)]">
-                      {app}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-gradient-to-br from-[#0b1020] to-transparent rounded-xl border border-white/10 p-8 text-center"
-            >
-              <h3 className="font-heading text-xl font-semibold text-white mb-3">
-                Development Status
-              </h3>
-              <div className="mb-4">
-                <span className="inline-block rounded-full bg-[var(--color-secondary-400)]/20 px-4 py-2 font-mono text-sm text-[var(--color-secondary-400)] border border-[var(--color-secondary-400)]/30">
-                  {robot.status}
-                </span>
-              </div>
-              <p className="font-mono text-sm text-[var(--color-text-secondary)] mb-6">
-                This platform is under active development. For collaboration
-                inquiries, partnerships, or to discuss custom applications,
-                please contact our robotics team.
-              </p>
-              <Link
-                href="/contact"
-                className="btn-secondary inline-flex items-center gap-2"
-              >
-                Partner With Us <IoArrowForward size={16} />
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="relative py-20 md:py-28 overflow-hidden border-t border-white/5">
