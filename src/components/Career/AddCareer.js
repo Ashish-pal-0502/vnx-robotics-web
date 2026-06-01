@@ -1,8 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
 import apiClient from "@/api/client";
 import toast from "react-hot-toast";
 
@@ -28,49 +25,7 @@ function AddCareer({ onSuccess, editingCareer }) {
     "Remote",
   ];
 
-  // title editor
-  const titleEditor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3],
-        },
-      }),
-      Placeholder.configure({
-        placeholder: "Enter job title...",
-      }),
-    ],
-    content: formData.title,
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        title: editor.getHTML(),
-      }));
-    },
-  });
-
-  //description editor
-  const descriptionEditor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3],
-        },
-      }),
-      Placeholder.configure({
-        placeholder: "Write job description...",
-      }),
-    ],
-    content: formData.description,
-    onUpdate: ({ editor }) => {
-      setFormData((prev) => ({
-        ...prev,
-        description: editor.getHTML(),
-      }));
-    },
-  });
-
-  //load edit data
+  // Load edit data
   useEffect(() => {
     if (editingCareer) {
       setFormData({
@@ -81,32 +36,16 @@ function AddCareer({ onSuccess, editingCareer }) {
         category: editingCareer?.category || "",
         applyLink: editingCareer?.applyLink || "",
       });
-
-      if (titleEditor && editingCareer?.title) {
-        titleEditor.commands.setContent(editingCareer.title);
-      }
-
-      if (descriptionEditor && editingCareer?.description) {
-        descriptionEditor.commands.setContent(editingCareer.description);
-      }
     }
-  }, [editingCareer, titleEditor, descriptionEditor]);
+  }, [editingCareer]);
 
-  //validate
+  // Validate
   const validateForm = () => {
-    if (
-      !formData.title ||
-      formData.title === "<p></p>" ||
-      formData.title === "<p><br></p>"
-    ) {
+    if (!formData.title || formData.title.trim() === "") {
       setError("Job title is required.");
       return false;
     }
-    if (
-      !formData.description ||
-      formData.description === "<p></p>" ||
-      formData.description === "<p><br></p>"
-    ) {
+    if (!formData.description || formData.description.trim() === "") {
       setError("Job description is required.");
       return false;
     }
@@ -121,7 +60,7 @@ function AddCareer({ onSuccess, editingCareer }) {
     return true;
   };
 
-  //submit form
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -158,8 +97,6 @@ function AddCareer({ onSuccess, editingCareer }) {
           category: "",
           applyLink: "",
         });
-        titleEditor?.commands.clearContent();
-        descriptionEditor?.commands.clearContent();
       }
 
       if (onSuccess) {
@@ -182,112 +119,13 @@ function AddCareer({ onSuccess, editingCareer }) {
     }
   };
 
-  //toolbar button
-  const ToolbarButton = ({ onClick, active, children, title }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      title={title}
-      className={`px-3 py-1.5 rounded transition text-sm font-medium ${
-        active ? "bg-[#1f3b57] text-white" : "text-gray-600 hover:bg-gray-100"
-      }`}
-    >
-      {children}
-    </button>
-  );
-
-  //toolbar
-  const Toolbar = ({ editor }) => {
-    if (!editor) return null;
-
-    return (
-      <div className="flex gap-1 mb-2 p-1 border border-gray-200 rounded-lg bg-gray-50 flex-wrap">
-        <ToolbarButton
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          active={editor.isActive("heading", { level: 1 })}
-          title="Heading 1"
-        >
-          H1
-        </ToolbarButton>
-
-        <ToolbarButton
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          active={editor.isActive("heading", { level: 2 })}
-          title="Heading 2"
-        >
-          H2
-        </ToolbarButton>
-
-        <ToolbarButton
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          active={editor.isActive("heading", { level: 3 })}
-          title="Heading 3"
-        >
-          H3
-        </ToolbarButton>
-
-        <div className="w-px bg-gray-300 mx-1" />
-
-        <ToolbarButton
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          active={editor.isActive("bold")}
-          title="Bold"
-        >
-          Bold
-        </ToolbarButton>
-
-        <ToolbarButton
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          active={editor.isActive("italic")}
-          title="Italic"
-        >
-          Italic
-        </ToolbarButton>
-
-        <div className="w-px bg-gray-300 mx-1" />
-
-        <ToolbarButton
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          active={editor.isActive("bulletList")}
-          title="Bullet List"
-        >
-          • List
-        </ToolbarButton>
-
-        <ToolbarButton
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          active={editor.isActive("orderedList")}
-          title="Ordered List"
-        >
-          1. List
-        </ToolbarButton>
-
-        <div className="w-px bg-gray-300 mx-1" />
-
-        <ToolbarButton
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          active={editor.isActive("codeBlock")}
-          title="Code Block"
-        >
-          {"</>"}
-        </ToolbarButton>
-      </div>
-    );
-  };
-
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm">
       <h2 className="text-2xl font-semibold mb-6">
         {editingCareer?._id ? "Update Career" : "Add Career"}
       </h2>
 
-      <div className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* ERROR */}
         {error && (
           <div className="p-3 bg-red-100 text-red-700 rounded-lg">{error}</div>
@@ -305,15 +143,18 @@ function AddCareer({ onSuccess, editingCareer }) {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Job Title <span className="text-red-500">*</span>
           </label>
-
-          <Toolbar editor={titleEditor} />
-
-          <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
-            <EditorContent
-              editor={titleEditor}
-              className="prose max-w-none p-4 min-h-[120px]"
-            />
-          </div>
+          <input
+            type="text"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                title: e.target.value,
+              }))
+            }
+            placeholder="Enter job title"
+            className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57]"
+          />
         </div>
 
         {/* DESCRIPTION */}
@@ -321,15 +162,18 @@ function AddCareer({ onSuccess, editingCareer }) {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Job Description <span className="text-red-500">*</span>
           </label>
-
-          <Toolbar editor={descriptionEditor} />
-
-          <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
-            <EditorContent
-              editor={descriptionEditor}
-              className="prose max-w-none p-4 min-h-[350px]"
-            />
-          </div>
+          <textarea
+            value={formData.description}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
+            }
+            placeholder="Write job description..."
+            rows={8}
+            className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57] resize-y"
+          />
         </div>
 
         {/* LOCATION */}
@@ -414,8 +258,7 @@ function AddCareer({ onSuccess, editingCareer }) {
 
         {/* SUBMIT */}
         <button
-          type="button"
-          onClick={handleSubmit}
+          type="submit"
           disabled={loading}
           className="w-full bg-[#1f3b57] text-white px-6 py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#2a4d72] transition font-medium"
         >
@@ -425,75 +268,7 @@ function AddCareer({ onSuccess, editingCareer }) {
               ? "Update Career"
               : "Add Career"}
         </button>
-      </div>
-
-      {/* GLOBAL STYLES */}
-      <style jsx global>{`
-        .ProseMirror {
-          outline: none;
-        }
-
-        .ProseMirror p {
-          margin: 0 0 0.5em 0;
-        }
-
-        .ProseMirror h1 {
-          font-size: 2em;
-          font-weight: bold;
-          margin: 0.67em 0;
-        }
-
-        .ProseMirror h2 {
-          font-size: 1.5em;
-          font-weight: bold;
-          margin: 0.83em 0;
-        }
-
-        .ProseMirror h3 {
-          font-size: 1.17em;
-          font-weight: bold;
-          margin: 1em 0;
-        }
-
-        .ProseMirror ul,
-        .ProseMirror ol {
-          padding-left: 1.5em;
-          margin: 0.5em 0;
-        }
-
-        .ProseMirror code {
-          background-color: #f3f4f6;
-          padding: 0.2em 0.4em;
-          border-radius: 3px;
-          font-family: monospace;
-        }
-
-        .ProseMirror pre {
-          background-color: #1f2937;
-          color: #e5e7eb;
-          padding: 1em;
-          border-radius: 0.5em;
-          overflow-x: auto;
-        }
-
-        .ProseMirror pre code {
-          background-color: transparent;
-          color: inherit;
-          padding: 0;
-        }
-
-        .ProseMirror[contenteditable="true"] {
-          min-height: 100px;
-        }
-
-        .ProseMirror p.is-editor-empty:first-child::before {
-          content: attr(data-placeholder);
-          float: left;
-          color: #9ca3af;
-          pointer-events: none;
-          height: 0;
-        }
-      `}</style>
+      </form>
     </div>
   );
 }
