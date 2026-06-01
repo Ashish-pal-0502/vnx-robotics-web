@@ -1,21 +1,10 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import {
-  IoArrowForward,
-  IoCheckmarkCircle,
-  IoHardwareChipOutline,
-  IoCubeOutline,
-  IoBuildOutline,
-  IoCloudOutline,
-  IoGitNetworkOutline,
-  IoFlashOutline,
-  IoCalendarOutline,
-  IoNewspaperOutline,
-} from "react-icons/io5";
+import { useRef } from "react";
+import { IoCheckmarkCircle, IoFlashOutline } from "react-icons/io5";
+import { IoLogoLinkedin, IoLogoTwitter } from "react-icons/io5";
 
 export default function AboutPage() {
   const sectionRefs = {
@@ -58,14 +47,6 @@ export default function AboutPage() {
     "Systems Integration",
   ];
 
-  const collaborationAreas = [
-    "Actuator development",
-    "Robotics mechanisms",
-    "Industrial automation",
-    "Embedded infrastructure",
-    "Intelligent operational systems",
-  ];
-
   const growthStages = [
     {
       stage: "Stage 1",
@@ -89,27 +70,41 @@ export default function AboutPage() {
     },
   ];
 
-  const newsUpdates = [
+  const leaders = [
     {
-      title: "Robotics Development Update",
-      description:
-        "Quadruped mobility testing and robotics platform development progress.",
-      date: "April 2025",
-      icon: <IoHardwareChipOutline size={20} />,
+      name: "Pham Thanh Huu",
+      role: "Founder & CEO",
+      image: "/leaders/Pham.jpg",
+      linkedin: "#",
+      twitter: "#",
     },
     {
-      title: "Industrial Collaboration",
-      description:
-        "Strategic collaboration discussions across industrial automation and intelligent systems.",
-      date: "March 2025",
-      icon: <IoGitNetworkOutline size={20} />,
+      name: "Dr. Pramod Pal",
+      role: "Co-founder & CTO",
+      image: "/leaders/Pramod.jpeg",
+      linkedin: "#",
+      twitter: "#",
     },
     {
-      title: "Embedded Systems Expansion",
-      description:
-        "Expansion of embedded systems and intelligent hardware capability development.",
-      date: "February 2025",
-      icon: <IoFlashOutline size={20} />,
+      name: "Eijri Kent",
+      role: "Chief Operating Officer",
+      image: "/leaders/Ejiri.jpg",
+      linkedin: "#",
+      twitter: "#",
+    },
+    {
+      name: "Andrew Woo",
+      role: "Director of Korea Business Development Division",
+      image: "/leaders/Andrew.jpg",
+      linkedin: "#",
+      twitter: "#",
+    },
+    {
+      name: "Nobuhiro Sadakuni",
+      role: "Representative Director",
+      image: "/leaders/Nobuhiro_Sadakuni.jpg",
+      linkedin: "#",
+      twitter: "#",
     },
   ];
 
@@ -123,7 +118,7 @@ export default function AboutPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
           <img
-            src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?q=80&w=1200&auto=format&fit=crop"
+            src="https://www.shutterstock.com/image-vector/contact-us-customer-support-hotline-600nw-2561218445.jpg"
             alt="Industrial engineering background"
             className="h-full w-full object-cover"
           />
@@ -184,12 +179,7 @@ export default function AboutPage() {
                   Intelligent Industry
                 </span>
               </h2>
-              {/* <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
-                VNX Robotics is an industrial automation and robotics systems
-                company focused on building intelligent operational technologies
-                for manufacturing, logistics, warehouse automation, and future
-                autonomous systems.
-              </p> */}
+
               <div className="space-y-3">
                 {[
                   "industrial automation",
@@ -294,6 +284,70 @@ export default function AboutPage() {
                 infrastructure.
               </p>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========== OUR LEADERSHIP ========== */}
+      <section className="relative py-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-logo text-4xl md:text-5xl font-regular text-[var(--color-secondary-400)]">
+              Our Leadership
+            </h2>
+          </motion.div>
+
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {leaders.map((leader, idx) => (
+              <motion.div
+                key={leader.name}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.15 }}
+                className="group relative overflow-hidden rounded-3xl border border-white/10"
+              >
+                <div className="relative h-[450px] lg:h-[500px]">
+                  <img
+                    src={leader.image}
+                    alt={leader.name}
+                    className="h-auto lg:h-full w-full object-cover "
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 className="font-heading text-2xl text-white">
+                      {leader.name}
+                    </h3>
+
+                    <p className="font-mono text-sm text-gray-300">
+                      {leader.role}
+                    </p>
+
+                    <div className="mt-4 flex gap-3">
+                      <a
+                        href={leader.twitter}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
+                      >
+                        <IoLogoTwitter />
+                      </a>
+
+                      <a
+                        href={leader.linkedin}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
+                      >
+                        <IoLogoLinkedin />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -492,62 +546,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* ========== LATEST NEWS & UPDATES ========== */}
-      {/* <section ref={sectionRefs.news} className="relative py-5">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView.news ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
-              Latest{" "}
-              <span className="text-[var(--color-secondary-400)]">
-                News & Updates
-              </span>
-            </h2>
-            <p className="font-mono text-sm text-[var(--color-text-secondary)]">
-              Stay informed about our latest developments
-            </p>
-          </motion.div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {newsUpdates.map((news, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView.news ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all duration-300 hover:border-[var(--color-secondary-400)]/30"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="text-[var(--color-secondary-400)]">
-                    {news.icon}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <IoCalendarOutline
-                      size={12}
-                      className="text-[var(--color-text-muted)]"
-                    />
-                    <span className="font-mono text-xs text-[var(--color-text-muted)]">
-                      {news.date}
-                    </span>
-                  </div>
-                </div>
-                <h3 className="font-heading text-lg font-semibold text-white mb-2 group-hover:text-[var(--color-secondary-400)] transition-colors">
-                  {news.title}
-                </h3>
-                <p className="font-mono text-sm text-[var(--color-text-secondary)]">
-                  {news.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* ========== FUTURE DIRECTION CTA ========== */}
       <section className="relative py-20 overflow-hidden border-t border-white/5">

@@ -1,13 +1,51 @@
 {
   "navbar": {
-    "homepage": "ホームページ",
+    "homepage": "ホーム",
     "industries": "業界",
     "solutions": "ソリューション",
     "robotics": "ロボティクス",
-    "about": "会社概要",
-    "careers": "採用情報",
-    "contact": "お問い合わせ",
     "blogs": "ブログ",
+    "about": "会社概要",
+    "careers": "キャリア",
+    "contact": "お問い合わせ",
     "contactBtn": "お問い合わせ"
+  },
+  "heroHome": {
+    "trustedCustomers": "1K+ 信頼されている顧客",
+    "heading": "再定義された制御 \n 解き放たれた革新",
+    "description": "産業オートメーション。ロボティクス。インテリジェントオペレーション。",
+    "getStarted": "始める",
+    "scrollDown": "スクロール"
+  },
+  "trustedBy": {
+    "industryRecognition": "業界認識",
+    "headingPrefix": "信頼されている",
+    "headingHighlight": "ロボティクス",
+    "headingSuffix": "＆産業リーダー",
+    "description": "ロボティクスと産業オートメーションのパートナーと協力",
+    "partners": {
+      "IVSPartner": "IVSパートナー",
+      "IMACSPartner": "IMACSパートナー",
+      "BrainHealthLabPartner": "ブレインヘルスラボパートナー",
+      "CTGroupPartner": "CTグループパートナー",
+      "ITRPartner": "ITRパートナー",
+      "ShoeAgTechPartner": "シューアグテックパートナー"
+    }
+  },
+  "aboutUs": {
+    "industrialSystems": "産業システム",
+    "imageAlt": "VNX Roboticsの産業オートメーションとロボティクスシステム",
+    "engineeringPhilosophy": "エンジニアリング哲学",
+    "headingPrefix": "ソリューション",
+    "headingHighlight": "エコシステム",
+    "capabilities": [
+      "ロボット",
+      "オートメーション",
+      "データ",
+      "インテリジェンス",
+      "オペレーション"
+    ],
+    "philosophyStatement": "\"VNX Roboticsは、成功する自動化システムは、スケーラブルなアーキテクチャ、運用信頼性、および規律あるエンジニアリング実行を通じて構築されると信じています。\"",
+    "ctaButton": "私たちのビジョンを探る"
   }
 }

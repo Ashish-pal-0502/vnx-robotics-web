@@ -1,19 +1,18 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { useRef } from "react";
 import {
   IoArrowForward,
+  IoBuildOutline,
   IoCheckmarkCircle,
   IoChevronForward,
-  IoHardwareChipOutline,
-  IoCubeOutline,
-  IoBuildOutline,
   IoCloudOutline,
-  IoTrendingUpOutline,
+  IoCubeOutline,
   IoFlashOutline,
+  IoHardwareChipOutline,
+  IoTrendingUpOutline,
 } from "react-icons/io5";
 
 export default function IndustriesPage() {
@@ -94,7 +93,7 @@ export default function IndustriesPage() {
         "Intelligent Robotics Software",
       ],
       image:
-        "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1200&auto=format&fit=crop",
+        "https://thumbs.dreamstime.com/b/real-humanoid-robot-working-factory-warehouse-concept-industrial-real-humanoid-robot-working-factory-445309770.jpg",
     },
     {
       icon: <IoTrendingUpOutline size={28} />,
@@ -142,15 +141,6 @@ export default function IndustriesPage() {
     },
   ];
 
-  const capabilityPillars = [
-    "Controls & Automation",
-    "Robotics Systems",
-    "Industrial Software",
-    "Embedded Systems",
-    "AI & Analytics",
-    "Operational Intelligence",
-  ];
-
   return (
     <main className="bg-[var(--color-dark-100)]">
       {/* ========== HERO SECTION ========== */}
@@ -162,7 +152,7 @@ export default function IndustriesPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
           <img
-            src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?q=80&w=1200&auto=format&fit=crop"
+            src="https://thumbs.dreamstime.com/b/computer-cogs-technology-background-blue-banner-old-new-using-circuits-old-machine-31582628.jpg"
             alt="Industrial background"
             className="h-full w-full object-cover"
           />

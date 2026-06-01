@@ -1,17 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const logos = [
-  { src: "/partnerLogo/IVS.png", alt: "Partner 1" },
-  { src: "/partnerLogo/IMACS.png", alt: "Partner 2" },
-  { src: "/partnerLogo/brain_health_lab.jpeg", alt: "Partner 3" },
-  { src: "/partnerLogo/CTgroup.png", alt: "Partner 4" },
-  { src: "/partnerLogo/ITR.png", alt: "Partner 5" },
-  { src: "/partnerLogo/shoeagtech.png", alt: "Partner 6" },
+  { src: "/partnerLogo/IVS.png", alt: "IVS Partner" },
+  { src: "/partnerLogo/IMACS.png", alt: "IMACS Partner" },
+  {
+    src: "/partnerLogo/brain_health_lab.jpeg",
+    alt: "Brain Health Lab Partner",
+  },
+  { src: "/partnerLogo/CTgroup.png", alt: "CT Group Partner" },
+  { src: "/partnerLogo/ITR.png", alt: "ITR Partner" },
+  { src: "/partnerLogo/shoeagtech.png", alt: "Shoe Ag Tech Partner" },
 ];
 
 export default function TrustedBy() {
+  const { t } = useTranslation();
   const duplicated = [...logos, ...logos];
 
   return (
@@ -40,23 +45,23 @@ export default function TrustedBy() {
         {/* TOP LABEL */}
         <div className="mb-5 flex items-center gap-3">
           <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
-
           <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
-            Industry Recognition
+            {t("trustedBy.industryRecognition")}
           </span>
         </div>
 
         {/* HEADING */}
         <div className="mb-14 max-w-2xl">
           <h2 className="font-heading text-2xl font-semibold uppercase leading-tight text-[var(--color-text-primary)] md:text-4xl">
-            Trusted by{" "}
-            <span className="text-[var(--color-secondary-400)]">Robotics</span>{" "}
-            & Industrial Leaders
+            {t("trustedBy.headingPrefix")}{" "}
+            <span className="text-[var(--color-secondary-400)]">
+              {t("trustedBy.headingHighlight")}
+            </span>{" "}
+            {t("trustedBy.headingSuffix")}
           </h2>
 
           <p className="mt-5 max-w-2xl font-mono text-sm leading-8 text-[var(--color-text-secondary)]">
-            Collaborating with partners across robotics and industrial
-            automation
+            {t("trustedBy.description")}
           </p>
         </div>
 
@@ -69,7 +74,7 @@ export default function TrustedBy() {
           <div className="absolute right-0 top-0 z-10 h-full w-28 bg-gradient-to-l from-[var(--color-dark-100)] to-transparent" />
 
           <motion.div
-            className="flex w-max items-center gap-10 py-5 "
+            className="flex w-max items-center gap-10 py-5"
             animate={{ x: ["0%", "-50%"] }}
             transition={{
               repeat: Infinity,
@@ -107,7 +112,7 @@ export default function TrustedBy() {
               >
                 <img
                   src={logo.src}
-                  alt={logo.alt}
+                  alt={t(`trustedBy.partners.${logo.alt.replace(/ /g, "")}`)}
                   className="
                     h-22
                     object-contain

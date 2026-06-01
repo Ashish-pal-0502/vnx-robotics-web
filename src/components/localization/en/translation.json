@@ -9,5 +9,43 @@
     "careers": "Careers",
     "contact": "Contact",
     "contactBtn": "Contact us"
+  },
+  "heroHome": {
+    "trustedCustomers": "1K+ Trusted Customers",
+    "heading": "Control Redefined \n Innovation Unleashed",
+    "description": "Industrial Automation. Robotics. Intelligent Operations.",
+    "getStarted": "Get Started",
+    "scrollDown": "Scroll down"
+  },
+  "trustedBy": {
+    "industryRecognition": "Industry Recognition",
+    "headingPrefix": "Trusted by",
+    "headingHighlight": "Robotics",
+    "headingSuffix": "& Industrial Leaders",
+    "description": "Collaborating with partners across robotics and industrial automation",
+    "partners": {
+      "IVSPartner": "IVS Partner",
+      "IMACSPartner": "IMACS Partner",
+      "BrainHealthLabPartner": "Brain Health Lab Partner",
+      "CTGroupPartner": "CT Group Partner",
+      "ITRPartner": "ITR Partner",
+      "ShoeAgTechPartner": "Shoe Ag Tech Partner"
+    }
+  },
+  "aboutUs": {
+    "industrialSystems": "INDUSTRIAL SYSTEMS",
+    "imageAlt": "VNX Robotics industrial automation and robotics systems",
+    "engineeringPhilosophy": "Engineering Philosophy",
+    "headingPrefix": "Solution",
+    "headingHighlight": "Ecosystem",
+    "capabilities": [
+      "Robots",
+      "Automation",
+      "Data",
+      "Intelligence",
+      "Operations"
+    ],
+    "philosophyStatement": "\"VNX Robotics believes successful automation systems are built through scalable architecture, operational reliability, and disciplined engineering execution.\"",
+    "ctaButton": "Explore our vision"
   }
 }

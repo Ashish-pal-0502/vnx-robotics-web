@@ -153,7 +153,7 @@ export default function SolutionsPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
           <img
-            src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?q=80&w=1200&auto=format&fit=crop"
+            src="https://media.istockphoto.com/id/1172940354/vector/vector-circle-tech-with-light-blue-and-lamp-bulb-on-technology-background.jpg?s=612x612&w=0&k=20&c=8bUJ3-cIkAQz1E-1mugZodjYoKNt5g9k0t7b-SB8qH8="
             alt="Industrial automation background"
             className="h-full w-full object-cover"
           />
