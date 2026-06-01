@@ -16,12 +16,20 @@ const AddRobot = ({ editData = null, onSuccess }) => {
 
   const [robotForm, setRobotForm] = useState({
     name: "",
-    status: "",
+    category: "",
     description: "",
   });
 
+  const [specifications, setSpecifications] = useState([]);
+  const [keyPoints, setKeyPoints] = useState([]);
+  const [applications, setApplications] = useState([]);
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
+
+  // Temporary inputs for adding new items
+  const [newSpec, setNewSpec] = useState({ label: "", value: "" });
+  const [newKeyPoint, setNewKeyPoint] = useState("");
+  const [newApplication, setNewApplication] = useState("");
 
   /* =========================
      NAME EDITOR
@@ -33,14 +41,11 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           levels: [1, 2, 3],
         },
       }),
-
       Placeholder.configure({
         placeholder: "Enter robot name...",
       }),
     ],
-
     content: "",
-
     onUpdate: ({ editor }) => {
       setRobotForm((prev) => ({
         ...prev,
@@ -59,19 +64,15 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           levels: [1, 2, 3],
         },
       }),
-
       Image.configure({
         inline: true,
         allowBase64: false,
       }),
-
       Placeholder.configure({
         placeholder: "Write robot description...",
       }),
     ],
-
     content: "",
-
     onUpdate: ({ editor }) => {
       setRobotForm((prev) => ({
         ...prev,
@@ -88,7 +89,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
 
     setRobotForm({
       name: editData.name || "",
-      status: editData.status || "",
+      category: editData.category || "",
       description: editData.description || "",
     });
 
@@ -100,6 +101,22 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       descriptionEditor.commands.setContent(editData.description);
     }
 
+    // Load specifications
+    if (editData.specifications && editData.specifications.length > 0) {
+      setSpecifications(editData.specifications);
+    }
+
+    // Load key points
+    if (editData.keyPoints && editData.keyPoints.length > 0) {
+      setKeyPoints(editData.keyPoints);
+    }
+
+    // Load applications
+    if (editData.applications && editData.applications.length > 0) {
+      setApplications(editData.applications);
+    }
+
+    // Load images
     const existingImages =
       editData?.images?.length > 0
         ? editData.images
@@ -129,11 +146,9 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       const response = await apiClient.post("/robot/upload-url", {
         fileName: file.name,
         fileType: file.type,
+        size: file.size,
       });
 
-      console.log("UPLOAD URL RESPONSE:", response.data);
-
-      // handle every backend response shape
       const data =
         response?.data?.data?.data || response?.data?.data || response?.data;
 
@@ -143,15 +158,12 @@ const AddRobot = ({ editData = null, onSuccess }) => {
 
       const uploadURL =
         data.uploadURL || data.uploadUrl || data.url || data.presignedUrl;
-
       const fileUrl =
         data.fileUrl || data.fileURL || data.publicUrl || data.location;
-
       const key = data.key;
 
       if (!uploadURL) {
         console.error("Invalid upload response:", data);
-
         throw new Error("Upload URL missing from server response");
       }
 
@@ -162,7 +174,6 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       };
     } catch (err) {
       console.error("Error getting presigned URL:", err);
-
       throw new Error(
         err?.response?.data?.message ||
           err?.message ||
@@ -191,7 +202,6 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       return true;
     } catch (err) {
       console.error("S3 Upload Error:", err);
-
       throw new Error("Failed to upload image");
     }
   };
@@ -210,13 +220,11 @@ const AddRobot = ({ editData = null, onSuccess }) => {
 
       if (!isImage) {
         setError("Only image files are allowed");
-
         return false;
       }
 
       if (!isValidSize) {
         setError("Image size should be less than 5MB");
-
         return false;
       }
 
@@ -234,7 +242,6 @@ const AddRobot = ({ editData = null, onSuccess }) => {
     }));
 
     setImages((prev) => [...prev, ...newImages]);
-
     setPreviews((prev) => [...prev, ...newImages.map((img) => img.preview)]);
   };
 
@@ -243,8 +250,79 @@ const AddRobot = ({ editData = null, onSuccess }) => {
   ========================= */
   const removeImage = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
-
     setPreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  /* =========================
+     SPECIFICATIONS HANDLERS
+  ========================= */
+  const addSpecification = () => {
+    if (!newSpec.label.trim() || !newSpec.value.trim()) {
+      setError("Both label and value are required for specification");
+      return;
+    }
+    setSpecifications([
+      ...specifications,
+      { label: newSpec.label, value: newSpec.value },
+    ]);
+    setNewSpec({ label: "", value: "" });
+    setError("");
+  };
+
+  const removeSpecification = (index) => {
+    setSpecifications(specifications.filter((_, i) => i !== index));
+  };
+
+  const updateSpecification = (index, field, value) => {
+    const updated = [...specifications];
+    updated[index][field] = value;
+    setSpecifications(updated);
+  };
+
+  /* =========================
+     KEY POINTS HANDLERS
+  ========================= */
+  const addKeyPoint = () => {
+    if (!newKeyPoint.trim()) {
+      setError("Key point cannot be empty");
+      return;
+    }
+    setKeyPoints([...keyPoints, newKeyPoint]);
+    setNewKeyPoint("");
+    setError("");
+  };
+
+  const removeKeyPoint = (index) => {
+    setKeyPoints(keyPoints.filter((_, i) => i !== index));
+  };
+
+  const updateKeyPoint = (index, value) => {
+    const updated = [...keyPoints];
+    updated[index] = value;
+    setKeyPoints(updated);
+  };
+
+  /* =========================
+     APPLICATIONS HANDLERS
+  ========================= */
+  const addApplication = () => {
+    if (!newApplication.trim()) {
+      setError("Application cannot be empty");
+      return;
+    }
+    setApplications([...applications, newApplication]);
+    setNewApplication("");
+    setError("");
+  };
+
+  const removeApplication = (index) => {
+    setApplications(applications.filter((_, i) => i !== index));
+  };
+
+  const updateApplication = (index, value) => {
+    const updated = [...applications];
+    updated[index] = value;
+    setApplications(updated);
   };
 
   /* =========================
@@ -257,7 +335,11 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       robotForm.name === "<p><br></p>"
     ) {
       setError("Robot name is required");
+      return false;
+    }
 
+    if (!robotForm.category) {
+      setError("Category is required");
       return false;
     }
 
@@ -267,13 +349,11 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       robotForm.description === "<p><br></p>"
     ) {
       setError("Robot description is required");
-
       return false;
     }
 
     if (images.length === 0) {
       setError("At least one image is required");
-
       return false;
     }
 
@@ -296,19 +376,15 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       let uploadedImages = [];
 
       for (const img of images) {
-        // existing image
         if (img.isExisting) {
           uploadedImages.push({
             url: img.url,
             key: img.key,
           });
-
           continue;
         }
 
-        // new image
         const { uploadURL, fileUrl, key } = await getPresignedUrl(img.file);
-
         await uploadToS3(img.file, uploadURL);
 
         uploadedImages.push({
@@ -319,8 +395,11 @@ const AddRobot = ({ editData = null, onSuccess }) => {
 
       const payload = {
         name: robotForm.name,
-        status: robotForm.status,
+        category: robotForm.category,
         description: robotForm.description,
+        specifications: specifications,
+        keyPoints: keyPoints,
+        applications: applications,
         images: uploadedImages,
       };
 
@@ -335,22 +414,26 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       } else {
         const res = await apiClient.post("/robot/create", payload);
         toast.success(res?.data?.message || "Robot created successfully");
-        // reset
+
+        // Reset form
         setRobotForm({
           name: "",
-          status: "",
+          category: "",
           description: "",
         });
-
+        setSpecifications([]);
+        setKeyPoints([]);
+        setApplications([]);
         setImages([]);
         setPreviews([]);
-
         nameEditor?.commands.clearContent();
         descriptionEditor?.commands.clearContent();
       }
+
       if (onSuccess) {
         onSuccess();
       }
+
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error("ROBOT SUBMIT ERROR:", err);
@@ -394,9 +477,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
-          active={editor.isActive("heading", {
-            level: 1,
-          })}
+          active={editor.isActive("heading", { level: 1 })}
           title="Heading 1"
         >
           H1
@@ -406,9 +487,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
-          active={editor.isActive("heading", {
-            level: 2,
-          })}
+          active={editor.isActive("heading", { level: 2 })}
           title="Heading 2"
         >
           H2
@@ -418,9 +497,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
-          active={editor.isActive("heading", {
-            level: 3,
-          })}
+          active={editor.isActive("heading", { level: 3 })}
           title="Heading 3"
         >
           H3
@@ -497,9 +574,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Robot Name *
           </label>
-
           <Toolbar editor={nameEditor} />
-
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
             <EditorContent
               editor={nameEditor}
@@ -508,14 +583,28 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           </div>
         </div>
 
+        {/* CATEGORY */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Category *
+          </label>
+          <input
+            type="text"
+            value={robotForm.category}
+            onChange={(e) =>
+              setRobotForm({ ...robotForm, category: e.target.value })
+            }
+            placeholder="e.g., Industrial, Medical, Service, Educational"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1f3b57] focus:border-transparent"
+          />
+        </div>
+
         {/* DESCRIPTION */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Robot Description *
           </label>
-
           <Toolbar editor={descriptionEditor} />
-
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
             <EditorContent
               editor={descriptionEditor}
@@ -524,7 +613,176 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           </div>
         </div>
 
-        {/* IMAGE */}
+        {/* SPECIFICATIONS */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Technical Specifications
+          </label>
+
+          {/* Specifications List */}
+          {specifications.length > 0 && (
+            <div className="space-y-2 mb-3">
+              {specifications.map((spec, index) => (
+                <div key={index} className="flex gap-2 items-start">
+                  <input
+                    type="text"
+                    value={spec.label}
+                    onChange={(e) =>
+                      updateSpecification(index, "label", e.target.value)
+                    }
+                    placeholder="Label (e.g., Weight)"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                  />
+                  <input
+                    type="text"
+                    value={spec.value}
+                    onChange={(e) =>
+                      updateSpecification(index, "value", e.target.value)
+                    }
+                    placeholder="Value (e.g., 50kg)"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeSpecification(index)}
+                    className="text-red-500 hover:text-red-700 px-3 py-2"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Add New Specification */}
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newSpec.label}
+              onChange={(e) =>
+                setNewSpec({ ...newSpec, label: e.target.value })
+              }
+              placeholder="Label (e.g., Weight, Dimensions)"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              type="text"
+              value={newSpec.value}
+              onChange={(e) =>
+                setNewSpec({ ...newSpec, value: e.target.value })
+              }
+              placeholder="Value (e.g., 50kg, 30x20x15cm)"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+            />
+            <button
+              type="button"
+              onClick={addSpecification}
+              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* KEY POINTS */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Key Features / Points
+          </label>
+
+          {/* Key Points List */}
+          {keyPoints.length > 0 && (
+            <div className="space-y-2 mb-3">
+              {keyPoints.map((point, index) => (
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={point}
+                    onChange={(e) => updateKeyPoint(index, e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeKeyPoint(index)}
+                    className="text-red-500 hover:text-red-700 px-3 py-2"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Add New Key Point */}
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newKeyPoint}
+              onChange={(e) => setNewKeyPoint(e.target.value)}
+              placeholder="Enter key feature (e.g., Autonomous Navigation)"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+              onKeyPress={(e) => e.key === "Enter" && addKeyPoint()}
+            />
+            <button
+              type="button"
+              onClick={addKeyPoint}
+              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* APPLICATIONS */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Applications / Use Cases
+          </label>
+
+          {/* Applications List */}
+          {applications.length > 0 && (
+            <div className="space-y-2 mb-3">
+              {applications.map((app, index) => (
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={app}
+                    onChange={(e) => updateApplication(index, e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeApplication(index)}
+                    className="text-red-500 hover:text-red-700 px-3 py-2"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Add New Application */}
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newApplication}
+              onChange={(e) => setNewApplication(e.target.value)}
+              placeholder="Enter application (e.g., Warehouse Automation)"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+              onKeyPress={(e) => e.key === "Enter" && addApplication()}
+            />
+            <button
+              type="button"
+              onClick={addApplication}
+              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* IMAGES */}
         <div>
           <label className="block text-sm font-medium mb-2">
             Robot Images *
@@ -537,15 +795,12 @@ const AddRobot = ({ editData = null, onSuccess }) => {
             {uploadingImage ? (
               <div className="text-center">
                 <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-[#1f3b57] mb-2"></div>
-
                 <p className="text-gray-500">Uploading images...</p>
               </div>
             ) : (
               <div className="text-center">
                 <div className="text-3xl mb-2">🤖</div>
-
                 <p className="text-gray-500">Click to upload robot images</p>
-
                 <p className="text-xs text-gray-400 mt-1">
                   PNG, JPG, WEBP up to 5MB
                 </p>
@@ -572,7 +827,6 @@ const AddRobot = ({ editData = null, onSuccess }) => {
                     alt={`Preview ${index + 1}`}
                     className="w-full h-32 object-cover rounded-lg border"
                   />
-
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
@@ -602,49 +856,41 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           outline: none;
           min-height: 100px;
         }
-
         .ProseMirror p {
           margin: 0 0 0.75rem 0;
         }
-
         .ProseMirror h1 {
           font-size: 2rem;
           font-weight: 700;
           margin: 1rem 0;
           line-height: 1.2;
         }
-
         .ProseMirror h2 {
           font-size: 1.5rem;
           font-weight: 700;
           margin: 0.8rem 0;
           line-height: 1.3;
         }
-
         .ProseMirror h3 {
           font-size: 1.25rem;
           font-weight: 700;
           margin: 0.6rem 0;
           line-height: 1.4;
         }
-
         .ProseMirror ul,
         .ProseMirror ol {
           padding-left: 1.5rem;
           margin: 0.75rem 0;
         }
-
         .ProseMirror li {
           margin-bottom: 0.25rem;
         }
-
         .ProseMirror code {
           background: #f3f4f6;
           padding: 0.2rem 0.4rem;
           border-radius: 4px;
           font-size: 0.9rem;
         }
-
         .ProseMirror pre {
           background: #111827;
           color: #f9fafb;
@@ -653,30 +899,25 @@ const AddRobot = ({ editData = null, onSuccess }) => {
           overflow-x: auto;
           margin: 1rem 0;
         }
-
         .ProseMirror pre code {
           background: transparent;
           padding: 0;
           color: inherit;
         }
-
         .ProseMirror img {
           max-width: 100%;
           border-radius: 10px;
           margin: 1rem 0;
         }
-
         .ProseMirror blockquote {
           border-left: 4px solid #d1d5db;
           padding-left: 1rem;
           color: #6b7280;
           margin: 1rem 0;
         }
-
         .ProseMirror:focus {
           outline: none;
         }
-
         .ProseMirror p.is-editor-empty:first-child::before {
           content: attr(data-placeholder);
           float: left;

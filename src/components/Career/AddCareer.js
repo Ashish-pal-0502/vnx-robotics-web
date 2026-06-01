@@ -13,8 +13,20 @@ function AddCareer({ onSuccess, editingCareer }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    location: "",
+    jobType: "Full Time",
+    category: "",
     applyLink: "",
   });
+
+  // Job type options
+  const jobTypeOptions = [
+    "Full Time",
+    "Part Time",
+    "Internship",
+    "Contract",
+    "Remote",
+  ];
 
   // title editor
   const titleEditor = useEditor({
@@ -64,6 +76,9 @@ function AddCareer({ onSuccess, editingCareer }) {
       setFormData({
         title: editingCareer?.title || "",
         description: editingCareer?.description || "",
+        location: editingCareer?.location || "",
+        jobType: editingCareer?.jobType || "Full Time",
+        category: editingCareer?.category || "",
         applyLink: editingCareer?.applyLink || "",
       });
 
@@ -95,6 +110,14 @@ function AddCareer({ onSuccess, editingCareer }) {
       setError("Job description is required.");
       return false;
     }
+    if (!formData.location || formData.location.trim() === "") {
+      setError("Job location is required.");
+      return false;
+    }
+    if (!formData.category || formData.category.trim() === "") {
+      setError("Job category is required.");
+      return false;
+    }
     return true;
   };
 
@@ -104,11 +127,16 @@ function AddCareer({ onSuccess, editingCareer }) {
     setError("");
     setMessage("");
     if (!validateForm()) return;
+
     const payload = {
       title: formData.title,
       description: formData.description,
+      location: formData.location,
+      jobType: formData.jobType,
+      category: formData.category,
       applyLink: formData.applyLink,
     };
+
     try {
       setLoading(true);
 
@@ -117,25 +145,32 @@ function AddCareer({ onSuccess, editingCareer }) {
           `/career/update/${editingCareer._id}`,
           payload,
         );
-        toast.success(res?.data?.message);
+        toast.success(res?.data?.message || "Career updated successfully");
       } else {
         const res = await apiClient.post("/career/create", payload);
-        toast.success(res?.data?.message);
+        toast.success(res?.data?.message || "Career created successfully");
+        // Reset form
         setFormData({
           title: "",
           description: "",
+          location: "",
+          jobType: "Full Time",
+          category: "",
           applyLink: "",
         });
         titleEditor?.commands.clearContent();
         descriptionEditor?.commands.clearContent();
       }
+
       if (onSuccess) {
         onSuccess();
       }
+
       setTimeout(() => {
         setMessage("");
       }, 3000);
     } catch (err) {
+      console.error("Career submit error:", err);
       toast.error("Submit career failed. Please try again.");
       const serverMessage =
         err?.response?.data?.message ||
@@ -147,7 +182,7 @@ function AddCareer({ onSuccess, editingCareer }) {
     }
   };
 
-  //tebular button
+  //toolbar button
   const ToolbarButton = ({ onClick, active, children, title }) => (
     <button
       type="button"
@@ -171,9 +206,7 @@ function AddCareer({ onSuccess, editingCareer }) {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
-          active={editor.isActive("heading", {
-            level: 1,
-          })}
+          active={editor.isActive("heading", { level: 1 })}
           title="Heading 1"
         >
           H1
@@ -183,9 +216,7 @@ function AddCareer({ onSuccess, editingCareer }) {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
-          active={editor.isActive("heading", {
-            level: 2,
-          })}
+          active={editor.isActive("heading", { level: 2 })}
           title="Heading 2"
         >
           H2
@@ -195,9 +226,7 @@ function AddCareer({ onSuccess, editingCareer }) {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
-          active={editor.isActive("heading", {
-            level: 3,
-          })}
+          active={editor.isActive("heading", { level: 3 })}
           title="Heading 3"
         >
           H3
@@ -279,10 +308,10 @@ function AddCareer({ onSuccess, editingCareer }) {
 
           <Toolbar editor={titleEditor} />
 
-          <div className="border border-gray-300 rounded-lg overflow-hidden overflow-y-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
+          <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
             <EditorContent
               editor={titleEditor}
-              className="prose max-w-none p-4 min-h-[120px] overflow-y-hidden"
+              className="prose max-w-none p-4 min-h-[120px]"
             />
           </div>
         </div>
@@ -295,12 +324,73 @@ function AddCareer({ onSuccess, editingCareer }) {
 
           <Toolbar editor={descriptionEditor} />
 
-          <div className="border border-gray-300 rounded-lg overflow-hidden overflow-y-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
+          <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57] focus-within:border-transparent">
             <EditorContent
               editor={descriptionEditor}
-              className="prose max-w-none p-4 min-h-[350px] overflow-y-hidden"
+              className="prose max-w-none p-4 min-h-[350px]"
             />
           </div>
+        </div>
+
+        {/* LOCATION */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Location <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={formData.location}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                location: e.target.value,
+              }))
+            }
+            placeholder="e.g., New York, NY or Remote"
+            className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57]"
+          />
+        </div>
+
+        {/* JOB TYPE */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Job Type <span className="text-red-500">*</span>
+          </label>
+          <select
+            value={formData.jobType}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                jobType: e.target.value,
+              }))
+            }
+            className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57] bg-white"
+          >
+            {jobTypeOptions.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* CATEGORY */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Category <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={formData.category}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                category: e.target.value,
+              }))
+            }
+            placeholder="e.g., Engineering, Marketing, Sales, Design"
+            className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57]"
+          />
         </div>
 
         {/* APPLY LINK */}
@@ -308,7 +398,6 @@ function AddCareer({ onSuccess, editingCareer }) {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Apply Link
           </label>
-
           <input
             type="url"
             value={formData.applyLink}
@@ -318,7 +407,7 @@ function AddCareer({ onSuccess, editingCareer }) {
                 applyLink: e.target.value,
               }))
             }
-            placeholder="https://example.com"
+            placeholder="https://example.com/careers/apply"
             className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57]"
           />
         </div>
@@ -342,11 +431,6 @@ function AddCareer({ onSuccess, editingCareer }) {
       <style jsx global>{`
         .ProseMirror {
           outline: none;
-          overflow-y: hidden;
-        }
-
-        .ProseMirror::-webkit-scrollbar {
-          display: none;
         }
 
         .ProseMirror p {
