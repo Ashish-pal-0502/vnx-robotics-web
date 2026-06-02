@@ -11,26 +11,49 @@ import {
   FiChevronLeft,
   FiChevronRight,
   FiMail,
+  FiSearch,
+  FiFilter,
+  FiX,
+  FiCheckCircle,
+  FiAlertCircle,
 } from "react-icons/fi";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [currentPage, setCurrentPage] = useState(1);
-
   const [totalPages, setTotalPages] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [filterRole, setFilterRole] = useState("all");
+  const [showFilters, setShowFilters] = useState(false);
 
-  /* =========================
-     FETCH USERS
-  ========================= */
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetch users with search and filter
   const fetchUsers = async (page = 1) => {
     try {
       setLoading(true);
+      const params = new URLSearchParams();
+      params.append("page", page);
+      if (debouncedSearch) params.append("search", debouncedSearch);
 
-      const res = await apiClient.get(`/user/get-users?page=${page}`);
+      const res = await apiClient.get(`/user/get-users?${params.toString()}`);
 
-      setUsers(res?.data?.users || []);
+      let fetchedUsers = res?.data?.users || [];
+
+      // Apply role filter on client side (if backend doesn't support it)
+      if (filterRole !== "all") {
+        fetchedUsers = fetchedUsers.filter((user) => user.role === filterRole);
+      }
+
+      setUsers(fetchedUsers);
       setTotalPages(res?.data?.totalPages || 1);
       setCurrentPage(Number(res?.data?.currentPage || 1));
     } catch (error) {
@@ -42,18 +65,16 @@ const UsersList = () => {
 
   useEffect(() => {
     fetchUsers(currentPage);
-  }, [currentPage]);
+  }, [currentPage, debouncedSearch, filterRole]);
 
-  /* =========================
-     CHANGE ROLE
-  ========================= */
+  // Handle role change
   const handleRoleChange = async (id, role) => {
     try {
       const res = await apiClient.patch(`/user/change-privilege/${id}`, {
         role,
       });
 
-      toast.success(res?.data?.message || "Role updated");
+      toast.success(res?.data?.message || "Role updated successfully");
 
       setUsers((prev) =>
         prev.map((user) => (user._id === id ? { ...user, role } : user)),
@@ -63,12 +84,10 @@ const UsersList = () => {
     }
   };
 
-  /* =========================
-     DELETE USER
-  ========================= */
+  // Handle delete user
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?",
+      "Are you sure you want to delete this user? This action cannot be undone.",
     );
 
     if (!confirmDelete) return;
@@ -76,7 +95,7 @@ const UsersList = () => {
     try {
       const res = await apiClient.delete(`/user/delete-user/${id}`);
 
-      toast.success(res?.data?.message || "User deleted");
+      toast.success(res?.data?.message || "User deleted successfully");
 
       if (users.length === 1 && currentPage > 1) {
         setCurrentPage((prev) => prev - 1);
@@ -84,336 +103,360 @@ const UsersList = () => {
         fetchUsers(currentPage);
       }
     } catch (error) {
-      toast.error("Delete failed");
+      toast.error("Delete failed. Please try again.");
     }
   };
 
-  /* =========================
-     LOADING UI
-  ========================= */
+  // Clear filters
+  const clearFilters = () => {
+    setSearchQuery("");
+    setFilterRole("all");
+    setShowFilters(false);
+  };
+
+  // Loading skeleton
   if (loading) {
     return (
-      <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden no-scrollbar shadow-sm">
-        {/* HEADER SKELETON */}
-        <div className="border-b border-gray-200 px-6 py-6 bg-gradient-to-r from-[#f8fbff] to-[#fffdf7]">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <div className="h-14 w-14 rounded-2xl bg-gray-200 animate-pulse" />
-
-              <div className="space-y-3">
-                <div className="h-5 w-52 rounded bg-gray-200 animate-pulse" />
-
-                <div className="h-4 w-40 rounded bg-gray-100 animate-pulse" />
-              </div>
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
+        <div className="p-6 border-b border-gray-100">
+          <div className="flex justify-between items-center">
+            <div className="space-y-3">
+              <div className="h-8 w-48 bg-gray-200 rounded-lg"></div>
+              <div className="h-4 w-64 bg-gray-100 rounded-lg"></div>
             </div>
-
-            <div className="h-16 w-36 rounded-2xl bg-gray-100 animate-pulse" />
+            <div className="h-12 w-32 bg-gray-200 rounded-xl"></div>
           </div>
         </div>
-
-        {/* TABLE SKELETON */}
-        <div className="p-6 hidden md:block">
+        <div className="p-6">
           <div className="space-y-4">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-24 rounded-2xl bg-gray-100 animate-pulse"
-              />
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-20 bg-gray-100 rounded-xl"></div>
             ))}
           </div>
-        </div>
-
-        {/* MOBILE CARD SKELETON */}
-        <div className="grid gap-4 p-4 md:hidden">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div
-              key={index}
-              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gray-200 animate-pulse" />
-
-                <div className="flex-1 space-y-3">
-                  <div className="h-4 w-40 rounded bg-gray-200 animate-pulse" />
-
-                  <div className="h-3 w-52 rounded bg-gray-100 animate-pulse" />
-                </div>
-              </div>
-
-              <div className="mt-5 h-12 rounded-xl bg-gray-100 animate-pulse" />
-
-              <div className="mt-4 h-12 rounded-xl bg-gray-100 animate-pulse" />
-            </div>
-          ))}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-3xl shadow-sm overflow-hidden no-scrollbar">
-      {/* HEADER */}
-      <div className="px-6 md:px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-[#f8fbff] to-[#fffdf7]">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          {/* LEFT */}
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#1f3b57] flex items-center justify-center text-white shadow-md">
-              <FiUsers size={22} />
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] px-6 py-8">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center text-white">
+              <FiUsers size={28} />
             </div>
-
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#1f3b57]">
-                Users Management
-              </h2>
-
-              <p className="text-sm text-gray-500 mt-1">
-                Manage user roles and permissions
+              <h1 className="text-2xl lg:text-3xl font-bold text-white">
+                User Management
+              </h1>
+              <p className="text-white/80 text-sm mt-1">
+                Manage user roles, permissions, and access
               </p>
             </div>
           </div>
 
-          {/* TOTAL */}
-          <div className="flex items-center gap-3 bg-white border border-gray-200 px-5 py-3 rounded-2xl shadow-sm w-fit">
-            <div className="w-10 h-10 rounded-xl bg-[#eef5ff] flex items-center justify-center text-[#1f3b57]">
-              <FiUsers />
-            </div>
-
-            <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">
-                Total Users
-              </p>
-
-              <h4 className="text-xl font-bold text-[#1f3b57]">
-                {users.length}
-              </h4>
+          <div className="bg-white/10 backdrop-blur rounded-2xl px-6 py-3">
+            <div className="flex items-center gap-3">
+              <FiUsers className="text-white/80" />
+              <div>
+                <p className="text-white/60 text-xs uppercase tracking-wide">
+                  Total Users
+                </p>
+                <p className="text-white text-2xl font-bold">{users.length}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* MOBILE VIEW */}
-      <div className="block md:hidden p-4 space-y-4">
-        {users?.length > 0 ? (
-          users.map((user) => (
-            <div
-              key={user._id}
-              className="border border-gray-200 rounded-2xl p-5 bg-white shadow-sm"
+      {/* Search and Filters */}
+      <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* Search Bar */}
+          <div className="flex-1 relative">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search by name or email..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#1f3b57] focus:ring-2 focus:ring-[#1f3b57]/20 outline-none transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <FiX size={18} />
+              </button>
+            )}
+          </div>
+
+          {/* Filter Button (Mobile) */}
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="md:hidden flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl"
+          >
+            <FiFilter />
+            Filters
+            {filterRole !== "all" && (
+              <span className="w-2 h-2 bg-[#1f3b57] rounded-full"></span>
+            )}
+          </button>
+
+          {/* Filter Options */}
+          <div
+            className={`${showFilters ? "flex" : "hidden"} md:flex flex-col md:flex-row gap-3`}
+          >
+            <select
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+              className="px-4 py-3 rounded-xl border border-gray-200 focus:border-[#1f3b57] outline-none bg-white"
             >
-              {/* USER */}
-              <div className="flex items-start gap-3">
-                <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#eef5ff] flex items-center justify-center text-[#1f3b57]">
-                  <FiUser size={20} />
+              <option value="all">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+
+            {(searchQuery || filterRole !== "all") && (
+              <button
+                onClick={clearFilters}
+                className="px-4 py-3 text-gray-600 hover:text-gray-800 border border-gray-200 rounded-xl hover:bg-gray-50 transition whitespace-nowrap"
+              >
+                Clear Filters
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile View */}
+      <div className="md:hidden divide-y divide-gray-100">
+        {users.length > 0 ? (
+          users.map((user) => (
+            <div key={user._id} className="p-6 hover:bg-gray-50 transition">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] flex items-center justify-center text-white font-bold text-lg">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">{user.name}</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      ID: {user._id.slice(-8)}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-[#1f3b57] text-base break-words">
-                    {user.name}
-                  </h3>
-
-                  <div className="flex items-start gap-2 text-sm text-gray-500 mt-1 break-all">
-                    <FiMail size={14} className="mt-1 shrink-0" />
-
-                    <span>{user.email}</span>
-                  </div>
+                <div
+                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    user.role === "admin"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-green-100 text-green-700"
+                  }`}
+                >
+                  {user.role === "admin" ? "Admin" : "User"}
                 </div>
               </div>
 
-              {/* ROLE */}
-              <div className="mt-5">
-                <label className="text-xs font-medium text-gray-500 block mb-2 uppercase tracking-wide">
-                  User Role
-                </label>
+              <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+                <FiMail size={14} className="shrink-0" />
+                <span className="break-all">{user.email}</span>
+              </div>
 
+              <div className="flex gap-3">
                 <select
                   value={user.role}
                   onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                  className={`w-full px-4 py-3 rounded-xl text-sm border outline-none transition font-medium ${
-                    user.role === "admin"
-                      ? "bg-red-50 text-red-600 border-red-200"
-                      : "bg-green-50 text-green-700 border-green-200"
-                  }`}
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 outline-none text-sm font-medium"
                 >
-                  <option value="user">User</option>
-
-                  <option value="admin">Admin</option>
+                  <option value="user">👤 User</option>
+                  <option value="admin">👑 Admin</option>
                 </select>
-              </div>
 
-              {/* ACTIONS */}
-              <div className="mt-5">
                 <button
                   onClick={() => handleDelete(user._id)}
-                  className="w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 py-3 rounded-xl transition font-medium"
+                  className="px-4 py-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition font-medium"
                 >
-                  <FiTrash2 />
-                  Delete User
+                  <FiTrash2 size={18} />
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
-              <FiUsers size={26} />
+          <div className="text-center py-16">
+            <div className="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <FiUsers size={32} className="text-gray-400" />
             </div>
-
-            <p className="text-gray-500">No users found</p>
+            <p className="text-gray-500 font-medium">No users found</p>
+            {(searchQuery || filterRole !== "all") && (
+              <button
+                onClick={clearFilters}
+                className="mt-4 text-[#1f3b57] hover:underline text-sm"
+              >
+                Clear filters
+              </button>
+            )}
           </div>
         )}
       </div>
 
-      {/* DESKTOP TABLE */}
-      <div className="hidden md:block">
-        <div className="grid grid-cols-[1.4fr_1.5fr_1fr_140px] gap-4 px-8 py-5 bg-[#f8fafc] border-b border-gray-200">
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-            User
-          </div>
-
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-            Email Address
-          </div>
-
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-            Role
-          </div>
-
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 text-right">
-            Actions
-          </div>
-        </div>
-
-        <div>
-          {users?.length > 0 ? (
-            users.map((user, index) => (
-              <div
-                key={user._id}
-                className={`grid grid-cols-[1.4fr_1.5fr_1fr_140px] gap-4 px-8 py-5 items-center transition hover:bg-[#fafcff] ${
-                  index !== users.length - 1 ? "border-b border-gray-100" : ""
-                }`}
-              >
-                {/* USER */}
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#eef5ff] flex items-center justify-center text-[#1f3b57] shadow-sm">
-                    <FiUser size={20} />
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                User
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Role
+              </th>
+              <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {users.length > 0 ? (
+              users.map((user) => (
+                <tr key={user._id} className="hover:bg-gray-50/50 transition">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] flex items-center justify-center text-white font-bold text-sm">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-800">{user.name}</p>
+                        <p className="text-xs text-gray-400">
+                          {user._id.slice(-8)}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiMail size={14} className="text-gray-400" />
+                      <span className="text-sm">{user.email}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <select
+                      value={user.role}
+                      onChange={(e) =>
+                        handleRoleChange(user._id, e.target.value)
+                      }
+                      className={`px-3 py-2 rounded-lg text-sm font-medium border outline-none transition ${
+                        user.role === "admin"
+                          ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
+                          : "bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
+                      }`}
+                    >
+                      <option value="user">👤 User</option>
+                      <option value="admin">👑 Admin</option>
+                    </select>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition font-medium flex items-center gap-2 ml-auto"
+                    >
+                      <FiTrash2 size={16} />
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="px-6 py-16 text-center">
+                  <div className="flex flex-col items-center">
+                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                      <FiUsers size={32} className="text-gray-400" />
+                    </div>
+                    <p className="text-gray-500 font-medium">No users found</p>
+                    {(searchQuery || filterRole !== "all") && (
+                      <button
+                        onClick={clearFilters}
+                        className="mt-4 text-[#1f3b57] hover:underline text-sm"
+                      >
+                        Clear filters
+                      </button>
+                    )}
                   </div>
-
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-[#1f3b57] truncate">
-                      {user.name}
-                    </h3>
-
-                    <p className="text-xs text-gray-400 mt-1 truncate">
-                      ID: {user._id.slice(0, 8)}...
-                    </p>
-                  </div>
-                </div>
-
-                {/* EMAIL */}
-                <div className="flex items-center gap-2 text-gray-600 min-w-0">
-                  <FiMail size={15} className="shrink-0" />
-
-                  <span className="truncate">{user.email}</span>
-                </div>
-
-                {/* ROLE */}
-                <div className="flex items-center gap-3 min-w-0">
-                  <div
-                    className={`w-10 h-10 shrink-0 rounded-xl flex items-center justify-center ${
-                      user.role === "admin"
-                        ? "bg-red-100 text-red-600"
-                        : "bg-green-100 text-green-600"
-                    }`}
-                  >
-                    <FiShield size={16} />
-                  </div>
-
-                  <select
-                    value={user.role}
-                    onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                    className={`w-full max-w-[140px] px-4 py-2.5 rounded-xl text-sm border outline-none font-medium transition ${
-                      user.role === "admin"
-                        ? "bg-red-50 text-red-600 border-red-200"
-                        : "bg-green-50 text-green-700 border-green-200"
-                    }`}
-                  >
-                    <option value="user">User</option>
-
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
-
-                {/* ACTION */}
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => handleDelete(user._id)}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition font-medium whitespace-nowrap"
-                  >
-                    <FiTrash2 size={16} />
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="text-center py-16 text-gray-500">
-              <div className="flex flex-col items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
-                  <FiUsers size={26} />
-                </div>
-                No users found
-              </div>
-            </div>
-          )}
-        </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
-      {/* PAGINATION */}
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="px-6 py-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* INFO */}
-          <div className="text-sm text-gray-500">
-            Page{" "}
-            <span className="font-semibold text-[#1f3b57]">{currentPage}</span>{" "}
-            of{" "}
-            <span className="font-semibold text-[#1f3b57]">{totalPages}</span>
-          </div>
+        <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-sm text-gray-500">
+              Showing page{" "}
+              <span className="font-semibold text-[#1f3b57]">
+                {currentPage}
+              </span>{" "}
+              of{" "}
+              <span className="font-semibold text-[#1f3b57]">{totalPages}</span>
+            </div>
 
-          {/* BUTTONS */}
-          <div className="flex items-center gap-2 flex-wrap justify-center">
-            {/* PREV */}
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              className="h-11 px-4 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2"
-            >
-              <FiChevronLeft />
-              Prev
-            </button>
-
-            {/* PAGE NUMBERS */}
-            {Array.from({ length: totalPages }, (_, index) => (
+            <div className="flex items-center gap-2">
               <button
-                key={index}
-                onClick={() => setCurrentPage(index + 1)}
-                className={`w-11 h-11 rounded-xl text-sm font-semibold transition ${
-                  currentPage === index + 1
-                    ? "bg-[#1f3b57] text-white shadow-md"
-                    : "bg-white border border-gray-200 hover:bg-gray-50 text-gray-700"
-                }`}
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+                className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
               >
-                {index + 1}
+                <FiChevronLeft size={16} />
+                Previous
               </button>
-            ))}
 
-            {/* NEXT */}
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              className="h-11 px-4 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2"
-            >
-              Next
-              <FiChevronRight />
-            </button>
+              <div className="hidden sm:flex gap-2">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-10 h-10 rounded-lg text-sm font-semibold transition ${
+                        currentPage === pageNum
+                          ? "bg-[#1f3b57] text-white shadow-md"
+                          : "bg-white border border-gray-200 hover:bg-gray-50 text-gray-700"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
+              >
+                Next
+                <FiChevronRight size={16} />
+              </button>
+            </div>
           </div>
         </div>
       )}

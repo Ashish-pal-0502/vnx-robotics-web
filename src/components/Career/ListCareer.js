@@ -14,6 +14,9 @@ import {
   FiMapPin,
   FiTag,
   FiClock,
+  FiFilter,
+  FiX,
+  FiSearch,
 } from "react-icons/fi";
 
 const ITEMS_PER_PAGE = 5;
@@ -23,6 +26,8 @@ const ListCareer = ({ onEdit }) => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedJobType, setSelectedJobType] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
   const [jobTypes, setJobTypes] = useState([]);
 
   /* =========================
@@ -87,19 +92,39 @@ const ListCareer = ({ onEdit }) => {
      FILTERED CAREERS
   ========================= */
   const filteredCareers = useMemo(() => {
-    if (selectedJobType === "all") return careers;
-    return careers.filter((career) => career.jobType === selectedJobType);
-  }, [careers, selectedJobType]);
+    let filtered = careers;
+
+    // Apply job type filter
+    if (selectedJobType !== "all") {
+      filtered = filtered.filter(
+        (career) => career.jobType === selectedJobType,
+      );
+    }
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (career) =>
+          stripHtml(career.title).toLowerCase().includes(query) ||
+          stripHtml(career.description).toLowerCase().includes(query) ||
+          (career.location && career.location.toLowerCase().includes(query)) ||
+          (career.category && career.category.toLowerCase().includes(query)),
+      );
+    }
+
+    return filtered;
+  }, [careers, selectedJobType, searchQuery]);
 
   /* =========================
-     PAGINATION - FIXED
+     PAGINATION
   ========================= */
   const totalPages = Math.ceil(filteredCareers.length / ITEMS_PER_PAGE);
 
-  // Reset to page 1 when filter changes
+  // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedJobType]);
+  }, [selectedJobType, searchQuery]);
 
   const paginatedCareers = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -118,464 +143,458 @@ const ListCareer = ({ onEdit }) => {
   ========================= */
   const getJobTypeColor = (jobType) => {
     const colors = {
-      "Full Time": "bg-green-100 text-green-700",
-      "Part Time": "bg-blue-100 text-blue-700",
-      Internship: "bg-purple-100 text-purple-700",
-      Contract: "bg-orange-100 text-orange-700",
-      Remote: "bg-teal-100 text-teal-700",
+      "Full Time": "bg-green-100 text-green-700 border-green-200",
+      "Part Time": "bg-blue-100 text-blue-700 border-blue-200",
+      Internship: "bg-purple-100 text-purple-700 border-purple-200",
+      Contract: "bg-orange-100 text-orange-700 border-orange-200",
+      Remote: "bg-teal-100 text-teal-700 border-teal-200",
     };
-    return colors[jobType] || "bg-gray-100 text-gray-700";
+    return colors[jobType] || "bg-gray-100 text-gray-700 border-gray-200";
+  };
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setSelectedJobType("all");
+    setShowFilters(false);
   };
 
   /* =========================
-     LOADING
+     LOADING SKELETON
   ========================= */
   if (loading) {
     return (
-      <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm">
-        <div className="border-b border-gray-200 px-5 py-5 md:px-8 bg-gradient-to-r from-[#f8fbff] to-[#fffaf0]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="h-14 w-14 rounded-2xl bg-gray-200 animate-pulse" />
-              <div>
-                <div className="h-6 w-52 rounded-lg bg-gray-200 animate-pulse mb-2" />
-                <div className="h-4 w-36 rounded-lg bg-gray-100 animate-pulse" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-pulse">
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex justify-between items-center">
+                <div className="space-y-3">
+                  <div className="h-8 w-48 bg-gray-200 rounded-lg"></div>
+                  <div className="h-4 w-64 bg-gray-100 rounded-lg"></div>
+                </div>
+                <div className="h-16 w-32 bg-gray-100 rounded-xl"></div>
               </div>
             </div>
-            <div className="h-16 w-28 rounded-2xl bg-gray-100 animate-pulse" />
+            <div className="p-6">
+              <div className="space-y-4">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="h-24 bg-gray-100 rounded-xl"></div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="overflow-x-auto hidden lg:block">
-          <table className="w-full min-w-[1200px]">
-            <thead className="bg-[#f8fafc] border-b border-gray-200">
-              <tr>
-                <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Job Title
-                </th>
-                <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Description
-                </th>
-                <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Location
-                </th>
-                <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Type
-                </th>
-                <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Category
-                </th>
-                <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Created
-                </th>
-                <th className="px-8 py-5 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <tr key={index} className="border-b border-gray-100">
-                  <td className="px-8 py-6">
-                    <div className="h-5 w-48 rounded bg-gray-200 animate-pulse" />
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="h-4 w-full max-w-[380px] rounded bg-gray-200 animate-pulse" />
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="h-4 w-32 rounded bg-gray-200 animate-pulse" />
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="h-6 w-24 rounded-full bg-gray-200 animate-pulse" />
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="h-4 w-28 rounded bg-gray-200 animate-pulse" />
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="h-4 w-28 rounded bg-gray-200 animate-pulse" />
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="flex items-center justify-end gap-3">
-                      <div className="h-10 w-24 rounded-xl bg-gray-200 animate-pulse" />
-                      <div className="h-10 w-24 rounded-xl bg-red-100 animate-pulse" />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm">
-      {/* HEADER */}
-      <div className="border-b border-gray-200 px-5 py-5 md:px-8 bg-gradient-to-r from-[#f8fbff] to-[#fffaf0]">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#006db1] to-[#0088db] shadow-lg">
-              <FiBriefcase className="text-white text-2xl" />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-6 md:mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-xl shadow-lg">
+              <FiBriefcase className="text-white" size={24} />
             </div>
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#111827]">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
                 Careers Management
-              </h2>
+              </h1>
               <p className="text-sm text-gray-500 mt-1">
-                Manage all job openings
+                Manage all job openings and applications
               </p>
             </div>
           </div>
-          <div className="rounded-2xl border border-gray-200 bg-white px-5 py-3 shadow-sm">
-            <p className="text-xs uppercase tracking-wider text-gray-500">
-              Total Careers
-            </p>
-            <h3 className="text-2xl font-bold text-[#1f3b57]">
-              {filteredCareers.length}
-            </h3>
-          </div>
         </div>
-      </div>
 
-      {/* FILTERS */}
-      {jobTypes.length > 0 && (
-        <div className="px-5 py-4 border-b border-gray-200 bg-gray-50">
-          <div className="flex flex-wrap items-center gap-3">
-            <FiClock className="text-gray-400" />
-            <span className="text-sm font-medium text-gray-700">
-              Filter by job type:
-            </span>
-            <button
-              onClick={() => {
-                setSelectedJobType("all");
-              }}
-              className={`px-3 py-1.5 rounded-lg text-sm transition ${
-                selectedJobType === "all"
-                  ? "bg-[#1f3b57] text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
-              }`}
-            >
-              All
-            </button>
-            {jobTypes.map((type) => (
-              <button
-                key={type}
-                onClick={() => {
-                  setSelectedJobType(type);
-                }}
-                className={`px-3 py-1.5 rounded-lg text-sm transition ${
-                  selectedJobType === type
-                    ? "bg-[#1f3b57] text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
-                }`}
-              >
-                {type}
-              </button>
-            ))}
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Header Stats */}
+          <div className="bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] px-6 py-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center text-white">
+                  <FiBriefcase size={22} />
+                </div>
+                <div>
+                  <p className="text-white/60 text-xs uppercase tracking-wide">
+                    Total Careers
+                  </p>
+                  <p className="text-white text-3xl font-bold">
+                    {filteredCareers.length}
+                  </p>
+                </div>
+              </div>
+              {(searchQuery || selectedJobType !== "all") && (
+                <button
+                  onClick={clearFilters}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur rounded-xl text-white hover:bg-white/20 transition"
+                >
+                  <FiX size={16} />
+                  Clear Filters
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      )}
 
-      {/* EMPTY */}
-      {filteredCareers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#eef6ff] mb-5">
-            <FiBriefcase className="text-4xl text-[#006db1]" />
-          </div>
-          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-            {careers.length === 0
-              ? "No Careers Found"
-              : "No Careers in this Job Type"}
-          </h3>
-          <p className="text-gray-500 max-w-md">
-            {careers.length === 0
-              ? "There are currently no career opportunities available."
-              : "Try selecting a different job type filter."}
-          </p>
-        </div>
-      ) : (
-        <>
-          {/* DESKTOP TABLE */}
-          <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full min-w-[1200px]">
-              <thead className="bg-[#f8fafc]">
-                <tr>
-                  <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Job Title
-                  </th>
-                  <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Description
-                  </th>
-                  <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Location
-                  </th>
-                  <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Type
-                  </th>
-                  <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Category
-                  </th>
-                  <th className="px-8 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Created
-                  </th>
-                  <th className="px-8 py-5 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedCareers.map((career) => (
-                  <tr
-                    key={career._id}
-                    className="border-t border-gray-100 transition hover:bg-[#f9fbff]"
+          {/* Search and Filters */}
+          <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Search Bar */}
+              <div className="flex-1 relative">
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search by title, description, location, or category..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#1f3b57] focus:ring-2 focus:ring-[#1f3b57]/20 outline-none transition-all bg-white"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {/* TITLE */}
-                    <td className="px-8 py-6">
-                      <div className="max-w-[250px]">
-                        <h3 className="font-semibold text-[#111827] text-base line-clamp-2">
+                    <FiX size={18} />
+                  </button>
+                )}
+              </div>
+
+              {/* Filter Toggle Button (Mobile) */}
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="md:hidden flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl"
+              >
+                <FiFilter />
+                Filters
+                {selectedJobType !== "all" && (
+                  <span className="w-2 h-2 bg-[#1f3b57] rounded-full"></span>
+                )}
+              </button>
+
+              {/* Job Type Filters */}
+              <div
+                className={`${showFilters ? "flex" : "hidden"} md:flex flex-wrap gap-2`}
+              >
+                <button
+                  onClick={() => setSelectedJobType("all")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                    selectedJobType === "all"
+                      ? "bg-[#1f3b57] text-white shadow-md"
+                      : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  All Jobs
+                </button>
+                {jobTypes.map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setSelectedJobType(type)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                      selectedJobType === type
+                        ? "bg-[#1f3b57] text-white shadow-md"
+                        : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Empty State */}
+          {filteredCareers.length === 0 ? (
+            <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
+              <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
+                <FiBriefcase className="text-4xl text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                {careers.length === 0
+                  ? "No Careers Found"
+                  : "No Matching Careers"}
+              </h3>
+              <p className="text-gray-500 max-w-md">
+                {careers.length === 0
+                  ? "There are currently no career opportunities available."
+                  : "Try adjusting your search or filter criteria."}
+              </p>
+              {(searchQuery || selectedJobType !== "all") && (
+                <button
+                  onClick={clearFilters}
+                  className="mt-6 px-6 py-2 bg-[#1f3b57] text-white rounded-xl hover:bg-[#2a4d72] transition"
+                >
+                  Clear All Filters
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* Desktop Table View */}
+              <div className="hidden lg:block overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Job Title
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Type
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Category
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Created
+                      </th>
+                      <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {paginatedCareers.map((career, index) => (
+                      <tr
+                        key={career._id}
+                        className="hover:bg-gray-50/50 transition group"
+                      >
+                        <td className="px-6 py-4">
+                          <div className="max-w-[280px]">
+                            <h3 className="font-semibold text-gray-800 text-sm line-clamp-2">
+                              {stripHtml(career.title)}
+                            </h3>
+                            {career.applyLink && (
+                              <a
+                                href={career.applyLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs text-blue-600 mt-1 hover:underline"
+                              >
+                                Apply Now
+                                <FiExternalLink size={10} />
+                              </a>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <p className="max-w-[320px] text-sm text-gray-500 line-clamp-2">
+                            {stripHtml(career.description)?.slice(0, 100) ||
+                              "No description"}
+                          </p>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-1.5">
+                            <FiMapPin className="text-gray-400 text-sm" />
+                            <span className="text-sm text-gray-700">
+                              {career.location || "Not specified"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${getJobTypeColor(career.jobType)}`}
+                          >
+                            {career.jobType || "Not specified"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-1.5">
+                            <FiTag className="text-gray-400 text-sm" />
+                            <span className="text-sm text-gray-700">
+                              {career.category || "Not specified"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            <FiCalendar size={14} />
+                            {new Date(career.createdAt).toLocaleDateString()}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => onEdit(career)}
+                              className="p-2 text-gray-600 hover:text-[#1f3b57] hover:bg-gray-100 rounded-lg transition"
+                              title="Edit"
+                            >
+                              <FiEdit2 size={18} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(career._id)}
+                              className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                              title="Delete"
+                            >
+                              <FiTrash2 size={18} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="lg:hidden divide-y divide-gray-100">
+                {paginatedCareers.map((career) => (
+                  <div
+                    key={career._id}
+                    className="p-6 hover:bg-gray-50 transition"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-800 text-base leading-6">
                           {stripHtml(career.title)}
                         </h3>
-                        {career.applyLink && (
-                          <a
-                            href={career.applyLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-xs text-blue-500 mt-1 hover:underline"
+                        <div className="flex items-center gap-2 mt-2">
+                          <span
+                            className={`inline-flex px-2 py-1 rounded-full text-xs font-medium border ${getJobTypeColor(career.jobType)}`}
                           >
-                            Apply Now <FiExternalLink size={10} />
-                          </a>
-                        )}
+                            {career.jobType || "Not specified"}
+                          </span>
+                        </div>
                       </div>
-                    </td>
-
-                    {/* DESCRIPTION */}
-                    <td className="px-8 py-6">
-                      <p className="max-w-[350px] text-sm leading-7 text-gray-500 line-clamp-2">
-                        {stripHtml(career.description)?.slice(0, 120) ||
-                          "No description"}
-                      </p>
-                    </td>
-
-                    {/* LOCATION */}
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-1.5">
-                        <FiMapPin className="text-gray-400 text-sm" />
-                        <span className="text-sm text-gray-700">
-                          {career.location || "Not specified"}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* JOB TYPE */}
-                    <td className="px-8 py-6">
-                      <span
-                        className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${getJobTypeColor(career.jobType)}`}
-                      >
-                        {career.jobType || "Not specified"}
-                      </span>
-                    </td>
-
-                    {/* CATEGORY */}
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-1.5">
-                        <FiTag className="text-gray-400 text-sm" />
-                        <span className="text-sm text-gray-700">
-                          {career.category || "Not specified"}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* CREATED */}
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <FiCalendar />
-                        {new Date(career.createdAt).toLocaleDateString()}
-                      </div>
-                    </td>
-
-                    {/* ACTIONS */}
-                    <td className="px-8 py-6">
-                      <div className="flex items-center justify-end gap-3">
+                      <div className="flex gap-1">
                         <button
                           onClick={() => onEdit(career)}
-                          className="inline-flex items-center gap-2 rounded-xl bg-[#1f3b57] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#2a4d72]"
+                          className="p-2 text-gray-600 hover:text-[#1f3b57] rounded-lg transition"
                         >
-                          <FiEdit2 />
-                          Edit
+                          <FiEdit2 size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(career._id)}
-                          className="inline-flex items-center gap-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
+                          className="p-2 text-gray-600 hover:text-red-600 rounded-lg transition"
                         >
-                          <FiTrash2 />
-                          Delete
+                          <FiTrash2 size={18} />
                         </button>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
 
-          {/* MOBILE CARDS */}
-          <div className="grid gap-4 p-4 lg:hidden">
-            {paginatedCareers.map((career) => (
-              <div
-                key={career._id}
-                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-[#111827] leading-7">
-                      {stripHtml(career.title)}
-                    </h3>
-                    <span
-                      className={`inline-flex mt-2 px-3 py-1 rounded-full text-xs font-medium ${getJobTypeColor(career.jobType)}`}
-                    >
-                      {career.jobType || "Not specified"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-3 space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <FiMapPin className="text-gray-400" />
-                    <span>{career.location || "Location not specified"}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <FiTag className="text-gray-400" />
-                    <span>{career.category || "Category not specified"}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <FiCalendar />
-                    {new Date(career.createdAt).toLocaleDateString()}
-                  </div>
-                </div>
-
-                <p className="mt-4 text-sm leading-7 text-gray-500">
-                  {stripHtml(career.description)?.slice(0, 120) ||
-                    "No description"}
-                  {stripHtml(career.description)?.length > 120 && "..."}
-                </p>
-
-                {career.applyLink && (
-                  <a
-                    href={career.applyLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 inline-flex items-center gap-2 rounded-xl bg-blue-50 px-4 py-2 text-sm font-medium text-[#006db1] transition hover:bg-blue-100"
-                  >
-                    Apply Now
-                    <FiExternalLink />
-                  </a>
-                )}
-
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => onEdit(career)}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-[#1f3b57] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#2a4d72]"
-                  >
-                    <FiEdit2 />
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(career._id)}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-100"
-                  >
-                    <FiTrash2 />
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* PAGINATION - FIXED */}
-          {totalPages > 1 && (
-            <div className="border-t border-gray-200 px-4 py-5 md:px-8 bg-[#fafcff]">
-              <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                <p className="text-sm text-gray-500">
-                  Showing page{" "}
-                  <span className="font-semibold text-[#111827]">
-                    {currentPage}
-                  </span>{" "}
-                  of{" "}
-                  <span className="font-semibold text-[#111827]">
-                    {totalPages}
-                  </span>{" "}
-                  ({filteredCareers.length} total items)
-                </p>
-                <div className="flex items-center gap-2 flex-wrap justify-center">
-                  {/* PREVIOUS */}
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <FiChevronLeft />
-                    Previous
-                  </button>
-
-                  {/* PAGE BUTTONS */}
-                  {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-                    let pageNum;
-                    if (totalPages <= 7) {
-                      pageNum = i + 1;
-                    } else if (currentPage <= 4) {
-                      pageNum = i + 1;
-                      if (i === 6) pageNum = totalPages;
-                    } else if (currentPage >= totalPages - 3) {
-                      pageNum = totalPages - 6 + i;
-                    } else {
-                      pageNum = currentPage - 3 + i;
-                      if (i === 0) pageNum = 1;
-                      if (i === 1) pageNum = "...";
-                      if (i === 5) pageNum = "...";
-                      if (i === 6) pageNum = totalPages;
-                    }
-
-                    if (pageNum === "...") {
-                      return (
-                        <span
-                          key={i}
-                          className="h-11 w-11 flex items-center justify-center text-gray-500"
-                        >
-                          ...
+                    <div className="space-y-2 mb-3">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <FiMapPin
+                          className="text-gray-400 shrink-0"
+                          size={14}
+                        />
+                        <span>
+                          {career.location || "Location not specified"}
                         </span>
-                      );
-                    }
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <FiTag className="text-gray-400 shrink-0" size={14} />
+                        <span>
+                          {career.category || "Category not specified"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <FiCalendar size={12} />
+                        {new Date(career.createdAt).toLocaleDateString()}
+                      </div>
+                    </div>
 
-                    return (
-                      <button
-                        key={pageNum}
-                        onClick={() => handlePageChange(pageNum)}
-                        className={`h-11 w-11 rounded-xl text-sm font-semibold transition ${
-                          currentPage === pageNum
-                            ? "bg-[#1f3b57] text-white shadow-md"
-                            : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-100"
-                        }`}
+                    <p className="text-sm text-gray-500 leading-6 mb-3">
+                      {stripHtml(career.description)?.slice(0, 120) ||
+                        "No description"}
+                      {stripHtml(career.description)?.length > 120 && "..."}
+                    </p>
+
+                    {career.applyLink && (
+                      <a
+                        href={career.applyLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline"
                       >
-                        {pageNum}
-                      </button>
-                    );
-                  })}
-
-                  {/* NEXT */}
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    Next
-                    <FiChevronRight />
-                  </button>
-                </div>
+                        Apply Now
+                        <FiExternalLink size={12} />
+                      </a>
+                    )}
+                  </div>
+                ))}
               </div>
-            </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-sm text-gray-500">
+                      Showing{" "}
+                      <span className="font-semibold text-gray-700">
+                        {paginatedCareers.length}
+                      </span>{" "}
+                      of{" "}
+                      <span className="font-semibold text-gray-700">
+                        {filteredCareers.length}
+                      </span>{" "}
+                      careers
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
+                      >
+                        <FiChevronLeft size={16} />
+                        Previous
+                      </button>
+
+                      <div className="hidden sm:flex gap-2">
+                        {Array.from(
+                          { length: Math.min(5, totalPages) },
+                          (_, i) => {
+                            let pageNum;
+                            if (totalPages <= 5) {
+                              pageNum = i + 1;
+                            } else if (currentPage <= 3) {
+                              pageNum = i + 1;
+                            } else if (currentPage >= totalPages - 2) {
+                              pageNum = totalPages - 4 + i;
+                            } else {
+                              pageNum = currentPage - 2 + i;
+                            }
+
+                            return (
+                              <button
+                                key={pageNum}
+                                onClick={() => handlePageChange(pageNum)}
+                                className={`w-10 h-10 rounded-lg text-sm font-semibold transition ${
+                                  currentPage === pageNum
+                                    ? "bg-[#1f3b57] text-white shadow-md"
+                                    : "bg-white border border-gray-200 hover:bg-gray-50 text-gray-700"
+                                }`}
+                              >
+                                {pageNum}
+                              </button>
+                            );
+                          },
+                        )}
+                      </div>
+
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
+                      >
+                        Next
+                        <FiChevronRight size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </div>
   );
 };
