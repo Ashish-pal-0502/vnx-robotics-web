@@ -46,7 +46,7 @@ const BlogList = ({ onEdit }) => {
         },
       });
 
-      setBlogs(response?.data?.data?.blogs || []);
+      setBlogs(response?.data?.blogs || []);
     } catch (error) {
       console.error("Fetch blogs failed:", error);
 
@@ -92,11 +92,13 @@ const BlogList = ({ onEdit }) => {
     }
 
     const query = searchQuery.toLowerCase().trim();
-    
+
     return blogs.filter((blog) => {
       const cleanHeading = stripHtml(blog.heading).toLowerCase();
-      const cleanDescription = stripHtml(blog.mdesc || blog.content).toLowerCase();
-      
+      const cleanDescription = stripHtml(
+        blog.mdesc || blog.content,
+      ).toLowerCase();
+
       return cleanHeading.includes(query) || cleanDescription.includes(query);
     });
   }, [blogs, searchQuery]);
@@ -157,10 +159,7 @@ const BlogList = ({ onEdit }) => {
         {/* SKELETON */}
         <div className="p-4 md:p-6 space-y-4">
           {Array.from({ length: 5 }).map((_, index) => (
-            <div
-              key={index}
-              className="rounded-2xl border border-gray-200 p-4"
-            >
+            <div key={index} className="rounded-2xl border border-gray-200 p-4">
               <div className="flex gap-4">
                 <div className="w-24 h-24 rounded-2xl bg-gray-200 animate-pulse shrink-0" />
 
@@ -205,15 +204,16 @@ const BlogList = ({ onEdit }) => {
                 Blogs Management
               </h2>
 
-              <p className="text-sm text-gray-500">
-                Manage all blogs
-              </p>
+              <p className="text-sm text-gray-500">Manage all blogs</p>
             </div>
           </div>
 
           {/* SEARCH BAR */}
           <div className="relative w-full md:w-80">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <FiSearch
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={18}
+            />
             <input
               type="text"
               placeholder="Search blogs by title or description..."
@@ -242,7 +242,7 @@ const BlogList = ({ onEdit }) => {
               {blogs.length}
             </h3>
           </div>
-          
+
           {searchQuery && (
             <div className="rounded-2xl border border-blue-200 bg-blue-50 px-5 py-3 shadow-sm">
               <p className="text-xs uppercase tracking-wide text-blue-600">
@@ -260,7 +260,11 @@ const BlogList = ({ onEdit }) => {
       {filteredBlogs.length === 0 ? (
         <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#eef5ff] mb-5">
-            {searchQuery ? <FiSearch className="text-4xl text-[#1f3b57]" /> : <FiFileText className="text-4xl text-[#1f3b57]" />}
+            {searchQuery ? (
+              <FiSearch className="text-4xl text-[#1f3b57]" />
+            ) : (
+              <FiFileText className="text-4xl text-[#1f3b57]" />
+            )}
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mb-2">
@@ -268,11 +272,11 @@ const BlogList = ({ onEdit }) => {
           </h3>
 
           <p className="text-gray-500">
-            {searchQuery 
+            {searchQuery
               ? `No blogs match "${searchQuery}". Try a different search term.`
               : "There are currently no blogs available."}
           </p>
-          
+
           {searchQuery && (
             <button
               onClick={clearSearch}
@@ -288,25 +292,29 @@ const BlogList = ({ onEdit }) => {
           <div className="p-4 md:p-6 space-y-4">
             {paginatedBlogs.map((blog) => {
               const cleanHeading = stripHtml(blog.heading);
-              const cleanDescription = stripHtml(
-                blog.mdesc || blog.content,
-              );
+              const cleanDescription = stripHtml(blog.mdesc || blog.content);
 
               // Highlight matching text in search results
               const highlightText = (text, query) => {
                 if (!query || !text) return text;
-                
-                const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+
+                const regex = new RegExp(
+                  `(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+                  "gi",
+                );
                 const parts = text.split(regex);
-                
-                return parts.map((part, index) => 
+
+                return parts.map((part, index) =>
                   regex.test(part) ? (
-                    <mark key={index} className="bg-yellow-200 text-gray-900 px-0.5 rounded">
+                    <mark
+                      key={index}
+                      className="bg-yellow-200 text-gray-900 px-0.5 rounded"
+                    >
                       {part}
                     </mark>
                   ) : (
                     part
-                  )
+                  ),
                 );
               };
 
@@ -328,15 +336,21 @@ const BlogList = ({ onEdit }) => {
                     {/* CONTENT */}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-base md:text-lg text-[#1f3b57] line-clamp-1">
-                        {searchQuery 
-                          ? highlightText(cleanHeading || "Untitled Blog", searchQuery)
-                          : (cleanHeading || "Untitled Blog")}
+                        {searchQuery
+                          ? highlightText(
+                              cleanHeading || "Untitled Blog",
+                              searchQuery,
+                            )
+                          : cleanHeading || "Untitled Blog"}
                       </h3>
 
                       <p className="text-sm text-gray-500 line-clamp-2 leading-6 mt-1">
                         {searchQuery && cleanDescription
-                          ? highlightText(cleanDescription.slice(0, 120), searchQuery)
-                          : (cleanDescription?.slice(0, 120) || "No description")}
+                          ? highlightText(
+                              cleanDescription.slice(0, 120),
+                              searchQuery,
+                            )
+                          : cleanDescription?.slice(0, 120) || "No description"}
                       </p>
 
                       {/* FOOTER */}

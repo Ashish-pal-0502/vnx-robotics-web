@@ -133,8 +133,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         fileType: file.type,
       });
 
-      const data =
-        response?.data?.data?.data || response?.data?.data || response?.data;
+      const data = response?.data?.data || response?.data;
 
       if (!data) {
         throw new Error("No data received from server");

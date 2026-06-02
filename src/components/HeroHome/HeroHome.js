@@ -19,9 +19,8 @@ export default function HeroHome() {
       const response = await apiClient.get("/hero/get");
 
       if (response.ok && response.data?.success) {
-        const data = response.data.data.data;
+        const data = response.data.data;
         if (data && data.length > 0) {
-          console.log("Hero data:", data[0]);
           setHeroData(data[0]);
         }
       }

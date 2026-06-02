@@ -157,12 +157,12 @@ const DashboardPage = () => {
         apiClient.get("/career/get-all"),
         apiClient.get("/robot/get"),
       ]);
-      console.log("careers: ", careersRes);
+
       setStats({
-        totalUsers: usersRes?.data?.data?.users?.length || 0,
-        totalBlogs: blogsRes?.data?.data?.blogs?.length || 0,
-        totalCareers: careersRes?.data?.data?.data?.length || 0,
-        totalRobots: robotsRes?.data?.data?.robots?.length || 0,
+        totalUsers: usersRes?.data?.users?.length || 0,
+        totalBlogs: blogsRes?.data?.blogs?.length || 0,
+        totalCareers: careersRes?.data?.data?.length || 0,
+        totalRobots: robotsRes?.data?.robots?.length || 0,
       });
     } catch (error) {
       console.error("Failed to fetch dashboard stats:", error);

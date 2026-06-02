@@ -30,9 +30,9 @@ const UsersList = () => {
 
       const res = await apiClient.get(`/user/get-users?page=${page}`);
 
-      setUsers(res?.data?.data?.users || []);
-      setTotalPages(res?.data?.data?.totalPages || 1);
-      setCurrentPage(Number(res?.data?.data?.currentPage || 1));
+      setUsers(res?.data?.users || []);
+      setTotalPages(res?.data?.totalPages || 1);
+      setCurrentPage(Number(res?.data?.currentPage || 1));
     } catch (error) {
       toast.error("Failed to fetch users");
     } finally {

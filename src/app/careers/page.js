@@ -44,7 +44,7 @@ export default function CareersPage() {
     const response = await apiClient.get("/career/get-all");
 
     if (response.ok && response.data?.success) {
-      setCareers(response.data.data.data || []);
+      setCareers(response.data.data || []);
     }
   };
   useEffect(() => {
