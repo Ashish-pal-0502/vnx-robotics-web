@@ -114,40 +114,42 @@ export default function RoboticsPage() {
   return (
     <main className="bg-[var(--color-dark-100)]">
       {/* ========== HERO SECTION ========== */}
+      {/* ========== HERO SECTION ========== */}
       <section
         ref={sectionRefs.hero}
-        className="relative min-h-screen flex items-center overflow-hidden"
+        className="relative min-h-[60vh] lg:min-h-screen  flex items-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-20"
       >
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
-          <img
-            src="https://t4.ftcdn.net/jpg/08/71/75/11/360_F_871751180_OQ5s1vtuENqTMDdEIP6uUuCveboNAisn.jpg"
-            alt="Robotics hero"
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div className="absolute inset-0 opacity-[0.03] z-10">
+        {/* Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div
             className="h-full w-full"
             style={{
               backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: "70px 70px",
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
 
-        <div className="relative z-20 max-w-7xl px-6 md:px-12 py-20">
+        {/* Centered Blue Gradient */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-2xl h-[40vh] max-h-[400px] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(0,136,219,0.3) 0%, rgba(0,109,177,0.15) 50%, transparent 100%)",
+          }}
+        />
+
+        <div className="relative z-20 max-w-7xl px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView.hero ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <div className="mb-5 mt-10 flex items-center gap-3">
+            <div className="mb-5 flex items-center gap-3">
               <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
               <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
                 Advanced Robotics Systems

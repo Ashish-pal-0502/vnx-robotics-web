@@ -1,45 +1,182 @@
 {
   "navbar": {
     "homepage": "Trang chủ",
-    "industries": "Ngành nghề",
+    "industries": "Ngành công nghiệp",
     "solutions": "Giải pháp",
-    "robotics": "Robot",
+    "robotics": "Robot học",
     "blogs": "Blog",
     "about": "Về chúng tôi",
     "careers": "Tuyển dụng",
     "contact": "Liên hệ",
-    "contactBtn": "Liên hệ"
+    "contactBtn": "Liên hệ",
+    "products": "Sản phẩm",
+    "descriptions": {
+      "homepage": "Bản sắc, tầm nhìn và năng lực cốt lõi.",
+      "industries": "Kho bãi, sản xuất, robot, nông nghiệp, hệ thống nhúng.",
+      "products": "Hệ thống tự động hóa, hệ thống kho bãi, robot, phần mềm, tích hợp.",
+      "robotics": "Robot bốn chân, hệ thống tự động, nền tảng robot.",
+      "careers": "Văn hóa kỹ thuật, robot, tự động hóa, phát triển hệ thống nhúng.",
+      "blogs": "Những hiểu biết mới nhất, cập nhật và bài viết kỹ thuật.",
+      "about": "Tầm nhìn, triết lý lãnh đạo, hợp tác, đội ngũ, cập nhật mới nhất."
+    }
   },
   "heroHome": {
-    "trustedCustomers": "1K+ Khách hàng tin tưởng",
-    "heading": "Kiểm soát tái định nghĩa \n Đổi mới bùng nổ",
-    "description": "Tự động hóa công nghiệp. Robot. Vận hành thông minh.",
+    "trustedCustomers": "1.000+ Khách hàng tin tưởng",
+    "heading": "Kiểm soát Định nghĩa lại\nĐổi mới Giải phóng",
+    "description": "Tự động hóa Công nghiệp. Robot học. Vận hành Thông minh.",
     "getStarted": "Bắt đầu",
     "scrollDown": "Cuộn xuống"
   },
   "trustedBy": {
-    "industryRecognition": "Công nhận trong ngành",
+    "industryRecognition": "Công nhận Ngành",
     "headingPrefix": "Được tin cậy bởi",
-    "headingHighlight": "Robot",
-    "headingSuffix": "& Lãnh đạo ngành công nghiệp",
+    "headingHighlight": "Robot học",
+    "headingSuffix": "và Lãnh đạo Công nghiệp",
     "description": "Hợp tác với các đối tác trong lĩnh vực robot và tự động hóa công nghiệp",
     "partners": {
       "IVSPartner": "Đối tác IVS",
       "IMACSPartner": "Đối tác IMACS",
       "BrainHealthLabPartner": "Đối tác Phòng thí nghiệm Sức khỏe Não bộ",
-      "CTGroupPartner": "Đối tác CT Group",
+      "CTGroupPartner": "Đối tác Tập đoàn CT",
       "ITRPartner": "Đối tác ITR",
       "ShoeAgTechPartner": "Đối tác Shoe Ag Tech"
     }
   },
   "aboutUs": {
     "industrialSystems": "HỆ THỐNG CÔNG NGHIỆP",
-    "imageAlt": "Hệ thống tự động hóa công nghiệp và robot VNX Robotics",
-    "engineeringPhilosophy": "Triết lý kỹ thuật",
+    "imageAlt": "Hệ thống tự động hóa công nghiệp và robot của VNX Robotics",
+    "engineeringPhilosophy": "Triết lý Kỹ thuật",
     "headingPrefix": "Hệ sinh thái",
     "headingHighlight": "Giải pháp",
     "capabilities": ["Robot", "Tự động hóa", "Dữ liệu", "Trí tuệ", "Vận hành"],
-    "philosophyStatement": "\"VNX Robotics tin rằng hệ thống tự động hóa thành công được xây dựng thông qua kiến trúc có thể mở rộng, độ tin cậy vận hành và thực thi kỹ thuật có kỷ luật.\"",
+    "philosophyStatement": "\"VNX Robotics tin rằng các hệ thống tự động hóa thành công được xây dựng thông qua kiến trúc có thể mở rộng, độ tin cậy vận hành và thực thi kỹ thuật có kỷ luật.\"",
     "ctaButton": "Khám phá tầm nhìn của chúng tôi"
+  },
+  "industriesSection": {
+    "badge": "Các Ngành Chúng Tôi Phục Vụ",
+    "headingPrefix": "Hệ thống Thông minh Cho",
+    "headingHighlight": "Các Ngành Công nghiệp Hiện đại",
+    "description": "Robot có thể mở rộng, tự động hóa và hệ thống cơ sở hạ tầng thông minh trên các ngành công nghiệp toàn cầu.",
+    "explore": "Khám phá",
+    "industries": {
+      "warehouseLogistics": "Kho bãi & Hậu cần",
+      "warehouseLogisticsDesc": "Hệ thống kho thông minh và cơ sở hạ tầng tự động hóa.",
+      "manufacturing": "Sản xuất",
+      "manufacturingDesc": "Hệ thống sản xuất kết nối và trí tuệ công nghiệp.",
+      "roboticsAI": "Robot & AI",
+      "roboticsAIDesc": "Nền tảng robot tiên tiến cho các hoạt động sẵn sàng cho tương lai.",
+      "agricultureSystems": "Hệ thống Nông nghiệp",
+      "agricultureSystemsDesc": "Công nghệ tự động hóa nông nghiệp hiện đại.",
+      "embeddedDevices": "Thiết bị Nhúng",
+      "embeddedDevicesDesc": "Hệ thống nhúng điều khiển tự động hóa thế hệ tiếp theo.",
+      "industrialInfrastructure": "Cơ sở hạ tầng Công nghiệp",
+      "industrialInfrastructureDesc": "Phần mềm tích hợp và hệ thống vận hành thông minh."
+    }
+  },
+  "roboticsSection": {
+    "badge": "Chương trình Robot Tiên tiến",
+    "headingPrefix": "Xây dựng Thế hệ",
+    "headingHighlight": "Hệ thống Robot Tiếp theo",
+    "developmentPrograms": "Chương trình Phát triển",
+    "developmentSubtitle": "Các sáng kiến robot chủ động thể hiện tiến bộ kỹ thuật thực tế",
+    "receptionRobot": "Robot Lễ tân",
+    "quadrupedRobot": "Robot Bốn chân",
+    "techStack": "Công nghệ cốt lõi",
+    "techSubtitle": "Năng lực kỹ thuật hỗ trợ phát triển robot của chúng tôi",
+    "exploreCollaboration": "Khám phá cơ hội hợp tác và chương trình robot tiên tiến",
+    "discussCollaboration": "Thảo luận Hợp tác →",
+    "exploreRobotics": "Khám phá Chương trình Robot",
+    "learnMore": "Tìm hiểu thêm về chương trình này",
+    "programs": {
+      "quadruped": {
+        "title": "Nền tảng Robot Bốn chân",
+        "subtitle": "Kiểm tra Công nghiệp & Di chuyển Tự động",
+        "description": "Nền tảng robot bốn chân tiên tiến đang được phát triển tích cực cho kiểm tra công nghiệp, di chuyển tự động và các ứng dụng vận hành thông minh trong môi trường khắc nghiệt.",
+        "tags": {
+          "mobilitySystems": "Hệ thống Di động",
+          "embeddedControl": "Điều khiển Nhúng",
+          "roboticsMiddleware": "Phần mềm Trung gian Robot",
+          "intelligentLocomotion": "Di chuyển Thông minh"
+        },
+        "status": "Đang Phát triển Tích cực"
+      },
+      "reception": {
+        "title": "Robot Lễ tân & Tương tác",
+        "subtitle": "Nền tảng Tương tác Người-Robot",
+        "description": "Nền tảng robot tương tác được thiết kế cho môi trường vận hành người-robot trong tương lai, với tính năng điều hướng tự động, hệ thống phản hồi thông minh và khả năng robot dịch vụ.",
+        "tags": {
+          "humanInteraction": "Tương tác Con người",
+          "autonomousNavigation": "Điều hướng Tự động",
+          "roboticsSoftware": "Phần mềm Robot",
+          "embeddedSystems": "Hệ thống Nhúng"
+        },
+        "status": "Chương trình Phát triển"
+      }
+    },
+    "techStackItems": {
+      "roboticsMiddleware": {
+        "name": "Phần mềm Trung gian Robot",
+        "description": "Cơ sở hạ tầng ROS 2 và hệ thống robot phân tán"
+      },
+      "embeddedSystems": {
+        "name": "Hệ thống Nhúng",
+        "description": "Hệ thống điều khiển thời gian thực và nền tảng phần cứng thông minh"
+      },
+      "mobilitySystems": {
+        "name": "Hệ thống Di động",
+        "description": "Hệ thống truyền động, di chuyển và chuyển động robot"
+      },
+      "operationalIntelligence": {
+        "name": "Trí tuệ Vận hành",
+        "description": "Hệ thống phần mềm hỗ trợ vận hành tự động"
+      },
+      "aiAutonomy": {
+        "name": "AI & Tự chủ",
+        "description": "Ra quyết định thông minh trong tương lai và cơ sở hạ tầng robot tự động"
+      }
+    }
+  },
+  "ourWorldWideReach": {
+    "titles": [
+      "Mạng lưới Robot Toàn cầu.",
+      "Trí tuệ, Được nhân cách hóa.",
+      "Tự động hóa, Tái định nghĩa.",
+      "Hệ thống Tương lai, Được thiết kế."
+    ],
+    "description": "Trí tuệ robot kết nối thời gian thực hoạt động trên mạng lưới cơ sở hạ tầng công nghiệp toàn cầu.",
+    "globalPartners": "Đối tác Toàn cầu",
+    "operations": "Vận hành",
+    "countries": "Quốc gia",
+    "industryCategories": "Danh mục Ngành"
+  },
+  "homeBlogSection": {
+    "badge": "Thông tin & Tài nguyên",
+    "headingPrefix": "Câu chuyện",
+    "headingHighlight": "Mới nhất của chúng tôi",
+    "description": "Khám phá những hiểu biết, đổi mới và câu chuyện thực tế định hình tương lai của robot, hệ thống AI và tự động hóa thông minh.",
+    "allStories": "Tất cả Câu chuyện →"
+  },
+  "footer": {
+    "companyName": "VNX Robotics",
+    "tagline": "Được thiết kế Để vượt trội",
+    "description": "Hệ thống robot thông minh và tự động hóa được thiết kế cho các ngành công nghiệp thế hệ tiếp theo.",
+    "dashboard": "Bảng điều khiển",
+    "logout": "Đăng xuất",
+    "login": "Đăng nhập",
+    "solutions": "Giải pháp",
+    "resources": "Tài nguyên",
+    "company": "Công ty",
+    "products": "Sản phẩm",
+    "robotics": "Robot học",
+    "industries": "Ngành công nghiệp",
+    "blogs": "Blog",
+    "careers": "Tuyển dụng",
+    "termsConditions": "Điều khoản & Điều kiện",
+    "about": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "privacyPolicy": "Chính sách bảo mật",
+    "copyright": "© {{year}} VNX Robotics. Tất cả các quyền được bảo lưu.",
+    "logoutSuccess": "Đăng xuất thành công",
+    "logoutFailed": "Đăng xuất thất bại"
   }
 }

@@ -67,41 +67,37 @@ export default function Header() {
     {
       name: t("navbar.homepage"),
       href: "/",
-      description: "Identity, vision, and core capabilities.",
+      description: t("navbar.descriptions.homepage"),
     },
     {
       name: t("navbar.industries"),
       href: "/industries",
-      description:
-        "Warehouse, manufacturing, robotics, agriculture, embedded systems.",
+      description: t("navbar.descriptions.industries"),
     },
     {
-      name: t("navbar.solutions"),
-      href: "/solutions",
-      description:
-        "Automation systems, warehouse systems, robotics, software, integration.",
+      name: t("navbar.products"),
+      href: "/products",
+      description: t("navbar.descriptions.products"),
     },
     {
       name: t("navbar.robotics"),
       href: "/robotics",
-      description: "Quadrupeds, autonomous systems, robotics platforms.",
+      description: t("navbar.descriptions.robotics"),
     },
     {
       name: t("navbar.careers"),
       href: "/careers",
-      description:
-        "Engineering culture, robotics, automation, embedded systems growth.",
+      description: t("navbar.descriptions.careers"),
     },
     {
       name: t("navbar.blogs"),
       href: "/blogs",
-      description: "Latest insights, updates, and technical articles.",
+      description: t("navbar.descriptions.blogs"),
     },
     {
       name: t("navbar.about"),
       href: "/aboutus",
-      description:
-        "Vision, leadership philosophy, collaborations, team, latest updates.",
+      description: t("navbar.descriptions.about"),
     },
   ];
 

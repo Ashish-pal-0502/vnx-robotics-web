@@ -8,15 +8,16 @@ import {
   FaFacebookF,
   FaTiktok,
 } from "react-icons/fa";
-
 import { FaXTwitter } from "react-icons/fa6";
 import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import useAuth from "@/auth/useAuth";
 import apiClient from "@/api/client";
 import toast from "react-hot-toast";
 
 export default function Footer() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { user, logOut } = useAuth();
 
@@ -25,42 +26,46 @@ export default function Footer() {
       const response = await apiClient.post("/user/logout");
 
       if (response?.ok) {
-        toast.success("Logged out successfully");
+        toast.success(t("footer.logoutSuccess") || "Logged out successfully");
 
         logOut();
         router.replace("/");
       } else {
-        toast.error(response?.data?.message || "Logout failed");
+        toast.error(
+          response?.data?.message ||
+            t("footer.logoutFailed") ||
+            "Logout failed",
+        );
       }
     } catch (error) {
       console.error(error);
-      toast.error("Logout failed");
+      toast.error(t("footer.logoutFailed") || "Logout failed");
     }
   };
 
   const footerLinks = [
     {
-      title: "Solutions",
+      title: t("footer.solutions"),
       links: [
-        { name: "Automation", href: "/solutions" },
-        { name: "Robotics", href: "/robotics" },
-        { name: "Industries", href: "/industries" },
+        { name: t("footer.products"), href: "/products" },
+        { name: t("footer.robotics"), href: "/robotics" },
+        { name: t("footer.industries"), href: "/industries" },
       ],
     },
     {
-      title: "Resources",
+      title: t("footer.resources"),
       links: [
-        { name: "Blogs", href: "/blogs" },
-        { name: "Careers", href: "/careers" },
-        { name: "Terms & Conditions", href: "/terms-conditions" },
+        { name: t("footer.blogs"), href: "/blogs" },
+        { name: t("footer.careers"), href: "/careers" },
+        { name: t("footer.termsConditions"), href: "/terms-conditions" },
       ],
     },
     {
-      title: "Company",
+      title: t("footer.company"),
       links: [
-        { name: "About", href: "/aboutus" },
-        { name: "Contact", href: "/contact" },
-        { name: "Privacy Policy", href: "/privacy-policy" },
+        { name: t("footer.about"), href: "/aboutus" },
+        { name: t("footer.contact"), href: "/contact" },
+        { name: t("footer.privacyPolicy"), href: "/privacy-policy" },
       ],
     },
   ];
@@ -76,18 +81,15 @@ export default function Footer() {
           {/* LEFT */}
           <div>
             <p className="font-mono text-xs uppercase tracking-[3px] text-[var(--color-secondary-400)] mb-5">
-              VNX Robotics
+              {t("footer.companyName")}
             </p>
 
             <h2 className="font-logo text-3xl md:text-5xl leading-none uppercase">
-              Engineered
-              <br />
-              To Outrun
+              {t("footer.tagline")}
             </h2>
 
             <p className="mt-5 max-w-md font-body text-sm leading-7 text-[var(--color-text-secondary)]">
-              Intelligent robotics and automation systems designed for
-              next-generation industries.
+              {t("footer.description")}
             </p>
 
             <div className="mt-8 flex items-center gap-3">
@@ -110,7 +112,7 @@ export default function Footer() {
                       onClick={() => router.push("/dashboard")}
                       className="btn-primary cursor-pointer flex items-center gap-2"
                     >
-                      <span>Dashboard</span>
+                      <span>{t("footer.dashboard")}</span>
 
                       <FaArrowRight size={12} className="opacity-80" />
                     </button>
@@ -121,7 +123,7 @@ export default function Footer() {
                     onClick={handleLogout}
                     className="btn-secondary cursor-pointer flex items-center gap-2"
                   >
-                    <span>Logout</span>
+                    <span>{t("footer.logout")}</span>
                     <HiOutlineLogout size={17} />
                   </button>
                 </>
@@ -130,7 +132,7 @@ export default function Footer() {
                   onClick={() => router.push("/login")}
                   className="btn-primary cursor-pointer flex items-center gap-2"
                 >
-                  <span>Login</span>
+                  <span>{t("footer.login")}</span>
 
                   <FaArrowRight size={12} className="opacity-80" />
                 </button>
@@ -170,7 +172,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
           {/* COPYRIGHT */}
           <p className="font-mono text-xs text-[var(--color-text-muted)]">
-            © {new Date().getFullYear()} VNX Robotics. All rights reserved.
+            {t("footer.copyright", { year: new Date().getFullYear() })}
           </p>
 
           {/* SOCIAL + LINKS */}

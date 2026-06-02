@@ -8,7 +8,17 @@
     "about": "About Us",
     "careers": "Careers",
     "contact": "Contact",
-    "contactBtn": "Contact us"
+    "contactBtn": "Contact us",
+    "products": "Products",
+    "descriptions": {
+      "homepage": "Identity, vision, and core capabilities.",
+      "industries": "Warehouse, manufacturing, robotics, agriculture, embedded systems.",
+      "products": "Automation systems, warehouse systems, robotics, software, integration.",
+      "robotics": "Quadrupeds, autonomous systems, robotics platforms.",
+      "careers": "Engineering culture, robotics, automation, embedded systems growth.",
+      "blogs": "Latest insights, updates, and technical articles.",
+      "about": "Vision, leadership philosophy, collaborations, team, latest updates."
+    }
   },
   "heroHome": {
     "trustedCustomers": "1K+ Trusted Customers",
@@ -47,5 +57,132 @@
     ],
     "philosophyStatement": "\"VNX Robotics believes successful automation systems are built through scalable architecture, operational reliability, and disciplined engineering execution.\"",
     "ctaButton": "Explore our vision"
+  },
+  "industriesSection": {
+    "badge": "Industries We Enable",
+    "headingPrefix": "Intelligent Systems For",
+    "headingHighlight": "Modern Industries",
+    "description": "Scalable robotics, automation, and intelligent infrastructure systems across global industries.",
+    "explore": "Explore",
+    "industries": {
+      "warehouseLogistics": "Warehouse & Logistics",
+      "warehouseLogisticsDesc": "Intelligent warehouse systems and automation infrastructure.",
+      "manufacturing": "Manufacturing",
+      "manufacturingDesc": "Connected production systems and industrial intelligence.",
+      "roboticsAI": "Robotics & AI",
+      "roboticsAIDesc": "Advanced robotics platforms for future-ready operations.",
+      "agricultureSystems": "Agriculture Systems",
+      "agricultureSystemsDesc": "Autonomous technologies powering modern agriculture.",
+      "embeddedDevices": "Embedded Devices",
+      "embeddedDevicesDesc": "Embedded systems driving next-generation automation.",
+      "industrialInfrastructure": "Industrial Infrastructure",
+      "industrialInfrastructureDesc": "Integrated software and smart operational systems."
+    }
+  },
+  "roboticsSection": {
+    "badge": "Advanced Robotics Programs",
+    "headingPrefix": "Building Next-Generation",
+    "headingHighlight": "Robotics Systems",
+    "developmentPrograms": "Development Programs",
+    "developmentSubtitle": "Active robotics initiatives showing real engineering progress",
+    "receptionRobot": "Reception Robot",
+    "quadrupedRobot": "Quadruped Robot",
+    "techStack": "Technology Stack",
+    "techSubtitle": "Technical capabilities powering our robotics development",
+    "exploreCollaboration": "Explore collaboration opportunities and advanced robotics programs",
+    "discussCollaboration": "Discuss Collaboration →",
+    "exploreRobotics": "Explore Robotics Programs",
+    "learnMore": "Learn more about this program",
+    "programs": {
+      "quadruped": {
+        "title": "Quadruped Robotics Platform",
+        "subtitle": "Industrial Inspection & Autonomous Mobility",
+        "description": "Advanced quadruped robotics platform under active development for industrial inspection, autonomous mobility, and intelligent operational applications in challenging environments.",
+        "tags": {
+          "mobilitySystems": "Mobility Systems",
+          "embeddedControl": "Embedded Control",
+          "roboticsMiddleware": "Robotics Middleware",
+          "intelligentLocomotion": "Intelligent Locomotion"
+        },
+        "status": "Active Development"
+      },
+      "reception": {
+        "title": "Reception & Interactive Robotics",
+        "subtitle": "Human-Robot Interaction Platform",
+        "description": "Interactive robotics platform designed for future human-robot operational environments, featuring autonomous navigation, intelligent response systems, and service robotics capabilities.",
+        "tags": {
+          "humanInteraction": "Human Interaction",
+          "autonomousNavigation": "Autonomous Navigation",
+          "roboticsSoftware": "Robotics Software",
+          "embeddedSystems": "Embedded Systems"
+        },
+        "status": "Development Program"
+      }
+    },
+    "techStackItems": {
+      "roboticsMiddleware": {
+        "name": "Robotics Middleware",
+        "description": "ROS 2 infrastructure and distributed robotics systems"
+      },
+      "embeddedSystems": {
+        "name": "Embedded Systems",
+        "description": "Real-time control systems and intelligent hardware platforms"
+      },
+      "mobilitySystems": {
+        "name": "Mobility Systems",
+        "description": "Actuation, locomotion, and robotics motion systems"
+      },
+      "operationalIntelligence": {
+        "name": "Operational Intelligence",
+        "description": "Software systems supporting autonomous operations"
+      },
+      "aiAutonomy": {
+        "name": "AI & Autonomy",
+        "description": "Future intelligent decision-making and autonomous robotics infrastructure"
+      }
+    }
+  },
+  "ourWorldWideReach": {
+    "titles": [
+      "Global Robotics Network.",
+      "Intelligence, Personified.",
+      "Automation, Reimagined.",
+      "Future Systems, Engineered."
+    ],
+    "description": "Real-time connected robotics intelligence operating across worldwide industrial infrastructure networks.",
+    "globalPartners": "Global Partners",
+    "operations": "Operations",
+    "countries": "Countries",
+    "industryCategories": "Industry Categories"
+  },
+  "homeBlogSection": {
+    "badge": "Insights & Resources",
+    "headingPrefix": "Our Latest",
+    "headingHighlight": "Stories",
+    "description": "Explore insights, innovations, and real-world stories shaping the future of robotics, AI systems, and intelligent automation.",
+    "allStories": "All Stories →"
+  },
+  "footer": {
+    "companyName": "VNX Robotics",
+    "tagline": "Engineered To Outrun",
+    "description": "Intelligent robotics and automation systems designed for next-generation industries.",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "login": "Login",
+    "solutions": "Solutions",
+    "resources": "Resources",
+    "company": "Company",
+    "products": "Products",
+    "robotics": "Robotics",
+    "industries": "Industries",
+    "blogs": "Blogs",
+    "careers": "Careers",
+    "termsConditions": "Terms & Conditions",
+    "about": "About",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "copyright": "© {{year}} VNX Robotics. All rights reserved.",
+    "logoutSuccess": "Logged out successfully",
+    "logoutFailed": "Logout failed"
   }
 }

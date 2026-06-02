@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import dynamic from "next/dynamic";
 import gsap from "gsap";
@@ -110,6 +111,7 @@ const points = [
 ];
 
 function OurWorldWideReach() {
+  const { t } = useTranslation();
   const globeRef = useRef();
   const headingRef = useRef();
   const globeWrapperRef = useRef();
@@ -123,12 +125,7 @@ function OurWorldWideReach() {
     height: 700,
   });
 
-  const titles = [
-    "Global Robotics Network.",
-    "Intelligence, Personified.",
-    "Automation, Reimagined.",
-    "Future Systems, Engineered.",
-  ];
+  const titles = t("ourWorldWideReach.titles", { returnObjects: true });
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -428,8 +425,7 @@ function OurWorldWideReach() {
       {/* BOTTOM TEXT - Flows below globe */}
       <div className="relative z-20 max-w-2xl text-center mt-4 md:mt-8">
         <p className="font-mono text-xs text-[#a1a1aa] md:text-sm">
-          Real-time connected robotics intelligence operating across worldwide
-          industrial infrastructure networks.
+          {t("ourWorldWideReach.description")}
         </p>
       </div>
 
@@ -458,7 +454,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Global Partners
+              {t("ourWorldWideReach.globalPartners")}
             </p>
           </div>
 
@@ -469,7 +465,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Operations
+              {t("ourWorldWideReach.operations")}
             </p>
           </div>
         </div>
@@ -483,7 +479,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Countries
+              {t("ourWorldWideReach.countries")}
             </p>
           </div>
 
@@ -496,7 +492,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Industry Categories
+              {t("ourWorldWideReach.industryCategories")}
             </p>
           </div>
         </div>

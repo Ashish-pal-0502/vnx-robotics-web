@@ -73,86 +73,95 @@ export default function AboutPage() {
   const leaders = [
     {
       name: "Pham Thanh Huu",
-      role: "Founder & CEO",
-      image: "/leaders/Pham.jpg",
+
+      role: "Founder & Chief Executive Officer",
+
+      image: "/leaders/huu.png",
       linkedin: "#",
       twitter: "#",
     },
     {
       name: "Dr. Pramod Pal",
-      role: "Co-founder & CTO",
-      image: "/leaders/Pramod.jpeg",
-      linkedin: "#",
-      twitter: "#",
+      role: "Co-founder & Chief Technology Officer",
+      image: "/leaders/pramod.png",
+      linkedin: "https://www.linkedin.com/in/pramodiisc",
+      twitter: "https://x.com/pramodiisc",
     },
     {
-      name: "Eijri Kent",
-      role: "Chief Operating Officer",
-      image: "/leaders/Ejiri.jpg",
-      linkedin: "#",
-      twitter: "#",
-    },
-    {
-      name: "Andrew Woo",
-      role: "Director of Korea Business Development Division",
-      image: "/leaders/Andrew.jpg",
+      name: "Ejiri Kent",
+      role: "Chief Executive Officer",
+      image: "/leaders/kent.png",
       linkedin: "#",
       twitter: "#",
     },
     {
       name: "Nobuhiro Sadakuni",
-      role: "Representative Director",
-      image: "/leaders/Nobuhiro_Sadakuni.jpg",
+      role: "Chief Operating Officer",
+
+      image: "/leaders/sada.png",
       linkedin: "#",
-      twitter: "#",
+      twitter: "https://x.com/sadakuni1967",
+    },
+    {
+      name: "Andrew Woo",
+      role: "Director, Korea Business Development",
+
+      image: "/leaders/andrew.png",
+      linkedin: "https://vn.linkedin.com/in/wooandrew",
+      twitter: "https://x.com/woo_andrew",
     },
   ];
 
   return (
     <main className="bg-[var(--color-dark-100)]">
       {/* ========== HERO SECTION ========== */}
+      {/* ========== HERO SECTION ========== */}
       <section
         ref={sectionRefs.hero}
-        className="relative min-h-screen flex items-center overflow-hidden"
+        className="relative min-h-[60vh] lg:min-h-screen flex items-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-20"
       >
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
-          <img
-            src="https://www.shutterstock.com/image-vector/contact-us-customer-support-hotline-600nw-2561218445.jpg"
-            alt="Industrial engineering background"
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div className="absolute inset-0 opacity-[0.03] z-10">
+        {/* Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div
             className="h-full w-full"
             style={{
               backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: "70px 70px",
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
 
-        <div className="relative z-20 max-w-7xl  px-6 md:px-12 py-20">
+        {/* Centered Blue Gradient */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-2xl h-[40vh] max-h-[400px] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(0,136,219,0.3) 0%, rgba(0,109,177,0.15) 50%, transparent 100%)",
+          }}
+        />
+
+        <div className="relative z-20 max-w-7xl px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView.hero ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <div className="mb-5 mt-10 flex items-center gap-3">
+            <div className="mb-5 flex items-center gap-3">
               <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
               <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
                 About VNX Robotics
               </span>
             </div>
 
-            <h1 className="font-heading text-4xl md:text-5xl  font-bold uppercase leading-tight text-white mb-5">
-              Intelligent Automation & Robotics Systems
+            <h1 className="font-heading text-4xl md:text-5xl font-bold uppercase leading-tight text-white mb-5">
+              Intelligent Automation &{" "}
+              <span className="text-[var(--color-secondary-400)]">
+                Robotics Systems
+              </span>
             </h1>
 
             <p className="font-mono text-base md:text-lg text-[var(--color-text-secondary)] max-w-2xl">
@@ -165,7 +174,7 @@ export default function AboutPage() {
       </section>
 
       {/* ========== COMPANY INTRODUCTION ========== */}
-      <section ref={sectionRefs.introduction} className="relative py-20 ">
+      <section ref={sectionRefs.introduction} className="relative  ">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -332,6 +341,7 @@ export default function AboutPage() {
                     <div className="mt-4 flex gap-3">
                       <a
                         href={leader.twitter}
+                        target="_blank"
                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
                       >
                         <IoLogoTwitter />
@@ -339,6 +349,7 @@ export default function AboutPage() {
 
                       <a
                         href={leader.linkedin}
+                        target="_blank"
                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
                       >
                         <IoLogoLinkedin />
