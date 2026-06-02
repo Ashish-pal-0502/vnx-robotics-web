@@ -176,10 +176,11 @@ export default function TermsPage() {
                 If you have any questions about these Terms & Conditions, please
                 contact us at:{" "}
                 <a
-                  href="mailto:legal@vnxrobotics.com"
+                  href="mailto:info@vnxrobotics.com"
+                  target="_blank"
                   className="text-[var(--color-secondary-400)] hover:underline"
                 >
-                  legal@vnxrobotics.com
+                  info@vnxrobotics.com
                 </a>
               </p>
             </div>

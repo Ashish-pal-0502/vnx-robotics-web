@@ -414,7 +414,7 @@ export default function ContactPage() {
                 Phone
               </h3>
               <p className="font-mono text-sm text-[var(--color-text-secondary)]">
-                +91 00000 00000
+                +84 977 802 802
               </p>
             </motion.div>
 
@@ -434,7 +434,7 @@ export default function ContactPage() {
                 Email
               </h3>
               <p className="font-mono text-sm text-[var(--color-text-secondary)]">
-                hello@vnxrobotics.com
+                info@vnxrobotics.com
               </p>
             </motion.div>
 
@@ -454,7 +454,8 @@ export default function ContactPage() {
                 Location
               </h3>
               <p className="font-mono text-sm text-[var(--color-text-secondary)]">
-                Ho Chi Minh City, Vietnam
+                3rd Floor, 180–182 Ly Chinh Thang Street, Nhieu Loc Ward, Ho Chi
+                Minh City, Vietnam
               </p>
             </motion.div>
           </div>

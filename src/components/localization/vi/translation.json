@@ -4,10 +4,42 @@
     "industries": "Ngành nghề",
     "solutions": "Giải pháp",
     "robotics": "Robot",
-    "about": "Về chúng tôi",
     "blogs": "Blog",
-    "careers": "Cơ hội nghề nghiệp",
+    "about": "Về chúng tôi",
+    "careers": "Tuyển dụng",
     "contact": "Liên hệ",
-    "contactBtn": "Liên hệ ngay"
+    "contactBtn": "Liên hệ"
+  },
+  "heroHome": {
+    "trustedCustomers": "1K+ Khách hàng tin tưởng",
+    "heading": "Kiểm soát tái định nghĩa \n Đổi mới bùng nổ",
+    "description": "Tự động hóa công nghiệp. Robot. Vận hành thông minh.",
+    "getStarted": "Bắt đầu",
+    "scrollDown": "Cuộn xuống"
+  },
+  "trustedBy": {
+    "industryRecognition": "Công nhận trong ngành",
+    "headingPrefix": "Được tin cậy bởi",
+    "headingHighlight": "Robot",
+    "headingSuffix": "& Lãnh đạo ngành công nghiệp",
+    "description": "Hợp tác với các đối tác trong lĩnh vực robot và tự động hóa công nghiệp",
+    "partners": {
+      "IVSPartner": "Đối tác IVS",
+      "IMACSPartner": "Đối tác IMACS",
+      "BrainHealthLabPartner": "Đối tác Phòng thí nghiệm Sức khỏe Não bộ",
+      "CTGroupPartner": "Đối tác CT Group",
+      "ITRPartner": "Đối tác ITR",
+      "ShoeAgTechPartner": "Đối tác Shoe Ag Tech"
+    }
+  },
+  "aboutUs": {
+    "industrialSystems": "HỆ THỐNG CÔNG NGHIỆP",
+    "imageAlt": "Hệ thống tự động hóa công nghiệp và robot VNX Robotics",
+    "engineeringPhilosophy": "Triết lý kỹ thuật",
+    "headingPrefix": "Hệ sinh thái",
+    "headingHighlight": "Giải pháp",
+    "capabilities": ["Robot", "Tự động hóa", "Dữ liệu", "Trí tuệ", "Vận hành"],
+    "philosophyStatement": "\"VNX Robotics tin rằng hệ thống tự động hóa thành công được xây dựng thông qua kiến trúc có thể mở rộng, độ tin cậy vận hành và thực thi kỹ thuật có kỷ luật.\"",
+    "ctaButton": "Khám phá tầm nhìn của chúng tôi"
   }
 }

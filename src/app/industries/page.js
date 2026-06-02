@@ -1,19 +1,18 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { useRef } from "react";
 import {
   IoArrowForward,
+  IoBuildOutline,
   IoCheckmarkCircle,
   IoChevronForward,
-  IoHardwareChipOutline,
-  IoCubeOutline,
-  IoBuildOutline,
   IoCloudOutline,
-  IoTrendingUpOutline,
+  IoCubeOutline,
   IoFlashOutline,
+  IoHardwareChipOutline,
+  IoTrendingUpOutline,
 } from "react-icons/io5";
 
 export default function IndustriesPage() {
@@ -94,7 +93,7 @@ export default function IndustriesPage() {
         "Intelligent Robotics Software",
       ],
       image:
-        "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1200&auto=format&fit=crop",
+        "https://thumbs.dreamstime.com/b/real-humanoid-robot-working-factory-warehouse-concept-industrial-real-humanoid-robot-working-factory-445309770.jpg",
     },
     {
       icon: <IoTrendingUpOutline size={28} />,
@@ -142,15 +141,6 @@ export default function IndustriesPage() {
     },
   ];
 
-  const capabilityPillars = [
-    "Controls & Automation",
-    "Robotics Systems",
-    "Industrial Software",
-    "Embedded Systems",
-    "AI & Analytics",
-    "Operational Intelligence",
-  ];
-
   return (
     <main className="bg-[var(--color-dark-100)]">
       {/* ========== HERO SECTION ========== */}
@@ -162,7 +152,7 @@ export default function IndustriesPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
           <img
-            src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?q=80&w=1200&auto=format&fit=crop"
+            src="https://thumbs.dreamstime.com/b/computer-cogs-technology-background-blue-banner-old-new-using-circuits-old-machine-31582628.jpg"
             alt="Industrial background"
             className="h-full w-full object-cover"
           />
@@ -197,7 +187,7 @@ export default function IndustriesPage() {
             </div>
 
             <h1 className="font-heading text-4xl md:text-5xl  font-bold uppercase leading-tight text-white mb-5">
-              Industries We Enable
+              Industries We Empower
             </h1>
 
             <p className="font-mono text-base md:text-lg text-[var(--color-text-secondary)] max-w-2xl">
@@ -572,57 +562,6 @@ export default function IndustriesPage() {
       </section>
 
       {/* ========== CROSS-INDUSTRY CAPABILITIES ========== */}
-      <section
-        ref={sectionRefs.crossIndustry}
-        className="relative py-10 overflow-hidden bg-[var(--color-dark-200)]"
-      >
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div
-            className="h-full w-full"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: "70px 70px",
-            }}
-          />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView.crossIndustry ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="font-heading text-3xl md:text-4xl font-semibold uppercase text-white">
-              Connected Industrial Intelligence
-            </h2>
-            <p className="font-mono text-sm text-[var(--color-text-secondary)] mt-3 max-w-2xl mx-auto">
-              We think in systems — integrating controls, robotics, software,
-              and intelligence
-            </p>
-          </motion.div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {capabilityPillars.map((pillar, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={isInView.crossIndustry ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                className="group relative cursor-pointer rounded-xl border border-white/10 bg-white/[0.02] p-6 text-center transition-all duration-300 hover:border-[var(--color-primary-500)]/30"
-              >
-                <h4 className="font-heading text-lg font-semibold text-white group-hover:text-[var(--color-primary-400)] transition-colors">
-                  {pillar}
-                </h4>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ========== FINAL CTA SECTION ========== */}
       <section className="relative py-20 overflow-hidden border-t border-white/5">

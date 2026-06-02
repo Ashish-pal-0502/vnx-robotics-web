@@ -2,59 +2,133 @@
 
 import Link from "next/link";
 import Image from "next/image";
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import apiClient from "./../../api/client";
 
 export default function HeroHome() {
   const [videoSrc, setVideoSrc] = useState("");
+  const [heroData, setHeroData] = useState(null);
+  const videoRef = useRef(null);
+  const isResizing = useRef(false);
+  const currentVideoSrc = useRef("");
+  const { t } = useTranslation();
+
+  const getVideoLink = async () => {
+    try {
+      const response = await apiClient.get("/hero/get");
+
+      if (response.ok && response.data?.success) {
+        const data = response.data.data.data;
+        if (data && data.length > 0) {
+          console.log("Hero data:", data[0]);
+          setHeroData(data[0]);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching video:", error);
+    }
+  };
 
   useEffect(() => {
-    const updateVideoSource = () => {
-      const isMobile = window.innerWidth < 768; // Mobile: < 768px
-      const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024; // Tablet: 768px - 1024px
+    getVideoLink();
+  }, []);
 
-      if (isMobile) {
-        setVideoSrc("/mp4/phone.mp4"); // Your mobile video
-      } else if (isTablet) {
-        setVideoSrc("/mp4/HeroHome1.mp4"); // Your tablet video (optional)
-      } else {
-        setVideoSrc("/mp4/HeroHome1.mp4"); // Your desktop video
-      }
+  // Memoize the update function to avoid recreating on each render
+  const updateVideoSource = useCallback(() => {
+    if (!heroData || isResizing.current) return;
+
+    const isMobile = window.innerWidth < 768;
+    // Ensure we're getting the URL string, not the whole object
+    let newVideoUrl = isMobile
+      ? heroData.mobileVideo?.url || heroData.mobileVideo
+      : heroData.desktopVideo?.url || heroData.desktopVideo;
+
+    // If it's still an object, stringify won't help - log error
+    if (newVideoUrl && typeof newVideoUrl !== "string") {
+      console.error("Video URL is not a string:", newVideoUrl);
+      return;
+    }
+
+    if (newVideoUrl && newVideoUrl !== currentVideoSrc.current) {
+      console.log("Updating video URL to:", newVideoUrl);
+      currentVideoSrc.current = newVideoUrl;
+      setVideoSrc(newVideoUrl);
+    }
+  }, [heroData]);
+
+  // Handle resize with debounce to prevent multiple updates
+  useEffect(() => {
+    if (!heroData) return;
+
+    let resizeTimer;
+    const handleResize = () => {
+      isResizing.current = true;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        isResizing.current = false;
+        updateVideoSource();
+      }, 150);
     };
 
-    // Set initial video source
-    updateVideoSource();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimer);
+    };
+  }, [heroData, updateVideoSource]);
 
-    // Add resize listener
-    window.addEventListener("resize", updateVideoSource);
+  // Initial video source setup
+  useEffect(() => {
+    if (heroData) {
+      updateVideoSource();
+    }
+  }, [heroData, updateVideoSource]);
 
-    // Cleanup
-    return () => window.removeEventListener("resize", updateVideoSource);
-  }, []);
+  // Handle video source change without disrupting playback
+  useEffect(() => {
+    if (videoSrc && videoRef.current && typeof videoSrc === "string") {
+      const video = videoRef.current;
+
+      // Only update if src is different
+      if (video.src !== videoSrc && !video.src.includes(videoSrc)) {
+        console.log("Setting video src to:", videoSrc);
+        video.src = videoSrc;
+        video.load();
+
+        video.play().catch((e) => console.log("Play failed:", e));
+      }
+    }
+  }, [videoSrc]);
+
+  console.log("Current videoSrc state:", videoSrc, "Type:", typeof videoSrc);
 
   return (
     <main className="text-white bg-black/70">
       <section className="relative h-screen w-full flex items-center">
         {/* VIDEO BACKGROUND */}
-        {videoSrc && (
-          <video
-            key={videoSrc} // Forces re-render when video source changes
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={videoSrc} type="video/mp4" />
-          </video>
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          crossOrigin="anonymous"
+          className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => {
+            console.error("Video error:", e);
+            console.log("Current video src:", videoRef.current?.src);
+          }}
+        />
+
+        {/* Fallback gradient while video loads */}
+        {!videoSrc && (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a2e]" />
         )}
 
-        {/* DARK OVERLAY */}
-        <div className=" "></div>
-
         {/* CONTENT */}
-        <div className="relative z-10 max-w-7xl mx-auto px-10 md:pt-20 w-full ">
+        <div className="relative z-10 max-w-7xl mx-auto px-10 md:pt-20 w-full">
           <div className="max-w-2xl">
             {/* TRUST BADGE */}
             <div className="flex items-center gap-3 mb-6 md:mb-4">
@@ -64,41 +138,32 @@ export default function HeroHome() {
                 <div className="w-8 h-8 bg-[#083427] rounded-full border-2 border-white"></div>
               </div>
               <p className="text-sm font-heading text-white">
-                1K+ Trusted Customers
+                {t("heroHome.trustedCustomers")}
               </p>
             </div>
 
             {/* HEADING */}
             <h1 className="text-3xl font-logo uppercase md:text-4xl font-medium leading-tight mb-6 md:mb-2">
-              Control Redefined <br />
-              Innovation Unleashed
+              {t("heroHome.heading")}
             </h1>
 
             {/* DESCRIPTION */}
-            <p className="text-gray-300 mb-6 font-mono text-xl  md:text-base">
-              We focus on building intelligent robots for real-world logistics
-              and industrial inspection, starting with Warehouse AMRs and
-              Quadruped Inspection Robots.
+            <p className="text-gray-300 mb-6 font-mono text-xl md:text-base">
+              {t("heroHome.description")}
             </p>
 
             {/* BUTTON */}
-            {/* <Link
-              href="/contact"
-              className="inline-block btn-primary "
-            >
-              Get Started
-            </Link> */}
             <Link href="/contact" className="btn-primary">
-              Get Started →
+              {t("heroHome.getStarted")} →
             </Link>
           </div>
         </div>
 
         <div className="absolute right-6 md:right-10 bottom-8 md:bottom-20 hidden md:flex flex-col items-center">
-          <div className="  flex items-center justify-center animate-bounce cursor-pointer">
+          <div className="flex items-center justify-center animate-bounce cursor-pointer">
             <Image
               src="/icons/scrolldown.png"
-              alt="Scroll down"
+              alt={t("heroHome.scrollDown")}
               width={100}
               height={100}
               className="w-12 h-12 md:w-32 md:h-32"

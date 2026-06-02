@@ -31,6 +31,7 @@ const points = [
     lng: 139.6503,
     label: "Tokyo",
   },
+
   {
     lat: 37.7749,
     lng: -122.4194,
@@ -95,6 +96,16 @@ const points = [
     lat: 39.9042,
     lng: 116.4074,
     label: "Beijing",
+  },
+  {
+    lat: 21.0285,
+    lng: 105.8542,
+    label: "Hanoi",
+  },
+  {
+    lat: 10.8231,
+    lng: 106.6297,
+    label: "Ho Chi Minh City",
   },
 ];
 
@@ -287,7 +298,7 @@ function OurWorldWideReach() {
       return;
     }
 
-    const targets = [127, 13, 6, 1250];
+    const targets = [3, 4, 6, 5];
     const intervals = targets.map((target, index) => {
       const duration = 2000;
       const increment = target / (duration / 30);
@@ -315,12 +326,11 @@ function OurWorldWideReach() {
           STABLE BACKGROUND BLUE GRADIENT
           Fixed position, stays behind all content
       ============================== */}
-
       <div
         className="pointer-events-none fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-2xl h-[30vh] max-h-[400px] rounded-full blur-3xl"
         style={{
           background:
-            "radial-gradient(circle, rgba(0,136,219,0.7) 0%, rgba(0,109,177,0.4) 50%, transparent 100%)",
+            "radial-gradient(circle, rgba(0,136,219,0.3) 0%, rgba(0,109,177,0.15) 50%, transparent 100%)",
         }}
       />
 
@@ -486,7 +496,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Data Points
+              Industry Categories
             </p>
           </div>
         </div>

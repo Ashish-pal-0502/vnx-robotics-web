@@ -14,13 +14,13 @@ const industries = [
     title: "Manufacturing",
     description: "Connected production systems and industrial intelligence.",
     image:
-      "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?q=80&w=1200&auto=format&fit=crop",
+      "https://media.istockphoto.com/id/2165482429/photo/automatic-drill-machine-tool-with-camera-at-industrial-manufacture-factory.jpg?s=612x612&w=0&k=20&c=HzHPZDczGHUJIi8BxJJr3nc61c9jLXWhBG_fVM1Mn04=",
   },
   {
     title: "Robotics & AI",
     description: "Advanced robotics platforms for future-ready operations.",
     image:
-      "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1200&auto=format&fit=crop",
+      "https://img.magnific.com/premium-photo/futuristic-humanoid-ai-robot-engages-advanced-machine-learning-data-analysis-utilizing-clou_1313853-101908.jpg?semt=ais_hybrid&w=740&q=80",
   },
   {
     title: "Agriculture Systems",
@@ -140,9 +140,9 @@ export default function IndustriesSection() {
               </span>
             </h2>
 
-            <p className="mt-6 max-w-2xl font-body text-base leading-relaxed text-[var(--color-text-secondary)] md:text-lg">
-              Building scalable robotics, automation, and intelligent
-              infrastructure systems across global industries.
+            <p className="mt-6   max-w-2xl font-mono text-sm leading-8 text-[var(--color-text-secondary)]">
+              Scalable robotics, automation, and intelligent infrastructure
+              systems across global industries.
             </p>
           </div>
 

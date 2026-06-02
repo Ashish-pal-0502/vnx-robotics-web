@@ -53,9 +53,9 @@ export default function Header() {
   }, []);
 
   const languages = [
-    { code: "en", label: "ENG" },
-    { code: "vi", label: "VIE" },
-    { code: "ja", label: "JPN" },
+    { code: "en", label: "English" },
+    { code: "vi", label: "Vietnamese" },
+    { code: "ja", label: "Japanese" },
   ];
 
   const changeLanguage = (lng) => {
@@ -149,12 +149,12 @@ export default function Header() {
                 onMouseEnter={() => setIsLangOpen(true)}
                 onMouseLeave={() => setIsLangOpen(false)}
               >
-                <button className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10">
+                <button className="rounded-full border cursor-pointer border-white/20 p-2 text-white transition hover:bg-white/10">
                   <BsGlobe size={16} />
                 </button>
 
                 {isLangOpen && (
-                  <div className="absolute right-0 mt-0 w-24 overflow-hidden rounded-xl border border-white/10 bg-black/80 backdrop-blur-xl">
+                  <div className="absolute right-0 mt-0 w-auto overflow-hidden rounded-xl border border-white/10 bg-black/80 backdrop-blur-xl">
                     {languages.map((lang) => {
                       const isActive = i18n.language === lang.code;
 
@@ -198,7 +198,9 @@ export default function Header() {
       </header>
 
       {/* MOBILE MENU */}
-      <MobileMenu open={open} setOpen={setOpen} navLinks={navLinks} />
+      <div className="flex lg:hidden">
+        <MobileMenu open={open} setOpen={setOpen} navLinks={navLinks} />
+      </div>
     </>
   );
 }

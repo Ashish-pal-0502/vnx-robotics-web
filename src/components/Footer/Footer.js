@@ -6,7 +6,9 @@ import {
   FaLinkedinIn,
   FaArrowRight,
   FaFacebookF,
+  FaTiktok,
 } from "react-icons/fa";
+
 import { FaXTwitter } from "react-icons/fa6";
 import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi";
 import { useRouter } from "next/navigation";
@@ -177,19 +179,23 @@ export default function Footer() {
               {[
                 {
                   icon: <FaLinkedinIn size={14} />,
-                  href: "https://linkedin.com",
+                  href: "https://www.linkedin.com/company/vnxrobotics",
                 },
                 {
                   icon: <FaInstagram size={14} />,
-                  href: "https://instagram.com",
+                  href: "https://www.instagram.com/vnxrobotics/",
                 },
                 {
                   icon: <FaXTwitter size={14} />,
-                  href: "https://x.com",
+                  href: "https://x.com/vnxrobotics",
                 },
                 {
                   icon: <FaFacebookF size={13} />,
-                  href: "https://facebook.com",
+                  href: "https://www.facebook.com/profile.php?id=61590478439594",
+                },
+                {
+                  icon: <FaTiktok size={14} />,
+                  href: "https://www.tiktok.com/@vnxrobotics",
                 },
               ].map((social, index) => (
                 <Link

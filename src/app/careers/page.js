@@ -1,127 +1,55 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import apiClient from "./../../api/client";
 import {
-  IoLocationOutline,
-  IoTimeOutline,
-  IoBriefcaseOutline,
   IoArrowForward,
+  IoBriefcaseOutline,
+  IoLocationOutline,
   IoSearchOutline,
-  IoFilterOutline,
+  IoTimeOutline,
 } from "react-icons/io5";
-
-// Dummy career data matching your backend schema
-const careersData = [
-  {
-    id: 1,
-    title: "Senior Robotics Engineer",
-    description:
-      "Design and develop autonomous robotic systems for industrial automation. Experience with ROS, C++, and control systems required.",
-    applyLink: "/careers/robotics-engineer",
-    postedBy: "Engineering Team",
-    location: "Bangalore, India",
-    type: "Full-time",
-    department: "Robotics",
-    postedAt: "2026-05-15",
-  },
-  {
-    id: 2,
-    title: "Embedded Systems Engineer",
-    description:
-      "Develop firmware and embedded software for robotics platforms. Strong C/C++, RTOS, and microcontroller experience needed.",
-    applyLink: "/careers/embedded-engineer",
-    postedBy: "Engineering Team",
-    location: "Remote",
-    type: "Full-time",
-    department: "Embedded",
-    postedAt: "2026-05-10",
-  },
-  {
-    id: 3,
-    title: "Controls & Automation Specialist",
-    description:
-      "Design control systems for industrial automation. Experience with PLC, SCADA, and motion control systems.",
-    applyLink: "/careers/controls-specialist",
-    postedBy: "Automation Team",
-    location: "Mumbai, India",
-    type: "Full-time",
-    department: "Automation",
-    postedAt: "2026-05-05",
-  },
-  {
-    id: 4,
-    title: "Machine Learning Engineer",
-    description:
-      "Develop AI models for robotics perception and decision making. Experience with Python, TensorFlow, and computer vision.",
-    applyLink: "/careers/ml-engineer",
-    postedBy: "AI Team",
-    location: "Bangalore, India",
-    type: "Full-time",
-    department: "AI/ML",
-    postedAt: "2026-04-28",
-  },
-  {
-    id: 5,
-    title: "Full Stack Developer",
-    description:
-      "Build web platforms for robotics fleet management. Experience with React, Node.js, and cloud infrastructure.",
-    applyLink: "/careers/fullstack-developer",
-    postedBy: "Software Team",
-    location: "Remote",
-    type: "Full-time",
-    department: "Software",
-    postedAt: "2026-04-20",
-  },
-  {
-    id: 6,
-    title: "Robotics Intern",
-    description:
-      "Join our robotics team for hands-on experience in autonomous systems development.",
-    applyLink: "/careers/robotics-intern",
-    postedBy: "Engineering Team",
-    location: "Bangalore, India",
-    type: "Internship",
-    department: "Robotics",
-    postedAt: "2026-05-01",
-  },
-];
 
 export default function CareersPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("All");
   const [visibleJobs, setVisibleJobs] = useState([]);
-  const sectionRef = useRef(null);
-
-  const departments = [
-    "All",
-    "Robotics",
-    "Embedded",
-    "Automation",
-    "AI/ML",
-    "Software",
-  ];
+  const [careers, setCareers] = useState([]);
 
   useEffect(() => {
-    let filtered = careersData;
+    if (careers.length > 0) {
+      let filtered = careers;
 
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          job.description.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
+      if (searchTerm) {
+        filtered = filtered.filter(
+          (job) =>
+            job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            job.description.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+      }
+
+      if (selectedDepartment !== "All") {
+        filtered = filtered.filter(
+          (job) => job.category === selectedDepartment,
+        );
+      }
+
+      setVisibleJobs(filtered);
     }
+  }, [searchTerm, selectedDepartment, careers]);
 
-    if (selectedDepartment !== "All") {
-      filtered = filtered.filter(
-        (job) => job.department === selectedDepartment,
-      );
+  const getAllCareers = async () => {
+    const response = await apiClient.get("/career/get-all");
+
+    if (response.ok && response.data?.success) {
+      setCareers(response.data.data.data || []);
     }
-
-    setVisibleJobs(filtered);
-  }, [searchTerm, selectedDepartment]);
+  };
+  useEffect(() => {
+    getAllCareers();
+  }, []);
 
   return (
     <main className="bg-[var(--color-dark-100)] min-h-screen">
@@ -187,26 +115,6 @@ export default function CareersPage() {
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-secondary-400)]/50 transition-colors"
               />
             </div>
-
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
-              <IoFilterOutline
-                size={18}
-                className="text-[var(--color-text-muted)]"
-              />
-              {departments.map((dept) => (
-                <button
-                  key={dept}
-                  onClick={() => setSelectedDepartment(dept)}
-                  className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all whitespace-nowrap ${
-                    selectedDepartment === dept
-                      ? "bg-[var(--color-secondary-400)] text-black font-semibold"
-                      : "border border-white/10 text-[var(--color-text-secondary)] hover:border-[var(--color-secondary-400)]/30"
-                  }`}
-                >
-                  {dept}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Jobs Grid */}
@@ -214,7 +122,7 @@ export default function CareersPage() {
             {visibleJobs.length > 0 ? (
               visibleJobs.map((job, idx) => (
                 <motion.div
-                  key={job.id}
+                  key={job._id || idx}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
@@ -224,10 +132,10 @@ export default function CareersPage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <span className="px-2 py-0.5 rounded-full bg-[var(--color-secondary-400)]/10 text-[var(--color-secondary-400)] font-mono text-xs">
-                          {job.department}
+                          {job.category}
                         </span>
                         <span className="px-2 py-0.5 rounded-full border border-white/10 font-mono text-xs text-[var(--color-text-muted)]">
-                          {job.type}
+                          {job.jobType}
                         </span>
                       </div>
 
@@ -255,7 +163,7 @@ export default function CareersPage() {
                             className="text-[var(--color-text-muted)]"
                           />
                           <span className="font-mono text-xs text-[var(--color-text-muted)]">
-                            {job.type}
+                            {job.jobType}
                           </span>
                         </div>
                         <div className="flex items-center gap-1.5">
@@ -265,9 +173,12 @@ export default function CareersPage() {
                           />
                           <span className="font-mono text-xs text-[var(--color-text-muted)]">
                             Posted:{" "}
-                            {new Date(job.postedAt).toLocaleDateString(
+                            {new Date(job.createdAt).toLocaleDateString(
                               "en-US",
-                              { month: "short", day: "numeric" },
+                              {
+                                month: "short",
+                                day: "numeric",
+                              },
                             )}
                           </span>
                         </div>
@@ -276,6 +187,7 @@ export default function CareersPage() {
 
                     <Link
                       href={job.applyLink}
+                      target="_blank"
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-white hover:bg-[var(--color-secondary-400)] hover:text-black hover:border-transparent transition-all whitespace-nowrap"
                     >
                       Apply Now <IoArrowForward size={14} />
@@ -295,7 +207,7 @@ export default function CareersPage() {
       </section>
 
       {/* Why Join Us Section */}
-      <section className="relative py-16 mt-8">
+      <section className="relative py-2 mt-8">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
