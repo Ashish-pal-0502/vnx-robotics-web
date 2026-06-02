@@ -1,56 +1,27 @@
 "use client";
 import Link from "next/link";
 import react, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import BlogCard from "./../Cards/BlogCard";
 import apiClient from "./../../api/client";
 
-// const blogs = [
-//   {
-//     id: 1,
-//     image:
-//       "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1400&auto=format&fit=crop",
-//     date: "April 29, 2026",
-//     title: "Blog Heading",
-//     description:
-//       "Opening our new Tokyo hub to better serve entertainment and sports markets in Asia-Pacific.",
-//   },
-
-//   {
-//     id: 2,
-//     image:
-//       "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=1400&auto=format&fit=crop",
-//     date: "April 29, 2026",
-//     title: "Blog Heading",
-//     description:
-//       "A deep dive into the technology that keeps authenticity intact when translating across languages.",
-//   },
-
-//   {
-//     id: 3,
-//     image:
-//       "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1400&auto=format&fit=crop",
-//     date: "April 29, 2026",
-//     title: "Blog Heading",
-//     description:
-//       "Lessons from the Australian Open partnership and what it means for the future of fan engagement.",
-//   },
-// ];
-
 function HomeBlogSection() {
+  const { t } = useTranslation();
   const [blogs, setBlogs] = useState([]);
 
   const getAllBlogs = async () => {
     const response = await apiClient.get("/blog/get");
 
     if (response.ok) {
-      setBlogs(response?.data?.data?.blogs || []);
+      setBlogs(response?.data?.blogs || []);
     }
   };
 
   useEffect(() => {
     getAllBlogs();
   }, []);
+
   return (
     <section className="relative overflow-hidden bg-black py-5">
       {/* DARK BG GRADIENT */}
@@ -69,27 +40,28 @@ function HomeBlogSection() {
               <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
 
               <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
-                Insights & Resources
+                {t("homeBlogSection.badge")}
               </span>
             </div>
 
             {/* HEADING */}
             <h2 className="font-heading text-2xl font-semibold leading-tight text-white md:text-4xl">
-              Our Latest{" "}
-              <span className="text-[var(--color-secondary-400)]">Stories</span>
+              {t("homeBlogSection.headingPrefix")}{" "}
+              <span className="text-[var(--color-secondary-400)]">
+                {t("homeBlogSection.headingHighlight")}
+              </span>
             </h2>
 
             {/* DESCRIPTION */}
             <p className="mt-5 max-w-2xl font-mono text-sm leading-8 text-white">
-              Explore insights, innovations, and real-world stories shaping the
-              future of robotics, AI systems, and intelligent automation.
+              {t("homeBlogSection.description")}
             </p>
           </div>
 
           {/* RIGHT CTA */}
           <div className="flex items-center">
             <Link href="/blogs" className="btn-primary cursor-pointer">
-              <span>All Stories →</span>
+              <span>{t("homeBlogSection.allStories")}</span>
             </Link>
           </div>
         </div>

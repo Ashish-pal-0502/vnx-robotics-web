@@ -3,8 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export default function AboutUs() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative overflow-hidden bg-[var(--color-dark-100)] py-5">
       {/* BACKGROUND GLOW - Industrial & Calm */}
@@ -48,13 +51,13 @@ export default function AboutUs() {
                   <div className="h-2.5 w-2.5 rounded-full bg-[#006db1]" />
                 </div>
                 <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-secondary)]">
-                  INDUSTRIAL SYSTEMS
+                  {t("aboutUs.industrialSystems")}
                 </span>
               </div>
 
               <Image
                 src="/images/contactus.png"
-                alt="VNX Robotics industrial automation and robotics systems"
+                alt={t("aboutUs.imageAlt")}
                 width={600}
                 height={500}
                 className="h-[500px] w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
@@ -76,15 +79,15 @@ export default function AboutUs() {
             <div className="mb-6 flex items-center gap-3">
               <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
               <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
-                Engineering Philosophy
+                {t("aboutUs.engineeringPhilosophy")}
               </span>
             </div>
 
             {/* HEADING - Aligned with Strategic Positioning */}
             <h2 className="font-heading text-2xl font-semibold uppercase leading-tight text-[var(--color-text-primary)] md:text-4xl">
-              Solution{" "}
+              {t("aboutUs.headingPrefix")}{" "}
               <span className="text-[var(--color-secondary-400)]">
-                Ecosystem
+                {t("aboutUs.headingHighlight")}
               </span>{" "}
             </h2>
 
@@ -92,30 +95,24 @@ export default function AboutUs() {
 
             {/* LAYERED CAPABILITY PILLARS - From Tech Architecture Section */}
             <div className="mt-10 grid grid-cols-2 gap-4">
-              {[
-                "Robots",
-                "Automation",
-                "Data",
-                "Intelligence",
-                "Operations",
-              ].map((capability, idx) => (
-                <div
-                  key={capability}
-                  className="flex items-center gap-3 border-l-2 border-[#006db1]/40 bg-white/[0.02] px-4 py-3"
-                >
-                  <span className="text-sm font-medium uppercase tracking-wide text-[var(--color-text-primary)]">
-                    {capability}
-                  </span>
-                </div>
-              ))}
+              {t("aboutUs.capabilities", { returnObjects: true }).map(
+                (capability, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-3 border-l-2 border-[#006db1]/40 bg-white/[0.02] px-4 py-3"
+                  >
+                    <span className="text-sm font-medium uppercase tracking-wide text-[var(--color-text-primary)]">
+                      {capability}
+                    </span>
+                  </div>
+                ),
+              )}
             </div>
 
             {/* PHILOSOPHY STATEMENT - Leadership & Engineering Maturity */}
             <div className="mt-10 rounded-md border border-white/5 bg-white/[0.02] p-5">
               <p className="font-body text-sm italic leading-relaxed text-[var(--color-text-secondary)]">
-                &ldquo;VNX Robotics believes successful automation systems are
-                built through scalable architecture, operational reliability,
-                and disciplined engineering execution.&rdquo;
+                {t("aboutUs.philosophyStatement")}
               </p>
             </div>
 
@@ -123,7 +120,7 @@ export default function AboutUs() {
 
             <div className="mt-5 flex flex-wrap items-center gap-5">
               <Link href="/aboutus" className="btn-primary">
-                <span>Explore our vision →</span>
+                <span>{t("aboutUs.ctaButton")} →</span>
               </Link>
             </div>
           </motion.div>

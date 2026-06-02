@@ -2,48 +2,53 @@
 
 import { useEffect, useRef } from "react";
 import { FiChevronLeft, FiChevronRight, FiArrowRight } from "react-icons/fi";
-
-const industries = [
-  {
-    title: "Warehouse & Logistics",
-    description: "Intelligent warehouse systems and automation infrastructure.",
-    image:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    title: "Manufacturing",
-    description: "Connected production systems and industrial intelligence.",
-    image:
-      "https://media.istockphoto.com/id/2165482429/photo/automatic-drill-machine-tool-with-camera-at-industrial-manufacture-factory.jpg?s=612x612&w=0&k=20&c=HzHPZDczGHUJIi8BxJJr3nc61c9jLXWhBG_fVM1Mn04=",
-  },
-  {
-    title: "Robotics & AI",
-    description: "Advanced robotics platforms for future-ready operations.",
-    image:
-      "https://img.magnific.com/premium-photo/futuristic-humanoid-ai-robot-engages-advanced-machine-learning-data-analysis-utilizing-clou_1313853-101908.jpg?semt=ais_hybrid&w=740&q=80",
-  },
-  {
-    title: "Agriculture Systems",
-    description: "Autonomous technologies powering modern agriculture.",
-    image:
-      "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    title: "Embedded Devices",
-    description: "Embedded systems driving next-generation automation.",
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    title: "Industrial Infrastructure",
-    description: "Integrated software and smart operational systems.",
-    image:
-      "https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=1200&auto=format&fit=crop",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function IndustriesSection() {
+  const { t } = useTranslation();
   const scrollRef = useRef(null);
+
+  // Industries data with translations
+  const industries = [
+    {
+      title: t("industriesSection.industries.warehouseLogistics"),
+      description: t("industriesSection.industries.warehouseLogisticsDesc"),
+      image:
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      title: t("industriesSection.industries.manufacturing"),
+      description: t("industriesSection.industries.manufacturingDesc"),
+      image:
+        "https://media.istockphoto.com/id/2165482429/photo/automatic-drill-machine-tool-with-camera-at-industrial-manufacture-factory.jpg?s=612x612&w=0&k=20&c=HzHPZDczGHUJIi8BxJJr3nc61c9jLXWhBG_fVM1Mn04=",
+    },
+    {
+      title: t("industriesSection.industries.roboticsAI"),
+      description: t("industriesSection.industries.roboticsAIDesc"),
+      image:
+        "https://img.magnific.com/premium-photo/futuristic-humanoid-ai-robot-engages-advanced-machine-learning-data-analysis-utilizing-clou_1313853-101908.jpg?semt=ais_hybrid&w=740&q=80",
+    },
+    {
+      title: t("industriesSection.industries.agricultureSystems"),
+      description: t("industriesSection.industries.agricultureSystemsDesc"),
+      image:
+        "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      title: t("industriesSection.industries.embeddedDevices"),
+      description: t("industriesSection.industries.embeddedDevicesDesc"),
+      image:
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      title: t("industriesSection.industries.industrialInfrastructure"),
+      description: t(
+        "industriesSection.industries.industrialInfrastructureDesc",
+      ),
+      image:
+        "https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=1200&auto=format&fit=crop",
+    },
+  ];
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
@@ -121,28 +126,23 @@ export default function IndustriesSection() {
         {/* HEADER */}
         <div className="mb-14 flex flex-col gap-8 pr-5 md:pr-8 lg:flex-row lg:items-end lg:justify-between lg:pr-10">
           <div className="max-w-3xl">
-            {/* <p className="mb-5 font-mono text-xs uppercase tracking-[0.35em] text-[var(--color-secondary-400)]">
-              Industries We Enable
-            </p> */}
-
             <div className="mb-5 flex items-center gap-3">
               <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
 
               <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
-                Industries We Enable
+                {t("industriesSection.badge")}
               </span>
             </div>
 
             <h2 className="font-heading text-2xl font-semibold uppercase leading-[0.95] text-[var(--color-text-primary)] md:text-4xl">
-              Intelligent Systems For
+              {t("industriesSection.headingPrefix")}
               <span className="mt-2 block text-[var(--color-secondary-400)]">
-                Modern Industries
+                {t("industriesSection.headingHighlight")}
               </span>
             </h2>
 
-            <p className="mt-6   max-w-2xl font-mono text-sm leading-8 text-[var(--color-text-secondary)]">
-              Scalable robotics, automation, and intelligent infrastructure
-              systems across global industries.
+            <p className="mt-6 max-w-2xl font-mono text-sm leading-8 text-[var(--color-text-secondary)]">
+              {t("industriesSection.description")}
             </p>
           </div>
 
@@ -215,7 +215,7 @@ export default function IndustriesSection() {
 
                   <div className="mt-7 flex items-center gap-3 text-[var(--color-secondary-400)] opacity-0 transition-all duration-500 group-hover:opacity-100">
                     <span className="font-mono text-xs uppercase tracking-[0.25em]">
-                      Explore
+                      {t("industriesSection.explore")}
                     </span>
 
                     <FiArrowRight size={16} />

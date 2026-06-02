@@ -16,6 +16,7 @@ import {
   FiLogOut,
   FiPlusCircle,
   FiUser,
+  FiVideo,
 } from "react-icons/fi";
 
 import BlogForm from "@/components/Blogs/BlogForm";
@@ -29,10 +30,23 @@ import ListRobot from "@/components/Robot/ListRobot";
 
 import ProfilePage from "@/components/Profile/ProfilePage";
 import UsersList from "@/components/Users/UsersList";
+import AddHero from "@/components/Hero/AddHero";
 
 // SIDEBAR MENU
 const menuItems = [
   { key: "dashboard", label: "Dashboard", icon: FiGrid },
+  {
+    key: "hero",
+    label: "Hero",
+    icon: FiVideo,
+    children: [
+      {
+        key: "add-hero",
+        label: "Add Hero",
+        icon: FiPlusCircle,
+      },
+    ],
+  },
 
   { key: "users", label: "Users", icon: FiUser },
 
@@ -115,6 +129,8 @@ const DashboardPage = () => {
   // ROBOT
   const [editingRobot, setEditingRobot] = useState(null);
 
+  const [editingHero, setEditingHero] = useState(null);
+
   // STATS
   const [stats, setStats] = useState({
     totalUsers: 0,
@@ -141,12 +157,12 @@ const DashboardPage = () => {
         apiClient.get("/career/get-all"),
         apiClient.get("/robot/get"),
       ]);
-      console.log("careers: ", careersRes);
+
       setStats({
-        totalUsers: usersRes?.data?.data?.users?.length || 0,
-        totalBlogs: blogsRes?.data?.data?.blogs?.length || 0,
-        totalCareers: careersRes?.data?.data?.data?.length || 0,
-        totalRobots: robotsRes?.data?.data?.robots?.length || 0,
+        totalUsers: usersRes?.data?.users?.length || 0,
+        totalBlogs: blogsRes?.data?.blogs?.length || 0,
+        totalCareers: careersRes?.data?.data?.length || 0,
+        totalRobots: robotsRes?.data?.robots?.length || 0,
       });
     } catch (error) {
       console.error("Failed to fetch dashboard stats:", error);
@@ -208,7 +224,7 @@ const DashboardPage = () => {
   ];
 
   return (
-    <div className="h-screen overflow-hidden bg-[#FAF6ED] p-4 md:p-8">
+    <div className="h-screen overflow-hidden font-mono  bg-[#FAF6ED] p-4 md:p-8">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 h-full">
         {/* SIDEBAR */}
         <div className="w-full md:w-72 bg-white rounded-2xl p-5 shadow-sm md:h-full overflow-y-auto no-scrollbar">
@@ -241,7 +257,7 @@ const DashboardPage = () => {
                         setActiveTab(item.key);
                       }
                     }}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition text-sm ${
+                    className={`w-full cursor-pointer flex items-center justify-between px-4 py-3 rounded-xl transition text-sm ${
                       activeTab === item.key
                         ? "bg-[#1f3b57] text-white"
                         : "hover:bg-gray-100 text-gray-700"
@@ -271,7 +287,7 @@ const DashboardPage = () => {
                           <button
                             key={child.key}
                             onClick={() => setActiveTab(child.key)}
-                            className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition ${
+                            className={`w-full flex items-center cursor-pointer gap-3 px-4 py-2 rounded-lg text-sm transition ${
                               activeTab === child.key
                                 ? "bg-[#1f3b57] text-white"
                                 : "text-gray-600 hover:bg-gray-100"
@@ -292,7 +308,7 @@ const DashboardPage = () => {
             {/* LOGOUT */}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-sm"
+              className="w-full flex cursor-pointer items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-sm"
             >
               <FiLogOut size={18} />
               Logout
@@ -316,6 +332,8 @@ const DashboardPage = () => {
               ))}
             </div>
           )}
+          {/* HERO */}
+          {activeTab === "add-hero" && <AddHero editData={editingHero} />}
 
           {/* USERS */}
           {activeTab === "users" && <UsersList />}

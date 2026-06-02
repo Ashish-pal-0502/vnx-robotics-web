@@ -28,7 +28,7 @@ export default function BlogDetailPage() {
       const response = await apiClient.get(`/blog/get/${blogSlug}`);
 
       if (response.ok) {
-        setBlog(response?.data?.data?.blog);
+        setBlog(response?.data?.blog);
       } else {
         toast.error(response?.data?.message || "Failed to fetch blog");
       }
@@ -83,7 +83,7 @@ export default function BlogDetailPage() {
   return (
     <main className="bg-[var(--color-dark-100)] min-h-screen">
       {/* ========== HERO SECTION ========== */}
-      <section className="relative pt-24 pb-12 md:pt-32 md:pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-12 md:pt-32 md:pb-20 overflow-hidden">
         {/* Grid Background */}
         <div className="absolute inset-0 opacity-[0.03]">
           <div
@@ -131,7 +131,7 @@ export default function BlogDetailPage() {
 
             {/* Title */}
             <h1
-              className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white mb-6"
+              className="font-heading text-xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-white mb-6"
               dangerouslySetInnerHTML={{
                 __html: blog?.heading || "",
               }}
@@ -193,7 +193,7 @@ export default function BlogDetailPage() {
       </section>
 
       {/* ========== CONTENT SECTION ========== */}
-      <section className="relative pb-20">
+      <section className="relative pb-10">
         <div className="max-w-3xl mx-auto px-6">
           <motion.article
             initial={{ opacity: 0, y: 20 }}

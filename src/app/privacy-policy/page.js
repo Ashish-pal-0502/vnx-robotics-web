@@ -221,10 +221,11 @@ export default function PrivacyPolicyPage() {
                 If you have questions about this Privacy Policy or how we handle
                 your data, please contact us at:{" "}
                 <a
-                  href="mailto:privacy@vnxrobotics.com"
+                  href="mailto:info@vnxrobotics.com"
+                  target="_blank"
                   className="text-[var(--color-secondary-400)] hover:underline"
                 >
-                  privacy@vnxrobotics.com
+                  info@vnxrobotics.com
                 </a>
               </p>
             </div>

@@ -53,9 +53,9 @@ export default function Header() {
   }, []);
 
   const languages = [
-    { code: "en", label: "ENG" },
-    { code: "vi", label: "VIE" },
-    { code: "ja", label: "JPN" },
+    { code: "en", label: "English" },
+    { code: "vi", label: "Vietnamese" },
+    { code: "ja", label: "Japanese" },
   ];
 
   const changeLanguage = (lng) => {
@@ -67,41 +67,37 @@ export default function Header() {
     {
       name: t("navbar.homepage"),
       href: "/",
-      description: "Identity, vision, and core capabilities.",
+      description: t("navbar.descriptions.homepage"),
     },
     {
       name: t("navbar.industries"),
       href: "/industries",
-      description:
-        "Warehouse, manufacturing, robotics, agriculture, embedded systems.",
+      description: t("navbar.descriptions.industries"),
     },
     {
-      name: t("navbar.solutions"),
-      href: "/solutions",
-      description:
-        "Automation systems, warehouse systems, robotics, software, integration.",
+      name: t("navbar.products"),
+      href: "/products",
+      description: t("navbar.descriptions.products"),
     },
     {
       name: t("navbar.robotics"),
       href: "/robotics",
-      description: "Quadrupeds, autonomous systems, robotics platforms.",
+      description: t("navbar.descriptions.robotics"),
     },
     {
       name: t("navbar.careers"),
       href: "/careers",
-      description:
-        "Engineering culture, robotics, automation, embedded systems growth.",
+      description: t("navbar.descriptions.careers"),
     },
     {
       name: t("navbar.blogs"),
       href: "/blogs",
-      description: "Latest insights, updates, and technical articles.",
+      description: t("navbar.descriptions.blogs"),
     },
     {
       name: t("navbar.about"),
       href: "/aboutus",
-      description:
-        "Vision, leadership philosophy, collaborations, team, latest updates.",
+      description: t("navbar.descriptions.about"),
     },
   ];
 
@@ -149,12 +145,12 @@ export default function Header() {
                 onMouseEnter={() => setIsLangOpen(true)}
                 onMouseLeave={() => setIsLangOpen(false)}
               >
-                <button className="rounded-full border border-white/20 p-2 text-white transition hover:bg-white/10">
+                <button className="rounded-full border cursor-pointer border-white/20 p-2 text-white transition hover:bg-white/10">
                   <BsGlobe size={16} />
                 </button>
 
                 {isLangOpen && (
-                  <div className="absolute right-0 mt-0 w-24 overflow-hidden rounded-xl border border-white/10 bg-black/80 backdrop-blur-xl">
+                  <div className="absolute right-0 mt-0 w-auto overflow-hidden rounded-xl border border-white/10 bg-black/80 backdrop-blur-xl">
                     {languages.map((lang) => {
                       const isActive = i18n.language === lang.code;
 
@@ -198,7 +194,9 @@ export default function Header() {
       </header>
 
       {/* MOBILE MENU */}
-      <MobileMenu open={open} setOpen={setOpen} navLinks={navLinks} />
+      <div className="flex lg:hidden">
+        <MobileMenu open={open} setOpen={setOpen} navLinks={navLinks} />
+      </div>
     </>
   );
 }

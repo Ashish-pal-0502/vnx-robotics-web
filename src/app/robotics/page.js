@@ -1,17 +1,16 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import {
   IoArrowForward,
-  IoCheckmarkCircle,
-  IoHardwareChipOutline,
-  IoGitNetworkOutline,
-  IoCodeSlashOutline,
   IoFlashOutline,
+  IoGitNetworkOutline,
+  IoHardwareChipOutline,
   IoRocketOutline,
 } from "react-icons/io5";
+import apiClient from "./../../api/client";
 
 export default function RoboticsPage() {
   const sectionRefs = {
@@ -32,55 +31,6 @@ export default function RoboticsPage() {
     }),
     approach: useInView(sectionRefs.approach, { once: true, amount: 0.2 }),
   };
-
-  const robots = [
-    {
-      id: "quadruped",
-      name: "Quadruped Robotics Platform",
-      subtitle: "Industrial Inspection & Autonomous Mobility",
-      description:
-        "Advanced quadruped robotics platform under active development for industrial inspection, autonomous mobility, and intelligent operational applications.",
-      image:
-        "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1200&auto=format&fit=crop",
-      tags: [
-        "Mobility Systems",
-        "Embedded Control",
-        "Robotics Middleware",
-        "Intelligent Locomotion",
-      ],
-      status: "Active Development",
-      features: [
-        "Industrial inspection",
-        "Autonomous navigation",
-        "Rough terrain mobility",
-        "Real-time data processing",
-      ],
-      link: "/robotics/quadruped",
-    },
-    {
-      id: "reception",
-      name: "Reception & Interactive Robot",
-      subtitle: "Human-Robot Interaction Platform",
-      description:
-        "Interactive robotics platform designed for future human-robot operational environments, featuring autonomous navigation and intelligent response systems.",
-      image:
-        "https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=1200&auto=format&fit=crop",
-      tags: [
-        "Human Interaction",
-        "Autonomous Navigation",
-        "Robotics Software",
-        "Embedded Systems",
-      ],
-      status: "Development Program",
-      features: [
-        "Human interaction",
-        "Autonomous navigation",
-        "Voice recognition",
-        "Service robotics",
-      ],
-      link: "/robotics/reception",
-    },
-  ];
 
   const futurePrograms = [
     {
@@ -131,43 +81,75 @@ export default function RoboticsPage() {
     },
   ];
 
+  const [robots, setRobots] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getAllRobots = async () => {
+    try {
+      const response = await apiClient.get("/robot/get");
+
+      if (response.ok && response.data?.success) {
+        const robotsData = response.data.robots || [];
+        setRobots(robotsData);
+      }
+    } catch (error) {
+      console.error("Error fetching robots:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllRobots();
+  }, []);
+
+  // Helper function to strip HTML tags from name/description
+  const stripHtml = (html) => {
+    if (!html) return "";
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  };
+
   return (
     <main className="bg-[var(--color-dark-100)]">
       {/* ========== HERO SECTION ========== */}
+      {/* ========== HERO SECTION ========== */}
       <section
         ref={sectionRefs.hero}
-        className="relative min-h-screen flex items-center overflow-hidden"
+        className="relative min-h-[60vh] lg:min-h-screen  flex items-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-20"
       >
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
-          <img
-            src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1200&auto=format&fit=crop"
-            alt="Robotics hero"
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div className="absolute inset-0 opacity-[0.03] z-10">
+        {/* Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div
             className="h-full w-full"
             style={{
               backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: "70px 70px",
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
 
-        <div className="relative z-20 max-w-7xl  px-6 md:px-12 py-20">
+        {/* Centered Blue Gradient */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-2xl h-[40vh] max-h-[400px] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(0,136,219,0.3) 0%, rgba(0,109,177,0.15) 50%, transparent 100%)",
+          }}
+        />
+
+        <div className="relative z-20 max-w-7xl px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView.hero ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <div className="mb-5 mt-10 flex items-center gap-3">
+            <div className="mb-5 flex items-center gap-3">
               <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
               <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
                 Advanced Robotics Systems
@@ -191,8 +173,6 @@ export default function RoboticsPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* ========== ROBOTICS PHILOSOPHY ========== */}
 
       {/* ========== CURRENT ROBOTICS PROGRAMS ========== */}
       <section
@@ -231,60 +211,96 @@ export default function RoboticsPage() {
             </p>
           </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-2">
-            {robots.map((robot, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView.programs ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                whileHover={{ y: -6 }}
-                className="group relative rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden transition-all duration-300 hover:border-[var(--color-primary-500)]/30"
-              >
-                <div className="relative h-56 overflow-hidden">
-                  <img
-                    src={robot.image}
-                    alt={robot.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                  <div className="absolute top-4 right-4">
-                    <span className="rounded-full bg-[var(--color-secondary-400)]/20 backdrop-blur-sm px-3 py-1 font-mono text-xs text-[var(--color-secondary-400)] border border-[var(--color-secondary-400)]/30">
-                      {robot.status}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <h3 className="font-heading text-xl font-semibold text-white mb-2">
-                    {robot.name}
-                  </h3>
-                  <p className="font-mono text-sm text-[var(--color-secondary-400)] mb-3">
-                    {robot.subtitle}
-                  </p>
-                  <p className="font-mono text-sm text-[var(--color-text-secondary)] mb-4">
-                    {robot.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {robot.tags.map((tag, tagIdx) => (
-                      <span
-                        key={tagIdx}
-                        className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-muted)]"
-                      >
-                        {tag}
+          {loading ? (
+            <div className="text-center py-20">
+              <div className="animate-pulse text-white">
+                Loading robotics programs...
+              </div>
+            </div>
+          ) : robots.length > 0 ? (
+            <div className="grid gap-8 md:grid-cols-2">
+              {robots.map((robot, idx) => (
+                <motion.div
+                  key={robot._id || idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView.programs ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  whileHover={{ y: -6 }}
+                  className="group relative rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden transition-all duration-300 hover:border-[var(--color-primary-500)]/30"
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    <img
+                      src={
+                        robot.images?.[0]?.url ||
+                        "https://placehold.co/800x600/1a1a2e/white?text=No+Image"
+                      }
+                      alt={stripHtml(robot.name)}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        e.target.src = "/images/placeholder-robot.jpg";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                    <div className="absolute top-4 right-4">
+                      <span className="rounded-full bg-[var(--color-secondary-400)]/20 backdrop-blur-sm px-3 py-1 font-mono text-xs text-[var(--color-secondary-400)] border border-[var(--color-secondary-400)]/30">
+                        Active Development
                       </span>
-                    ))}
+                    </div>
                   </div>
-                  <Link
-                    href={robot.link}
-                    className="inline-flex items-center gap-2 font-mono text-sm text-[var(--color-secondary-400)] hover:gap-3 transition-all"
-                  >
-                    Learn more about this program <IoArrowForward size={14} />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+
+                  <div className="p-6">
+                    <h3 className="font-heading text-xl font-semibold text-white mb-2">
+                      {stripHtml(robot.name)}
+                    </h3>
+                    <p className="font-mono text-sm text-[var(--color-secondary-400)] mb-3">
+                      {robot.category || "Robotics Platform"}
+                    </p>
+                    <p className="font-mono text-sm text-[var(--color-text-secondary)] mb-4">
+                      {stripHtml(
+                        robot.description ||
+                          "Advanced robotics platform under development for industrial and commercial applications.",
+                      )}
+                    </p>
+
+                    {/* Key Points / Tags */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {robot.keyPoints?.slice(0, 3).map((point, tagIdx) => (
+                        <span
+                          key={tagIdx}
+                          className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-muted)]"
+                        >
+                          {point}
+                        </span>
+                      ))}
+                      {(!robot.keyPoints || robot.keyPoints.length === 0) && (
+                        <>
+                          <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-muted)]">
+                            Robotics Platform
+                          </span>
+                          <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-muted)]">
+                            Intelligent Systems
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    <Link
+                      href={`/robotics/${robot.slug || robot._id}`}
+                      className="inline-flex items-center gap-2 font-mono text-sm text-[var(--color-secondary-400)] hover:gap-3 transition-all"
+                    >
+                      Learn more about this program <IoArrowForward size={14} />
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-[var(--color-text-secondary)]">
+                No robotics programs found.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -377,8 +393,6 @@ export default function RoboticsPage() {
           </div>
         </div>
       </section>
-
-      {/* ========== ROBOTICS DEVELOPMENT APPROACH ========== */}
 
       {/* ========== CTA SECTION ========== */}
       <section className="relative py-15 overflow-hidden border-t border-white/5">

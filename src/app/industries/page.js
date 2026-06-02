@@ -1,19 +1,18 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { useRef } from "react";
 import {
   IoArrowForward,
+  IoBuildOutline,
   IoCheckmarkCircle,
   IoChevronForward,
-  IoHardwareChipOutline,
-  IoCubeOutline,
-  IoBuildOutline,
   IoCloudOutline,
-  IoTrendingUpOutline,
+  IoCubeOutline,
   IoFlashOutline,
+  IoHardwareChipOutline,
+  IoTrendingUpOutline,
 } from "react-icons/io5";
 
 export default function IndustriesPage() {
@@ -94,7 +93,7 @@ export default function IndustriesPage() {
         "Intelligent Robotics Software",
       ],
       image:
-        "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1200&auto=format&fit=crop",
+        "https://thumbs.dreamstime.com/b/real-humanoid-robot-working-factory-warehouse-concept-industrial-real-humanoid-robot-working-factory-445309770.jpg",
     },
     {
       icon: <IoTrendingUpOutline size={28} />,
@@ -142,47 +141,38 @@ export default function IndustriesPage() {
     },
   ];
 
-  const capabilityPillars = [
-    "Controls & Automation",
-    "Robotics Systems",
-    "Industrial Software",
-    "Embedded Systems",
-    "AI & Analytics",
-    "Operational Intelligence",
-  ];
-
   return (
     <main className="bg-[var(--color-dark-100)]">
+      {/* ========== HERO SECTION ========== */}\
       {/* ========== HERO SECTION ========== */}
       <section
         ref={sectionRefs.hero}
-        className="relative min-h-screen flex items-center overflow-hidden"
+        className="relative min-h-[60vh] lg:min-h-screen flex items-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-20"
       >
-        {/* Background Video/Image */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
-          <img
-            src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?q=80&w=1200&auto=format&fit=crop"
-            alt="Industrial background"
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        {/* Grid Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] z-10">
+        {/* Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div
             className="h-full w-full"
             style={{
               backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: "70px 70px",
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
 
-        <div className="relative z-20 max-w-7xl  px-6 md:px-12 py-20">
+        {/* Centered Blue Gradient */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-2xl h-[40vh] max-h-[400px] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(0,136,219,0.3) 0%, rgba(0,109,177,0.15) 50%, transparent 100%)",
+          }}
+        />
+
+        <div className="relative z-20 max-w-7xl px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView.hero ? { opacity: 1, y: 0 } : {}}
@@ -196,7 +186,7 @@ export default function IndustriesPage() {
               </span>
             </div>
 
-            <h1 className="font-heading text-4xl md:text-5xl  font-bold uppercase leading-tight text-white mb-5">
+            <h1 className="font-heading text-4xl md:text-5xl font-bold uppercase leading-tight text-white mb-5">
               Industries We Empower
             </h1>
 
@@ -217,11 +207,10 @@ export default function IndustriesPage() {
           </motion.div>
         </div>
       </section>
-
       {/* ========== INDUSTRIES OVERVIEW GRID ========== */}
       <section
         ref={sectionRefs.overview}
-        className="relative py-10  overflow-hidden"
+        className="relative    md:py-10  overflow-hidden"
       >
         <div className="absolute inset-0 opacity-[0.03]">
           <div
@@ -285,7 +274,6 @@ export default function IndustriesPage() {
           </div>
         </div>
       </section>
-
       {/* ========== WAREHOUSE & LOGISTICS DETAIL ========== */}
       <section
         ref={sectionRefs.warehouse}
@@ -342,7 +330,6 @@ export default function IndustriesPage() {
           </div>
         </div>
       </section>
-
       {/* ========== MANUFACTURING DETAIL ========== */}
       <section
         ref={sectionRefs.manufacturing}
@@ -399,7 +386,6 @@ export default function IndustriesPage() {
           </div>
         </div>
       </section>
-
       {/* ========== ROBOTICS & AUTONOMOUS SYSTEMS DETAIL ========== */}
       <section
         ref={sectionRefs.robotics}
@@ -456,7 +442,6 @@ export default function IndustriesPage() {
           </div>
         </div>
       </section>
-
       {/* ========== AGRICULTURE & FIELD ROBOTICS DETAIL ========== */}
       <section
         ref={sectionRefs.agriculture}
@@ -514,7 +499,6 @@ export default function IndustriesPage() {
           </div>
         </div>
       </section>
-
       {/* ========== EMBEDDED & INTELLIGENT SYSTEMS DETAIL ========== */}
       <section
         ref={sectionRefs.embedded}
@@ -570,9 +554,7 @@ export default function IndustriesPage() {
           </div>
         </div>
       </section>
-
       {/* ========== CROSS-INDUSTRY CAPABILITIES ========== */}
-
       {/* ========== FINAL CTA SECTION ========== */}
       <section className="relative py-20 overflow-hidden border-t border-white/5">
         <div className="absolute inset-0">

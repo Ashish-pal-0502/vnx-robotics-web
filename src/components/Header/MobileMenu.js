@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import Link from "next/link";
@@ -17,9 +15,9 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
   const { t, i18n } = useTranslation();
 
   const languages = [
-    { code: "en", label: "ENG" },
-    { code: "vi", label: "VIE" },
-    { code: "ja", label: "JPN" },
+    { code: "en", label: "English" },
+    { code: "vi", label: "Vietnamese" },
+    { code: "ja", label: "Japanese" },
   ];
 
   const changeLanguage = (lng) => {
@@ -34,7 +32,7 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
     } else {
       document.body.style.overflow = "unset";
     }
-    
+
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -53,7 +51,7 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
             onClick={() => setOpen(false)}
             className="fixed inset-0 z-[998] bg-black/60 backdrop-blur-sm"
           />
-          
+
           {/* Sidebar Menu */}
           <motion.div
             initial={{ x: "100%" }}
@@ -65,33 +63,31 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
             }}
             className="fixed right-0 top-0 bottom-0 z-[999] w-full max-w-xl bg-black/95 backdrop-blur-xl shadow-2xl"
           >
-           
-
             {/* TOP BAR */}
-<motion.div 
-  initial={{ opacity: 0, y: -20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.1, duration: 0.4 }}
-  className="flex items-center justify-between px-6 py-6 border-b border-white/10"
->
-  <Link href="/" onClick={() => setOpen(false)}>
-    <Image
-      src="/icons/vnxlogo.png"
-      alt="VNX Robotics"
-      width={60}
-      height={40}
-      priority
-      className="h-auto w-auto object-contain"
-    />
-  </Link>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="flex items-center justify-between px-6 py-6 border-b border-white/10"
+            >
+              <Link href="/" onClick={() => setOpen(false)}>
+                <Image
+                  src="/icons/vnxlogo.png"
+                  alt="VNX Robotics"
+                  width={60}
+                  height={40}
+                  priority
+                  className="h-auto w-auto object-contain"
+                />
+              </Link>
 
-  <button
-    onClick={() => setOpen(false)}
-    className="text-white transition-transform hover:scale-110 active:scale-95"
-  >
-    <FiX size={30} />
-  </button>
-</motion.div>
+              <button
+                onClick={() => setOpen(false)}
+                className="text-white transition-transform hover:scale-110 active:scale-95"
+              >
+                <FiX size={30} />
+              </button>
+            </motion.div>
 
             {/* NAVIGATION - with hidden scrollbar */}
             <div className="flex flex-col h-[calc(100vh-80px)] overflow-y-auto px-6 py-4 no-scrollbar">
@@ -138,10 +134,10 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
                 <motion.div
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ 
-                    delay: 0.1 * navLinks.length, 
+                  transition={{
+                    delay: 0.1 * navLinks.length,
                     duration: 0.5,
-                    ease: "easeOut"
+                    ease: "easeOut",
                   }}
                   className="pt-4"
                 >
@@ -158,7 +154,7 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
                         <BsGlobe size={20} />
                       </motion.button>
                     </div>
-                    
+
                     <AnimatePresence>
                       {isLangOpen && (
                         <motion.div
@@ -183,10 +179,17 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
                                     : "hover:bg-white/10"
                                 }`}
                               >
-                                <span className={`text-lg font-mono ${isActive ? "text-[#0088db]" : "text-white"}`}>
+                                <span
+                                  className={`text-lg font-mono ${isActive ? "text-[#0088db]" : "text-white"}`}
+                                >
                                   {lang.label}
                                 </span>
-                                {isActive && <FaCheck size={14} className="text-[#0088db]" />}
+                                {isActive && (
+                                  <FaCheck
+                                    size={14}
+                                    className="text-[#0088db]"
+                                  />
+                                )}
                               </motion.div>
                             );
                           })}
@@ -200,12 +203,12 @@ export default function MobileMenu({ open, setOpen, navLinks }) {
                 <motion.div
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ 
-                    delay: 0.1 * (navLinks.length + 1), 
+                  transition={{
+                    delay: 0.1 * (navLinks.length + 1),
                     duration: 0.5,
-                    ease: "easeOut"
+                    ease: "easeOut",
                   }}
-                  className="pt-2"
+                  className="pt-2 mb-20"
                 >
                   <motion.div
                     whileHover={{ scale: 1.02 }}
