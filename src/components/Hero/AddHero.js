@@ -3,6 +3,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import apiClient from "@/api/client";
 import toast from "react-hot-toast";
+import {
+  FiUpload,
+  FiTrash2,
+  FiVideo,
+  FiMonitor,
+  FiSmartphone,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiInfo,
+} from "react-icons/fi";
 
 const AddHero = ({ editData = null, onSuccess }) => {
   const [desktopVideo, setDesktopVideo] = useState(null);
@@ -40,13 +50,50 @@ const AddHero = ({ editData = null, onSuccess }) => {
   }, [editData]);
 
   const getUploadUrl = async (file) => {
-    const res = await apiClient.post("/hero/upload-url", {
-      fileName: file.name,
-      fileType: file.type,
-      size: file.size,
-    });
+    try {
+      const res = await apiClient.post("/hero/upload-url", {
+        fileName: file.name,
+        fileType: file.type,
+        size: file.size,
+      });
 
-    return res.data.data.data;
+      console.log("Full API Response:", res);
+      console.log("Response data:", res.data);
+
+      let uploadData;
+
+      if (res.data?.data?.data) {
+        uploadData = res.data.data.data;
+      } else if (res.data?.data) {
+        uploadData = res.data.data;
+      } else if (res.data) {
+        uploadData = res.data;
+      } else {
+        throw new Error("Invalid response structure from server");
+      }
+
+      if (!uploadData) {
+        throw new Error("No data received from server");
+      }
+
+      if (!uploadData.uploadURL) {
+        console.error("Upload data missing uploadURL:", uploadData);
+        throw new Error("Server response missing uploadURL field");
+      }
+
+      if (!uploadData.fileUrl) {
+        console.warn("Upload data missing fileUrl:", uploadData);
+      }
+
+      if (!uploadData.key) {
+        console.warn("Upload data missing key:", uploadData);
+      }
+
+      return uploadData;
+    } catch (error) {
+      console.error("Error in getUploadUrl:", error);
+      throw error;
+    }
   };
 
   const uploadFileToS3 = async (file, uploadURL, onProgress) => {
@@ -83,10 +130,9 @@ const AddHero = ({ editData = null, onSuccess }) => {
 
     if (!file) return;
 
-    // Validate file size (max 100MB)
-    if (file.size > 100 * 1024 * 1024) {
-      toast.error("Video size should be less than 100MB");
-      // Clear the input field
+    // Validate file size (max 20MB)
+    if (file.size > 20 * 1024 * 1024) {
+      toast.error("Video size should be less than 20MB");
       if (type === "desktop" && desktopInputRef.current) {
         desktopInputRef.current.value = "";
       } else if (type === "mobile" && mobileInputRef.current) {
@@ -97,7 +143,6 @@ const AddHero = ({ editData = null, onSuccess }) => {
 
     if (!file.type.startsWith("video/")) {
       toast.error("Please select a valid video file");
-      // Clear the input field
       if (type === "desktop" && desktopInputRef.current) {
         desktopInputRef.current.value = "";
       } else if (type === "mobile" && mobileInputRef.current) {
@@ -135,10 +180,38 @@ const AddHero = ({ editData = null, onSuccess }) => {
     }
   };
 
+  const validateBothVideos = () => {
+    // For edit mode
+    if (editData) {
+      const hasDesktopVideo = editData?.desktopVideo?.url || desktopVideo;
+      const hasMobileVideo = editData?.mobileVideo?.url || mobileVideo;
+
+      if (!hasDesktopVideo) {
+        toast.error("Desktop video is required!");
+        return false;
+      }
+      if (!hasMobileVideo) {
+        toast.error("Mobile video is required!");
+        return false;
+      }
+    } else {
+      // For create mode
+      if (!desktopVideo) {
+        toast.error("Please select desktop video!");
+        return false;
+      }
+      if (!mobileVideo) {
+        toast.error("Please select mobile video!");
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleSubmit = async () => {
-    // Validate at least one video is provided for new creation
-    if (!editData && !desktopVideo && !mobileVideo) {
-      toast.error("Please select at least one video");
+    // Validate both videos are provided
+    if (!validateBothVideos()) {
       return;
     }
 
@@ -154,12 +227,14 @@ const AddHero = ({ editData = null, onSuccess }) => {
 
         const uploadData = await getUploadUrl(desktopVideo);
 
+        console.log("Desktop upload data received:", uploadData);
+
         await uploadFileToS3(desktopVideo, uploadData.uploadURL, (progress) => {
           setUploadProgress((prev) => ({ ...prev, desktop: progress }));
         });
 
         desktopVideoData = {
-          url: uploadData.fileUrl,
+          url: uploadData.fileUrl || uploadData.url,
           key: uploadData.key,
         };
 
@@ -172,12 +247,14 @@ const AddHero = ({ editData = null, onSuccess }) => {
 
         const uploadData = await getUploadUrl(mobileVideo);
 
+        console.log("Mobile upload data received:", uploadData);
+
         await uploadFileToS3(mobileVideo, uploadData.uploadURL, (progress) => {
           setUploadProgress((prev) => ({ ...prev, mobile: progress }));
         });
 
         mobileVideoData = {
-          url: uploadData.fileUrl,
+          url: uploadData.fileUrl || uploadData.url,
           key: uploadData.key,
         };
 
@@ -189,6 +266,8 @@ const AddHero = ({ editData = null, onSuccess }) => {
         mobileVideo: mobileVideoData,
       };
 
+      console.log("Final payload:", payload);
+
       if (editData?._id) {
         await apiClient.put(`/hero/update/${editData._id}`, payload);
         toast.success("Hero updated successfully");
@@ -199,7 +278,6 @@ const AddHero = ({ editData = null, onSuccess }) => {
 
       // Reset form after successful submission
       if (!editData) {
-        // Clean up preview URLs
         if (desktopPreview && desktopPreview.startsWith("blob:")) {
           URL.revokeObjectURL(desktopPreview);
         }
@@ -213,7 +291,6 @@ const AddHero = ({ editData = null, onSuccess }) => {
         setMobilePreview("");
         setUploadProgress({ desktop: 0, mobile: 0 });
 
-        // Clear file input fields
         if (desktopInputRef.current) {
           desktopInputRef.current.value = "";
         }
@@ -243,7 +320,6 @@ const AddHero = ({ editData = null, onSuccess }) => {
       setDesktopVideo(null);
       setDesktopPreview("");
       setUploadProgress((prev) => ({ ...prev, desktop: 0 }));
-      // Clear the file input field
       if (desktopInputRef.current) {
         desktopInputRef.current.value = "";
       }
@@ -254,173 +330,303 @@ const AddHero = ({ editData = null, onSuccess }) => {
       setMobileVideo(null);
       setMobilePreview("");
       setUploadProgress((prev) => ({ ...prev, mobile: 0 }));
-      // Clear the file input field
       if (mobileInputRef.current) {
         mobileInputRef.current.value = "";
       }
     }
   };
 
+  // Check if both videos are selected
+  const isBothVideosSelected = () => {
+    if (editData) {
+      const hasDesktop = editData?.desktopVideo?.url || desktopVideo;
+      const hasMobile = editData?.mobileVideo?.url || mobileVideo;
+      return hasDesktop && hasMobile;
+    }
+    return desktopVideo && mobileVideo;
+  };
+
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm">
-      <h2 className="text-2xl font-semibold mb-6">
-        {editData ? "Update Hero" : "Create Hero"}
-      </h2>
-
-      <div className="space-y-6">
-        {/* Desktop Video */}
-        <div>
-          <label className="block mb-2 font-medium">
-            Desktop Video
-            {!editData && <span className="text-red-500 ml-1">*</span>}
-          </label>
-
-          <input
-            ref={desktopInputRef}
-            type="file"
-            accept="video/*"
-            onChange={(e) => handleVideoChange(e, "desktop")}
-            className="w-full border rounded-lg p-3"
-            disabled={loading}
-          />
-
-          {uploadProgress.desktop > 0 && uploadProgress.desktop < 100 && (
-            <div className="mt-2">
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-blue-500 transition-all duration-300"
-                  style={{ width: `${uploadProgress.desktop}%` }}
-                />
-              </div>
-              <p className="text-sm text-gray-600 mt-1">
-                Uploading: {uploadProgress.desktop}%
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-6 md:mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-xl shadow-lg">
+              <FiVideo className="text-white" size={24} />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+                {editData ? "Update Hero Section" : "Create New Hero"}
+              </h1>
+              <p className="text-sm text-gray-500 mt-1">
+                {editData
+                  ? "Update your hero videos for desktop and mobile devices"
+                  : "Add hero videos for desktop and mobile devices to showcase your brand"}
               </p>
             </div>
-          )}
-
-          {desktopPreview && (
-            <div className="mt-3 relative">
-              <video
-                src={desktopPreview}
-                controls
-                className="w-full rounded-lg border max-h-[300px]"
-              />
-              {!loading && (
-                <button
-                  onClick={() => removeVideo("desktop")}
-                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
-            </div>
-          )}
+          </div>
         </div>
 
-        {/* Mobile Video */}
-        <div>
-          <label className="block mb-2 font-medium">
-            Mobile Video
-            {!editData && <span className="text-red-500 ml-1">*</span>}
-          </label>
-
-          <input
-            ref={mobileInputRef}
-            type="file"
-            accept="video/*"
-            onChange={(e) => handleVideoChange(e, "mobile")}
-            className="w-full border rounded-lg p-3"
-            disabled={loading}
-          />
-
-          {uploadProgress.mobile > 0 && uploadProgress.mobile < 100 && (
-            <div className="mt-2">
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-blue-500 transition-all duration-300"
-                  style={{ width: `${uploadProgress.mobile}%` }}
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="p-6 md:p-8">
+            {/* Warning message if both videos not selected */}
+            {!isBothVideosSelected() && (
+              <div className="mb-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg flex items-start gap-3">
+                <FiAlertCircle
+                  className="text-amber-500 mt-0.5 shrink-0"
+                  size={20}
                 />
+                <div>
+                  <p className="text-amber-800 font-medium">
+                    Both desktop and mobile videos are required!
+                  </p>
+                  <p className="text-amber-600 text-sm mt-1">
+                    Please select both videos to continue.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-gray-600 mt-1">
-                Uploading: {uploadProgress.mobile}%
-              </p>
-            </div>
-          )}
+            )}
 
-          {mobilePreview && (
-            <div className="mt-3 relative">
-              <video
-                src={mobilePreview}
-                controls
-                className="w-full rounded-lg border max-h-[300px]"
-              />
-              {!loading && (
-                <button
-                  onClick={() => removeVideo("mobile")}
-                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              {/* Desktop Video Section */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-lg text-white">
+                    <FiMonitor size={18} />
+                  </div>
+                  <div>
+                    <label className="font-semibold text-gray-800">
+                      Desktop Video <span className="text-red-500">*</span>
+                    </label>
+                    <p className="text-xs text-gray-500">
+                      MP4, WebM, MOV (Max 20MB)
+                    </p>
+                  </div>
+                </div>
+
+                <input
+                  ref={desktopInputRef}
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => handleVideoChange(e, "desktop")}
+                  className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#1f3b57]/20 focus:border-[#1f3b57] outline-none transition"
+                  disabled={loading}
+                />
+
+                {uploadProgress.desktop > 0 && uploadProgress.desktop < 100 && (
+                  <div className="mt-3">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-600">Uploading...</span>
+                      <span className="font-medium text-[#1f3b57]">
+                        {uploadProgress.desktop}%
+                      </span>
+                    </div>
+                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] transition-all duration-300 rounded-full"
+                        style={{ width: `${uploadProgress.desktop}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {desktopPreview && (
+                  <div className="mt-3 relative group">
+                    <div className="relative rounded-xl overflow-hidden bg-black/5">
+                      <video
+                        src={desktopPreview}
+                        controls
+                        className="w-full rounded-xl max-h-[300px] object-contain"
+                      />
+                      {!loading && (
+                        <button
+                          onClick={() => removeVideo("desktop")}
+                          className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
+                      )}
+                    </div>
+                    <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur text-white px-3 py-1 rounded-full text-xs flex items-center gap-2">
+                      <FiCheckCircle size={12} className="text-green-400" />
+                      Video ready
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Video Section */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-lg text-white">
+                    <FiSmartphone size={18} />
+                  </div>
+                  <div>
+                    <label className="font-semibold text-gray-800">
+                      Mobile Video <span className="text-red-500">*</span>
+                    </label>
+                    <p className="text-xs text-gray-500">
+                      MP4, WebM, MOV (Max 20MB)
+                    </p>
+                  </div>
+                </div>
+
+                <input
+                  ref={mobileInputRef}
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => handleVideoChange(e, "mobile")}
+                  className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#1f3b57]/20 focus:border-[#1f3b57] outline-none transition"
+                  disabled={loading}
+                />
+
+                {uploadProgress.mobile > 0 && uploadProgress.mobile < 100 && (
+                  <div className="mt-3">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-600">Uploading...</span>
+                      <span className="font-medium text-[#1f3b57]">
+                        {uploadProgress.mobile}%
+                      </span>
+                    </div>
+                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] transition-all duration-300 rounded-full"
+                        style={{ width: `${uploadProgress.mobile}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {mobilePreview && (
+                  <div className="mt-3 relative group">
+                    <div className="relative rounded-xl overflow-hidden bg-black/5">
+                      <video
+                        src={mobilePreview}
+                        controls
+                        className="w-full rounded-xl max-h-[300px] object-contain"
+                      />
+                      {!loading && (
+                        <button
+                          onClick={() => removeVideo("mobile")}
+                          className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
+                      )}
+                    </div>
+                    <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur text-white px-3 py-1 rounded-full text-xs flex items-center gap-2">
+                      <FiCheckCircle size={12} className="text-green-400" />
+                      Video ready
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
+
+            {/* Guidelines Section */}
+            <div className="mt-8 p-4 bg-blue-50 rounded-xl">
+              <div className="flex items-start gap-3">
+                <FiInfo className="text-blue-600 mt-0.5 shrink-0" size={18} />
+                <div className="text-sm text-blue-800">
+                  <p className="font-medium mb-2">Video Guidelines:</p>
+                  <ul className="space-y-1 text-blue-700">
+                    <li>
+                      • Recommended resolution: Desktop (1920x1080), Mobile
+                      (1080x1920)
+                    </li>
+                    <li>• Maximum file size: 20MB per video</li>
+                    <li>• Supported formats: MP4, WebM, MOV</li>
+                    <li>
+                      • For best performance, keep videos under 30 seconds
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="border-t border-gray-100 bg-gray-50 px-6 md:px-8 py-6">
+            <div className="flex flex-col sm:flex-row gap-3 justify-end">
+              <button
+                onClick={handleSubmit}
+                disabled={loading || !isBothVideosSelected()}
+                className={`w-full sm:w-auto px-8 py-3 rounded-xl transition-all font-medium flex items-center justify-center gap-2 ${
+                  !isBothVideosSelected()
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] text-white hover:shadow-lg transform hover:scale-[1.02]"
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <FiUpload size={18} />
+                    {editData ? "Update Hero" : "Create Hero"}
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
 
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="w-full bg-[#1f3b57] text-white py-3 rounded-lg hover:bg-[#162e44] transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              Uploading...
-            </span>
-          ) : editData ? (
-            "Update Hero"
-          ) : (
-            "Create Hero"
-          )}
-        </button>
+        {/* Preview Section */}
+        {(desktopPreview || mobilePreview) && (
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <FiVideo size={20} />
+              Video Preview
+            </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {desktopPreview && (
+                <div className="bg-white rounded-xl overflow-hidden shadow-md">
+                  <div className="bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] px-4 py-2">
+                    <p className="text-sm font-medium text-white flex items-center gap-2">
+                      <FiMonitor size={14} />
+                      Desktop Preview
+                    </p>
+                  </div>
+                  <video src={desktopPreview} controls className="w-full" />
+                </div>
+              )}
+              {mobilePreview && (
+                <div className="bg-white rounded-xl overflow-hidden shadow-md">
+                  <div className="bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] px-4 py-2">
+                    <p className="text-sm font-medium text-white flex items-center gap-2">
+                      <FiSmartphone size={14} />
+                      Mobile Preview
+                    </p>
+                  </div>
+                  <video
+                    src={mobilePreview}
+                    controls
+                    className="w-full max-h-[400px]"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
