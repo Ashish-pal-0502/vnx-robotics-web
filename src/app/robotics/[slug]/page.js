@@ -392,7 +392,7 @@ export default function RobotDetailPage() {
       console.log("response", response);
 
       if (response.ok && response.data?.success) {
-        setRobot(response.data.data.robot);
+        setRobot(response.data.robot);
         setError(false);
       } else {
         setError(true);

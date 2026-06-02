@@ -47,7 +47,7 @@ const ListRobot = ({ onEdit }) => {
         },
       });
 
-      const robotsData = response?.data?.data?.robots || [];
+      const robotsData = response?.data?.robots || [];
       setRobots(robotsData);
 
       // Extract unique categories

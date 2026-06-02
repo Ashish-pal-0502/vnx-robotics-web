@@ -28,7 +28,7 @@ export default function BlogDetailPage() {
       const response = await apiClient.get(`/blog/get/${blogSlug}`);
 
       if (response.ok) {
-        setBlog(response?.data?.data?.blog);
+        setBlog(response?.data?.blog);
       } else {
         toast.error(response?.data?.message || "Failed to fetch blog");
       }

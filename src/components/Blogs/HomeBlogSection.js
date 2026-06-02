@@ -44,7 +44,7 @@ function HomeBlogSection() {
     const response = await apiClient.get("/blog/get");
 
     if (response.ok) {
-      setBlogs(response?.data?.data?.blogs || []);
+      setBlogs(response?.data?.blogs || []);
     }
   };
 

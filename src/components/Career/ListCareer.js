@@ -32,7 +32,7 @@ const ListCareer = ({ onEdit }) => {
     try {
       setLoading(true);
       const response = await apiClient.get("/career/get-all");
-      const careersData = response?.data?.data?.data || [];
+      const careersData = response?.data?.data || [];
       setCareers(careersData);
 
       // Extract unique job types
@@ -95,7 +95,7 @@ const ListCareer = ({ onEdit }) => {
      PAGINATION - FIXED
   ========================= */
   const totalPages = Math.ceil(filteredCareers.length / ITEMS_PER_PAGE);
-  
+
   // Reset to page 1 when filter changes
   useEffect(() => {
     setCurrentPage(1);
@@ -503,8 +503,8 @@ const ListCareer = ({ onEdit }) => {
                   of{" "}
                   <span className="font-semibold text-[#111827]">
                     {totalPages}
-                  </span>
-                  {" "}({filteredCareers.length} total items)
+                  </span>{" "}
+                  ({filteredCareers.length} total items)
                 </p>
                 <div className="flex items-center gap-2 flex-wrap justify-center">
                   {/* PREVIOUS */}
@@ -518,48 +518,48 @@ const ListCareer = ({ onEdit }) => {
                   </button>
 
                   {/* PAGE BUTTONS */}
-                  {Array.from(
-                    { length: Math.min(totalPages, 7) },
-                    (_, i) => {
-                      let pageNum;
-                      if (totalPages <= 7) {
-                        pageNum = i + 1;
-                      } else if (currentPage <= 4) {
-                        pageNum = i + 1;
-                        if (i === 6) pageNum = totalPages;
-                      } else if (currentPage >= totalPages - 3) {
-                        pageNum = totalPages - 6 + i;
-                      } else {
-                        pageNum = currentPage - 3 + i;
-                        if (i === 0) pageNum = 1;
-                        if (i === 1) pageNum = "...";
-                        if (i === 5) pageNum = "...";
-                        if (i === 6) pageNum = totalPages;
-                      }
-                      
-                      if (pageNum === "...") {
-                        return (
-                          <span key={i} className="h-11 w-11 flex items-center justify-center text-gray-500">
-                            ...
-                          </span>
-                        );
-                      }
-                      
+                  {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 7) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 4) {
+                      pageNum = i + 1;
+                      if (i === 6) pageNum = totalPages;
+                    } else if (currentPage >= totalPages - 3) {
+                      pageNum = totalPages - 6 + i;
+                    } else {
+                      pageNum = currentPage - 3 + i;
+                      if (i === 0) pageNum = 1;
+                      if (i === 1) pageNum = "...";
+                      if (i === 5) pageNum = "...";
+                      if (i === 6) pageNum = totalPages;
+                    }
+
+                    if (pageNum === "...") {
                       return (
-                        <button
-                          key={pageNum}
-                          onClick={() => handlePageChange(pageNum)}
-                          className={`h-11 w-11 rounded-xl text-sm font-semibold transition ${
-                            currentPage === pageNum
-                              ? "bg-[#1f3b57] text-white shadow-md"
-                              : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-100"
-                          }`}
+                        <span
+                          key={i}
+                          className="h-11 w-11 flex items-center justify-center text-gray-500"
                         >
-                          {pageNum}
-                        </button>
+                          ...
+                        </span>
                       );
                     }
-                  )}
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`h-11 w-11 rounded-xl text-sm font-semibold transition ${
+                          currentPage === pageNum
+                            ? "bg-[#1f3b57] text-white shadow-md"
+                            : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
 
                   {/* NEXT */}
                   <button

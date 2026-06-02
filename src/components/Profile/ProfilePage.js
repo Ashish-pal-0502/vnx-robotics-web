@@ -8,7 +8,7 @@ const ProfilePage = () => {
   const fetchProfile = async () => {
     try {
       const response = await apiClient.get("/user/me");
-      setProfile(response?.data?.data?.user || null);
+      setProfile(response?.data?.user || null);
     } catch (err) {
       console.error("Failed to load profile:", err);
     } finally {

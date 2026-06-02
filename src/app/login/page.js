@@ -39,7 +39,7 @@ function Page() {
 
       if (response?.ok) {
         toast.success(response?.data?.message || "Login successful");
-        logIn(response?.data?.data?.accessToken);
+        logIn(response?.data?.accessToken);
         router.replace("/");
       } else {
         toast.error(response?.data?.message || "Login failed");
@@ -62,7 +62,7 @@ function Page() {
 
       if (response?.ok) {
         toast.success(response?.data?.message || "Login successful");
-        logIn(response?.data?.data?.accessToken);
+        logIn(response?.data?.accessToken);
         router.replace("/");
       } else {
         toast.error(response.data.message || "Google login failed");
