@@ -75,7 +75,7 @@ export default function AboutPage() {
       name: "Pham Thanh Huu",
 
       role: "Founder & Chief Executive Officer",
-
+      bio: "20+ years of experience in software engineering, technology leadership, and international business across Vietnam, Japan, and North America. (DBA, MEng, LLM)",
       image: "/leaders/huu.png",
       linkedin: "#",
       twitter: "#",
@@ -83,21 +83,23 @@ export default function AboutPage() {
     {
       name: "Dr. Pramod Pal",
       role: "Co-founder & Chief Technology Officer",
+      bio: "5+ years of experience in robotics and AI, leading R&D at VNX Robotics with a focus on intelligent robotic systems. PhD in Robotics from Indian Institute of Science, Bangalore, India.",
       image: "/leaders/pramod.png",
       linkedin: "https://www.linkedin.com/in/pramodiisc",
       twitter: "https://x.com/pramodiisc",
     },
     {
       name: "Ejiri Kent",
-      role: "Chief Executive Officer",
+      role: "Chief Executive Officer, VNX Robotics Japan",
+      bio: "20+ years of experience in international collaboration and innovation between Japan and Vietnam, with a focus on robotics and AI applications.",
       image: "/leaders/kent.png",
       linkedin: "#",
       twitter: "#",
     },
     {
       name: "Nobuhiro Sadakuni",
-      role: "Chief Operating Officer",
-
+      role: "Chief Operating Officer, VNX Robotics Japan",
+      bio: "35+ years of experience in consulting and international business across Japan and global markets, with a focus on innovation and technology leadership.",
       image: "/leaders/sada.png",
       linkedin: "#",
       twitter: "https://x.com/sadakuni1967",
@@ -105,7 +107,7 @@ export default function AboutPage() {
     {
       name: "Andrew Woo",
       role: "Director, Korea Business Development",
-
+      bio: "20+ years of experience in technology, business development, and international collaboration across Korea and Vietnam, with a focus on AI, digital transformation, and strategic growth.",
       image: "/leaders/andrew.png",
       linkedin: "https://vn.linkedin.com/in/wooandrew",
       twitter: "https://x.com/woo_andrew",
@@ -324,7 +326,7 @@ export default function AboutPage() {
                   <img
                     src={leader.image}
                     alt={leader.name}
-                    className="h-auto lg:h-full w-full object-cover "
+                    className="h-auto lg:h-full grayscale w-full object-cover "
                   />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
@@ -334,15 +336,20 @@ export default function AboutPage() {
                       {leader.name}
                     </h3>
 
-                    <p className="font-mono text-sm text-gray-300">
+                    <p className="font-body text-sm text-gray-300">
                       {leader.role}
                     </p>
+                    {leader.bio && (
+                      <p className="font-mobo mt-3 text-xs text-gray-200">
+                        {leader?.bio}
+                      </p>
+                    )}
 
                     <div className="mt-4 flex gap-3">
                       <a
                         href={leader.twitter}
                         target="_blank"
-                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/30 backdrop-blur"
                       >
                         <IoLogoTwitter />
                       </a>
@@ -350,7 +357,7 @@ export default function AboutPage() {
                       <a
                         href={leader.linkedin}
                         target="_blank"
-                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/30 backdrop-blur"
                       >
                         <IoLogoLinkedin />
                       </a>
@@ -364,7 +371,7 @@ export default function AboutPage() {
       </section>
 
       {/* ========== LEADERSHIP PHILOSOPHY ========== */}
-      <section ref={sectionRefs.leadership} className="relative py-10">
+      {/* <section ref={sectionRefs.leadership} className="relative py-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -434,7 +441,7 @@ export default function AboutPage() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ========== TEAM & ENGINEERING CULTURE ========== */}
       <section
