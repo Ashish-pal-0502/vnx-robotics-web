@@ -262,12 +262,7 @@ export default function IndustriesPage() {
                 <p className="font-mono text-sm text-[var(--color-text-secondary)] mb-4">
                   {industry.description}
                 </p>
-                <Link
-                  href={`/industries/${industry.title.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-")}`}
-                  className="inline-flex items-center gap-2 font-mono text-sm text-[var(--color-primary-500)] group-hover:gap-3 transition-all"
-                >
-                  Learn more <IoArrowForward size={14} />
-                </Link>
+
                 <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-secondary-400)] transition-all duration-300 group-hover:w-full" />
               </motion.div>
             ))}
