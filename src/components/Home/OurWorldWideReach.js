@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import dynamic from "next/dynamic";
 import gsap from "gsap";
@@ -17,99 +18,38 @@ const Globe = dynamic(() => import("react-globe.gl"), {
 
 const points = [
   {
-    lat: 28.6139,
-    lng: 77.209,
-    label: "India",
-  },
-  {
-    lat: 40.7128,
-    lng: -74.006,
-    label: "New York",
-  },
-  {
-    lat: 35.6762,
-    lng: 139.6503,
-    label: "Tokyo",
+    lat: 10.8231,
+    lng: 106.6297,
+    label: "VNX Robotics JSC",
+    location: "HCM, Vietnam",
+    role: "R&D, Innovation, Talent Hub",
   },
 
   {
-    lat: 37.7749,
-    lng: -122.4194,
-    label: "San Francisco",
+    lat: 35.4437,
+    lng: 139.638,
+    label: "VNX Robotics K.K",
+    location: "Kanagawa, Japan",
+    role: "Sales & On-site Hub",
   },
   {
-    lat: 25.2048,
-    lng: 55.2708,
-    label: "Dubai",
+    lat: 12.9716,
+    lng: 77.5946,
+    label: "VNX Innovation India Pvt Ltd",
+    location: "Bangalore, India",
+    role: "Training & R&D",
   },
   {
-    lat: 48.8566,
-    lng: 2.3522,
-    label: "Paris",
-  },
-  {
-    lat: 1.3521,
-    lng: 103.8198,
-    label: "Singapore",
-  },
-  {
-    lat: 19.076,
-    lng: 72.8777,
-    label: "Mumbai",
-  },
-  {
-    lat: 31.2304,
-    lng: 121.4737,
-    label: "Shanghai",
-  },
-  {
-    lat: 30.0444,
-    lng: 31.2357,
-    label: "Cairo",
-  },
-  {
-    lat: 55.7558,
-    lng: 37.6173,
-    label: "Moscow",
-  },
-  {
-    lat: 34.0522,
-    lng: -118.2437,
-    label: "Los Angeles",
-  },
-  {
-    lat: 19.4326,
-    lng: -99.1332,
-    label: "Mexico City",
-  },
-  {
-    lat: -1.2864,
-    lng: 36.8172,
-    label: "Nairobi",
-  },
-  {
-    lat: 6.5244,
-    lng: 3.3792,
-    label: "Lagos",
-  },
-  {
-    lat: 39.9042,
-    lng: 116.4074,
-    label: "Beijing",
-  },
-  {
-    lat: 21.0285,
-    lng: 105.8542,
-    label: "Hanoi",
-  },
-  {
-    lat: 10.8231,
-    lng: 106.6297,
-    label: "Ho Chi Minh City",
+    lat: -25.2744,
+    lng: 133.7751,
+    label: "Australia",
+    location: "Planned legal entity in 2026",
+    role: "Market Operations",
   },
 ];
 
 function OurWorldWideReach() {
+  const { t } = useTranslation();
   const globeRef = useRef();
   const headingRef = useRef();
   const globeWrapperRef = useRef();
@@ -123,12 +63,7 @@ function OurWorldWideReach() {
     height: 700,
   });
 
-  const titles = [
-    "Global Robotics Network.",
-    "Intelligence, Personified.",
-    "Automation, Reimagined.",
-    "Future Systems, Engineered.",
-  ];
+  const titles = t("ourWorldWideReach.titles", { returnObjects: true });
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -411,9 +346,9 @@ function OurWorldWideReach() {
             labelsData={points}
             labelLat="lat"
             labelLng="lng"
-            labelText="label"
-            labelSize={2.5}
-            labelDotRadius={0.4}
+            labelText={(d) => `${d.label}\n ${d.location}\n ${d.role}`}
+            labelSize={1.5}
+            labelDotRadius={0.2}
             labelColor={() => "#ffc93d"}
             labelResolution={3}
             labelAltitude={0.015}
@@ -428,8 +363,7 @@ function OurWorldWideReach() {
       {/* BOTTOM TEXT - Flows below globe */}
       <div className="relative z-20 max-w-2xl text-center mt-4 md:mt-8">
         <p className="font-mono text-xs text-[#a1a1aa] md:text-sm">
-          Real-time connected robotics intelligence operating across worldwide
-          industrial infrastructure networks.
+          {t("ourWorldWideReach.description")}
         </p>
       </div>
 
@@ -458,7 +392,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Global Partners
+              {t("ourWorldWideReach.globalPartners")}
             </p>
           </div>
 
@@ -469,7 +403,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Operations
+              {t("ourWorldWideReach.operations")}
             </p>
           </div>
         </div>
@@ -483,7 +417,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Countries
+              {t("ourWorldWideReach.countries")}
             </p>
           </div>
 
@@ -496,7 +430,7 @@ function OurWorldWideReach() {
             </h3>
 
             <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.2em] text-white/60">
-              Industry Categories
+              {t("ourWorldWideReach.industryCategories")}
             </p>
           </div>
         </div>

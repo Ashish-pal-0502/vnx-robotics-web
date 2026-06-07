@@ -1,29 +1,38 @@
 {
   "navbar": {
-    "homepage": "ホーム",
-    "industries": "業界",
+    "homepage": "ホームページ",
+    "industries": "産業",
     "solutions": "ソリューション",
     "robotics": "ロボティクス",
     "blogs": "ブログ",
     "about": "会社概要",
     "careers": "キャリア",
     "contact": "お問い合わせ",
-    "contactBtn": "お問い合わせ"
+    "contactBtn": "お問い合わせ",
+    "products": "製品",
+    "descriptions": {
+      "homepage": "アイデンティティ、ビジョン、中核的能力",
+      "industries": "倉庫、製造、ロボティクス、農業、組み込みシステム",
+      "products": "自動化システム、倉庫システム、ロボティクス、ソフトウェア、統合",
+      "robotics": "四足歩行ロボット、自律システム、ロボティクスプラットフォーム",
+      "careers": "エンジニアリング文化、ロボティクス、自動化、組み込みシステムの成長",
+      "blogs": "最新の洞察、アップデート、技術記事",
+      "about": "ビジョン、リーダーシップ哲学、コラボレーション、チーム、最新情報"
+    }
   },
   "heroHome": {
-    "trustedCustomers": "1K+ 信頼されている顧客",
-    "heading": "再定義された制御 \n 解き放たれた革新",
+    "trustedCustomers": "1,000以上の信頼できる顧客",
+    "heading": "再定義された制御\n解き放たれたイノベーション",
     "description": "産業オートメーション。ロボティクス。インテリジェントオペレーション。",
     "getStarted": "始める",
-    "scrollDown": "スクロール",
-    "welcomeBack": "お帰りなさい"
+    "scrollDown": "スクロールダウン"
   },
   "trustedBy": {
-    "industryRecognition": "業界認識",
+    "industryRecognition": "業界の認知",
     "headingPrefix": "信頼されている",
     "headingHighlight": "ロボティクス",
-    "headingSuffix": "＆産業リーダー",
-    "description": "ロボティクスと産業オートメーションのパートナーと協力",
+    "headingSuffix": "および産業リーダー",
+    "description": "ロボティクスと産業オートメーションの分野でパートナーと協力",
     "partners": {
       "IVSPartner": "IVSパートナー",
       "IMACSPartner": "IMACSパートナー",
@@ -46,7 +55,233 @@
       "インテリジェンス",
       "オペレーション"
     ],
-    "philosophyStatement": "\"VNX Roboticsは、成功する自動化システムは、スケーラブルなアーキテクチャ、運用信頼性、および規律あるエンジニアリング実行を通じて構築されると信じています。\"",
+    "philosophyStatement": "\"VNX Roboticsは、成功する自動化システムはスケーラブルなアーキテクチャ、運用信頼性、そして規律あるエンジニアリング実行によって構築されると考えています。\"",
     "ctaButton": "私たちのビジョンを探る"
+  },
+  "industriesSection": {
+    "badge": "私たちが支援する産業",
+    "headingPrefix": "インテリジェントシステム",
+    "headingHighlight": "現代産業向け",
+    "description": "世界の産業向けのスケーラブルなロボティクス、オートメーション、インテリジェントインフラストラクチャシステム",
+    "explore": "探る",
+    "industries": {
+      "warehouseLogistics": "倉庫＆ロジスティクス",
+      "warehouseLogisticsDesc": "インテリジェント倉庫システムと自動化インフラ",
+      "manufacturing": "製造業",
+      "manufacturingDesc": "接続された生産システムと産業インテリジェンス",
+      "roboticsAI": "ロボティクス＆AI",
+      "roboticsAIDesc": "将来の運用に向けた高度なロボティクスプラットフォーム",
+      "agricultureSystems": "農業システム",
+      "agricultureSystemsDesc": "現代農業を支える自律技術",
+      "embeddedDevices": "組み込みデバイス",
+      "embeddedDevicesDesc": "次世代自動化を駆動する組み込みシステム",
+      "industrialInfrastructure": "産業インフラ",
+      "industrialInfrastructureDesc": "統合ソフトウェアとスマート運用システム"
+    }
+  },
+  "roboticsSection": {
+    "badge": "高度なロボティクスプログラム",
+    "headingPrefix": "次世代の",
+    "headingHighlight": "ロボティクスシステム構築",
+    "developmentPrograms": "開発プログラム",
+    "developmentSubtitle": "実際のエンジニアリングの進歩を示すアクティブなロボティクスイニシアチブ",
+    "receptionRobot": "レセプションロボット",
+    "quadrupedRobot": "四足歩行ロボット",
+    "techStack": "テクノロジースタック",
+    "techSubtitle": "ロボティクス開発を支える技術能力",
+    "exploreCollaboration": "コラボレーションの機会と高度なロボティクスプログラムを探る",
+    "discussCollaboration": "コラボレーションについて話し合う →",
+    "exploreRobotics": "ロボティクスプログラムを探る",
+    "learnMore": "このプログラムについて詳しく知る",
+    "programs": {
+      "quadruped": {
+        "title": "四足歩行ロボティクスプラットフォーム",
+        "subtitle": "産業点検＆自律移動",
+        "description": "困難な環境での産業点検、自律移動、インテリジェント運用アプリケーションのために積極的に開発中の高度な四足歩行ロボティクスプラットフォーム",
+        "tags": {
+          "mobilitySystems": "移動システム",
+          "embeddedControl": "組み込み制御",
+          "roboticsMiddleware": "ロボティクスミドルウェア",
+          "intelligentLocomotion": "インテリジェント locomotion"
+        },
+        "status": "積極的開発中"
+      },
+      "reception": {
+        "title": "レセプション＆インタラクティブロボティクス",
+        "subtitle": "人間とロボットのインタラクションプラットフォーム",
+        "description": "自律ナビゲーション、インテリジェント応答システム、サービスロボティクス機能を備えた、将来の人間とロボットの運用環境向けに設計されたインタラクティブロボティクスプラットフォーム",
+        "tags": {
+          "humanInteraction": "人間インタラクション",
+          "autonomousNavigation": "自律ナビゲーション",
+          "roboticsSoftware": "ロボティクスソフトウェア",
+          "embeddedSystems": "組み込みシステム"
+        },
+        "status": "開発プログラム"
+      }
+    },
+    "techStackItems": {
+      "roboticsMiddleware": {
+        "name": "ロボティクスミドルウェア",
+        "description": "ROS 2インフラと分散ロボティクスシステム"
+      },
+      "embeddedSystems": {
+        "name": "組み込みシステム",
+        "description": "リアルタイム制御システムとインテリジェントハードウェアプラットフォーム"
+      },
+      "mobilitySystems": {
+        "name": "移動システム",
+        "description": "アクチュエーション、ロコモーション、ロボティクス運動システム"
+      },
+      "operationalIntelligence": {
+        "name": "運用インテリジェンス",
+        "description": "自律運用をサポートするソフトウェアシステム"
+      },
+      "aiAutonomy": {
+        "name": "AIと自律性",
+        "description": "将来のインテリジェントな意思決定と自律ロボティクスインフラ"
+      }
+    }
+  },
+  "ourWorldWideReach": {
+    "titles": [
+      "グローバルロボティクスネットワーク。",
+      "具現化されたインテリジェンス。",
+      "再想像されたオートメーション。",
+      "設計された未来のシステム。"
+    ],
+    "description": "世界中の産業インフラストラクチャネットワークで運用されるリアルタイム接続ロボティクスインテリジェンス",
+    "globalPartners": "グローバルパートナー",
+    "operations": "運用",
+    "countries": "国",
+    "industryCategories": "産業カテゴリー"
+  },
+  "homeBlogSection": {
+    "badge": "インサイトとリソース",
+    "headingPrefix": "最新の",
+    "headingHighlight": "ストーリー",
+    "description": "ロボティクス、AIシステム、インテリジェントオートメーションの未来を形作る洞察、イノベーション、実際のストーリーを探る",
+    "allStories": "すべてのストーリー →"
+  },
+  "footer": {
+    "companyName": "VNX Robotics",
+    "tagline": "超えるために設計された",
+    "description": "次世代産業向けに設計されたインテリジェントロボティクスと自動化システム。",
+    "dashboard": "ダッシュボード",
+    "logout": "ログアウト",
+    "login": "ログイン",
+    "solutions": "ソリューション",
+    "resources": "リソース",
+    "company": "会社情報",
+    "products": "製品",
+    "robotics": "ロボティクス",
+    "industries": "産業",
+    "blogs": "ブログ",
+    "careers": "キャリア",
+    "termsConditions": "利用規約",
+    "about": "会社概要",
+    "contact": "お問い合わせ",
+    "privacyPolicy": "プライバシーポリシー",
+    "copyright": "© {{year}} VNX Robotics. 無断複写・転載を禁じます。",
+    "logoutSuccess": "ログアウトしました",
+    "logoutFailed": "ログアウトに失敗しました"
+  },
+  "contactPage": {
+    "badge": "お問い合わせ",
+    "heading": "会話を",
+    "headingHighlight": "始めましょう",
+    "subheading": "ロボットコンサルティング、共創、専任エンジニアリングチームなど、必要なものをお聞かせください。",
+    "subheadingHighlight": "私たちは常に情熱的な人材を求めています",
+    "subheadingSuffix": "ロボット工学の未来を形作る使命に参加してください。",
+    "nameLabel": "お名前",
+    "namePlaceholder": "山田太郎",
+    "phoneLabel": "電話番号",
+    "phonePlaceholder": "+81 00000 00000",
+    "emailLabel": "メールアドレス",
+    "emailPlaceholder": "hello@vnxrobotics.com",
+    "inquiryTypeLabel": "お問い合わせ種別",
+    "inquiryTypePlaceholder": "種別を選択",
+    "messageLabel": "メッセージ",
+    "messagePlaceholder": "サービスについてもっと知りたいです",
+    "sendButton": "送信",
+    "sendingButton": "送信中...",
+    "errorMessage": "メッセージの送信に失敗しました。もう一度お試しいただくか、直接お問い合わせください。",
+    "successMessage": "✓ ありがとうございます！お問い合わせを送信しました。24-48時間以内にご連絡いたします。",
+    "phoneTitle": "電話",
+    "emailTitle": "メール",
+    "locationTitle": "所在地",
+    "responseNote": "通常24-48時間以内に返信いたします",
+    "inquiryTypes": {
+      "roboticsConsulting": "ロボットコンサルティング",
+      "coCreationPartnership": "共創パートナーシップ",
+      "dedicatedEngineeringTeams": "専任エンジニアリングチーム",
+      "careers": "キャリア",
+      "generalInquiry": "一般お問い合わせ",
+      "technologyCollaboration": "技術協力"
+    }
+  },
+  "aboutPage": {
+    "badge": "VNX Roboticsについて",
+    "heading": "インテリジェントオートメーションと",
+    "headingHighlight": "ロボティクスシステム",
+    "description": "VNX Roboticsは、スケーラブルなシステム、運用インテリジェンス、将来の自律インフラに焦点を当てた、インテリジェントな産業オートメーションとロボティクス技術を開発しています。",
+    "introductionTitle": "インテリジェント産業の",
+    "introductionHighlight": "未来を設計する",
+    "introductionItems": [
+      "産業オートメーション",
+      "ロボティクスエンジニアリング",
+      "組み込みシステム",
+      "運用ソフトウェア",
+      "インテリジェントインフラ開発"
+    ],
+    "ourApproach": "アプローチ",
+    "approachText": "当社のアプローチは、スケーラブルなアーキテクチャ、運用理解、現実的な展開、長期的な技術能力構築を重視しています。",
+    "vision": "ビジョン",
+    "visionText": "スケーラブルなオートメーション、運用インテリジェンス、高度な自律技術を通じて産業運営を変革するインテリジェントなオートメーションとロボティクスシステムを構築すること。",
+    "mission": "ミッション",
+    "missionText": "実用的な産業オートメーションシステム、インテリジェントなロボティクスプラットフォーム、接続された運用技術を開発し、現代産業がスケーラブルな自律インフラへと進化できるようにすること。",
+    "ourLeadership": "リーダーシップ",
+    "leadershipBadge": "リーダーシップとエンジニアリング哲学",
+    "leadershipTitle": "ロボティクスと",
+    "leadershipHighlight": "インテリジェントシステムの深いルーツ",
+    "leadershipText": "VNX Roboticsは、ロボティクス、強化学習、インテリジェントシステム、産業オートメーション思考に深いルーツを持って設立されました。",
+    "leadershipItems": [
+      "システムエンジニアリング",
+      "ロボティクス開発",
+      "産業オートメーション",
+      "運用理解",
+      "長期的技術戦略"
+    ],
+    "leadershipQuote": "\"成功するオートメーションシステムは、高度なロボティクスだけでなく、スケーラブルなアーキテクチャ、運用信頼性、インテリジェントな統合、規律あるエンジニアリング実行によって構築されます。\"",
+    "engineeringTitle": " multidisciplinaryな",
+    "engineeringHighlight": "エンジニアリング能力の構築",
+    "engineeringSubtitle": "VNX Roboticsは、主要な技術領域にわたってチームを段階的に構築しています",
+    "engineeringValues": [
+      "長期的なエンジニアリング思考",
+      "運用理解",
+      "実践的な展開",
+      "継続的な技術成長"
+    ],
+    "technologyTitle": "段階的な",
+    "technologyHighlight": "技術開発",
+    "technologySubtitle": "当社の戦略的成長ロードマップ",
+    "futureTitle": "インテリジェントな",
+    "futureHighlight": "自律インフラに向けて",
+    "futureText": "産業オートメーション、ロボティクスシステム、インテリジェントな運用技術の未来を形作る私たちの旅に参加してください。",
+    "exploreCareers": "キャリアを探す →",
+    "contactUs": "お問い合わせ",
+    "stages": {
+      "stage1": "ステージ1",
+      "stage1Title": "産業オートメーションと統合",
+      "stage1Year": "基盤",
+      "stage2": "ステージ2",
+      "stage2Title": "倉庫システムと運用インテリジェンス",
+      "stage2Year": "拡張",
+      "stage3": "ステージ3",
+      "stage3Title": "ロボティクスプラットフォームと組み込みシステム",
+      "stage3Year": "高度",
+      "stage4": "ステージ4",
+      "stage4Title": "高度な自律産業インフラ",
+      "stage4Year": "未来"
+    }
   }
 }

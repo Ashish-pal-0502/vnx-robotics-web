@@ -11,6 +11,7 @@ export default function AboutPage() {
     hero: useRef(null),
     introduction: useRef(null),
     visionMission: useRef(null),
+    coreValues: useRef(null),
     leadership: useRef(null),
     culture: useRef(null),
     collaborations: useRef(null),
@@ -28,6 +29,7 @@ export default function AboutPage() {
       once: true,
       amount: 0.2,
     }),
+    coreValues: useInView(sectionRefs.coreValues, { once: true, amount: 0.2 }),
     leadership: useInView(sectionRefs.leadership, { once: true, amount: 0.2 }),
     culture: useInView(sectionRefs.culture, { once: true, amount: 0.2 }),
     collaborations: useInView(sectionRefs.collaborations, {
@@ -73,86 +75,97 @@ export default function AboutPage() {
   const leaders = [
     {
       name: "Pham Thanh Huu",
-      role: "Founder & CEO",
-      image: "/leaders/Pham.jpg",
+
+      role: "Founder & Chief Executive Officer",
+      bio: "20+ years of experience in software engineering, technology leadership, and international business across Vietnam, Japan, and North America. (DBA, MEng, LLM)",
+      image: "/leaders/huu.png",
       linkedin: "#",
       twitter: "#",
     },
     {
       name: "Dr. Pramod Pal",
-      role: "Co-founder & CTO",
-      image: "/leaders/Pramod.jpeg",
-      linkedin: "#",
-      twitter: "#",
+      role: "Co-founder & Chief Technology Officer",
+      bio: "5+ years of experience in robotics and AI, leading R&D at VNX Robotics with a focus on intelligent robotic systems. PhD in Robotics from Indian IISc, Bangalore, India.",
+      image: "/leaders/pramod.png",
+      linkedin: "https://www.linkedin.com/in/pramodiisc",
+      twitter: "https://x.com/pramodiisc",
     },
     {
-      name: "Eijri Kent",
-      role: "Chief Operating Officer",
-      image: "/leaders/Ejiri.jpg",
-      linkedin: "#",
-      twitter: "#",
-    },
-    {
-      name: "Andrew Woo",
-      role: "Director of Korea Business Development Division",
-      image: "/leaders/Andrew.jpg",
+      name: "Ejiri Kent",
+      role: "Chief Executive Officer, VNX Robotics Japan",
+      bio: "20+ years of experience in international collaboration and innovation between Japan and Vietnam, with a focus on robotics and AI applications.",
+      image: "/leaders/kent.png",
       linkedin: "#",
       twitter: "#",
     },
     {
       name: "Nobuhiro Sadakuni",
-      role: "Representative Director",
-      image: "/leaders/Nobuhiro_Sadakuni.jpg",
+      role: "Chief Operating Officer, VNX Robotics Japan",
+      bio: "35+ years of experience in Accenture, SoftBank and international business across Japan and global markets, with a focus on innovation and technology leadership.",
+      image: "/leaders/sada.png",
       linkedin: "#",
-      twitter: "#",
+      twitter: "https://x.com/sadakuni1967",
+    },
+    {
+      name: "Andrew Woo",
+      role: "Director, Korea Business Development",
+      bio: "20+ years of experience in technology, business development, and international collaboration across Korea and Vietnam, with a focus on AI, and digital transformation.",
+      image: "/leaders/andrew.png",
+      linkedin: "https://vn.linkedin.com/in/wooandrew",
+      twitter: "https://x.com/woo_andrew",
     },
   ];
 
   return (
     <main className="bg-(--color-dark-100)">
       {/* ========== HERO SECTION ========== */}
+      {/* ========== HERO SECTION ========== */}
       <section
         ref={sectionRefs.hero}
-        className="relative min-h-screen flex items-center overflow-hidden"
+        className="relative min-h-[60vh] lg:min-h-screen flex items-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-20"
       >
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent z-10" />
-          <img
-            src="https://www.shutterstock.com/image-vector/contact-us-customer-support-hotline-600nw-2561218445.jpg"
-            alt="Industrial engineering background"
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div className="absolute inset-0 opacity-[0.03] z-10">
+        {/* Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div
             className="h-full w-full"
             style={{
               backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: "70px 70px",
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
 
-        <div className="relative z-20 max-w-7xl  px-6 md:px-12 py-20">
+        {/* Centered Blue Gradient */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-2xl h-[40vh] max-h-[400px] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(0,136,219,0.3) 0%, rgba(0,109,177,0.15) 50%, transparent 100%)",
+          }}
+        />
+
+        <div className="relative z-20 max-w-7xl px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView.hero ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <div className="mb-5 mt-10 flex items-center gap-3">
-              <div className="h-0.5 w-12 bg-(--color-secondary-400)" />
-              <span className="font-mono text-xs uppercase tracking-[0.28em] text-(--color-secondary-400)">
+            <div className="mb-5 flex items-center gap-3">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
                 About VNX Robotics
               </span>
             </div>
 
-            <h1 className="font-heading text-4xl md:text-5xl  font-bold uppercase leading-tight text-white mb-5">
-              Intelligent Automation & Robotics Systems
+            <h1 className="font-heading text-4xl md:text-5xl font-bold uppercase leading-tight text-white mb-5">
+              Intelligent Automation &{" "}
+              <span className="text-[var(--color-secondary-400)]">
+                Robotics Systems
+              </span>
             </h1>
 
             <p className="font-mono text-base md:text-lg text-(--color-text-secondary) max-w-2xl">
@@ -165,7 +178,7 @@ export default function AboutPage() {
       </section>
 
       {/* ========== COMPANY INTRODUCTION ========== */}
-      <section ref={sectionRefs.introduction} className="relative py-20 ">
+      <section ref={sectionRefs.introduction} className="relative  ">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -288,6 +301,172 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ========== CORE VALUES ========== */}
+      <section
+        ref={sectionRefs.coreValues}
+        className="relative py-5 overflow-hidden bg-[var(--color-dark-200)]"
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView.coreValues ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            {/* <div className="mb-3 flex justify-center">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+            </div> */}
+            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
+              Our Core{" "}
+              <span className="text-[var(--color-secondary-400)]">Values</span>
+            </h2>
+            <p className="font-mono text-sm text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+              The principles that guide everything we build and every decision
+              we make
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                title: "Motion Excellence",
+                description:
+                  "Optimal precision, flexibility, and efficiency in every movement of the robot.",
+              },
+              {
+                title: "Control Precision",
+                description:
+                  "Accurate control is the foundation for reliability and outstanding performance.",
+              },
+              {
+                title: "Practical Innovation",
+                description:
+                  "Innovation that generates practical value, not merely experimental.",
+              },
+              {
+                title: "Technological Autonomy",
+                description:
+                  "The aspiration to master robotics through systems design.",
+              },
+            ].map((value, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView.coreValues ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all duration-300 hover:border-[var(--color-secondary-400)]/40 hover:bg-white/[0.05]"
+              >
+                <div className="mb-4 h-1 w-12 bg-[var(--color-secondary-400)] group-hover:w-16 transition-all duration-300" />
+                <h3 className="font-heading text-xl font-semibold text-white mb-3 group-hover:text-[var(--color-secondary-400)] transition-colors">
+                  {value.title}
+                </h3>
+                <p className="font-mono text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {value.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========== BUSINESS PHILOSOPHY ========== */}
+      <section className="relative py-5 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div
+            className="h-full w-full"
+            style={{
+              backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="mb-3 flex justify-center">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+            </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
+              Business{" "}
+              <span className="text-[var(--color-secondary-400)]">
+                Philosophy
+              </span>
+            </h2>
+            <p className="font-heading text-5xl md:text-6xl font-bold text-[var(--color-secondary-400)] mb-6">
+              Excellence is in our DNA
+            </p>
+            <div className="max-w-3xl mx-auto space-y-4">
+              <p className="font-mono text-xl text-white leading-relaxed">
+                We don't aim to be just another option — we aim to be
+                irreplaceable.
+              </p>
+              <p className="font-mono text-lg text-[var(--color-text-secondary)] leading-relaxed">
+                Our clients choose us because no one else delivers excellence
+                the way we do.
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-3 mt-12">
+            {[
+              {
+                title: "Uncompromising Quality",
+                description:
+                  "Every product meets the highest standards. Mediocrity is not an option.",
+              },
+              {
+                title: "Unmatched Value",
+                description:
+                  "We create unique value for clients that competitors simply cannot replicate.",
+              },
+              {
+                title: "Trusted Partnership",
+                description:
+                  "We act with integrity, take full responsibility, and commit ourselves to every client we serve.",
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className="group rounded-xl border border-white/10 bg-white/[0.02] p-8 text-center transition-all duration-300 hover:border-[var(--color-secondary-400)]/40 hover:bg-white/[0.05]"
+              >
+                <div className="mb-4 h-1 w-12 bg-[var(--color-secondary-400)] mx-auto group-hover:w-20 transition-all duration-300" />
+                <h3 className="font-heading text-xl font-semibold text-white mb-3 group-hover:text-[var(--color-secondary-400)] transition-colors">
+                  {item.title}
+                </h3>
+                {/* <p className="font-mono text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {item.description}
+                </p> */}
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <p className="font-heading text-2xl font-semibold text-white">
+              Excellence is in our DNA
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ========== OUR LEADERSHIP ========== */}
       <section className="relative py-10">
         <div className="max-w-7xl mx-auto px-6">
@@ -315,7 +494,7 @@ export default function AboutPage() {
                   <img
                     src={leader.image}
                     alt={leader.name}
-                    className="h-auto lg:h-full w-full object-cover "
+                    className="h-auto lg:h-full grayscale w-full object-cover "
                   />
 
                   <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
@@ -325,21 +504,28 @@ export default function AboutPage() {
                       {leader.name}
                     </h3>
 
-                    <p className="font-mono text-sm text-gray-300">
+                    <p className="font-body text-sm text-gray-300">
                       {leader.role}
                     </p>
+                    {leader.bio && (
+                      <p className="font-mobo mt-3 text-xs text-gray-200">
+                        {leader?.bio}
+                      </p>
+                    )}
 
                     <div className="mt-4 flex gap-3">
                       <a
                         href={leader.twitter}
-                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
+                        target="_blank"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/30 backdrop-blur"
                       >
                         <IoLogoTwitter />
                       </a>
 
                       <a
                         href={leader.linkedin}
-                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 backdrop-blur"
+                        target="_blank"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/30 backdrop-blur"
                       >
                         <IoLogoLinkedin />
                       </a>
@@ -353,7 +539,7 @@ export default function AboutPage() {
       </section>
 
       {/* ========== LEADERSHIP PHILOSOPHY ========== */}
-      <section ref={sectionRefs.leadership} className="relative py-10">
+      {/* <section ref={sectionRefs.leadership} className="relative py-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -423,7 +609,7 @@ export default function AboutPage() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ========== TEAM & ENGINEERING CULTURE ========== */}
       <section

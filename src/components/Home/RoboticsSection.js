@@ -5,67 +5,73 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { IoArrowForward } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 export default function RoboticsSection() {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const [activeProgram, setActiveProgram] = useState(0);
 
   const programs = [
     {
-      title: "Quadruped Robotics Platform",
-      subtitle: "Industrial Inspection & Autonomous Mobility",
-      description:
-        "Advanced quadruped robotics platform under active development for industrial inspection, autonomous mobility, and intelligent operational applications in challenging environments.",
+      title: t("roboticsSection.programs.quadruped.title"),
+      subtitle: t("roboticsSection.programs.quadruped.subtitle"),
+      description: t("roboticsSection.programs.quadruped.description"),
       tags: [
-        "Mobility Systems",
-        "Embedded Control",
-        "Robotics Middleware",
-        "Intelligent Locomotion",
+        t("roboticsSection.programs.quadruped.tags.mobilitySystems"),
+        t("roboticsSection.programs.quadruped.tags.embeddedControl"),
+        t("roboticsSection.programs.quadruped.tags.roboticsMiddleware"),
+        t("roboticsSection.programs.quadruped.tags.intelligentLocomotion"),
       ],
-      status: "Active Development",
-      videoSrc: "/roboVideos/Industrial_automation.mp4", // Replace with actual video
-      imageSrc: "/images/quadruped.jpeg", // Fallback image
+      status: t("roboticsSection.programs.quadruped.status"),
+      videoSrc: "/roboVideos/Industrial_automation.mp4",
+      imageSrc: "/images/quadruped.jpeg",
     },
     {
-      title: "Reception & Interactive Robotics",
-      subtitle: "Human-Robot Interaction Platform",
-      description:
-        "Interactive robotics platform designed for future human-robot operational environments, featuring autonomous navigation, intelligent response systems, and service robotics capabilities.",
+      title: t("roboticsSection.programs.reception.title"),
+      subtitle: t("roboticsSection.programs.reception.subtitle"),
+      description: t("roboticsSection.programs.reception.description"),
       tags: [
-        "Human Interaction",
-        "Autonomous Navigation",
-        "Robotics Software",
-        "Embedded Systems",
+        t("roboticsSection.programs.reception.tags.humanInteraction"),
+        t("roboticsSection.programs.reception.tags.autonomousNavigation"),
+        t("roboticsSection.programs.reception.tags.roboticsSoftware"),
+        t("roboticsSection.programs.reception.tags.embeddedSystems"),
       ],
-      status: "Development Program",
-      videoSrc: "/mp4/HeroV1.mp4", // Replace with actual video
-      imageSrc: "/roboImages/quadruped.jpeg", // Fallback image
+      status: t("roboticsSection.programs.reception.status"),
+      videoSrc: "/mp4/HeroV1.mp4",
+      imageSrc: "/roboImages/quadruped.jpeg",
     },
   ];
 
   const techStack = [
     {
-      name: "Robotics Middleware",
-      description: "ROS 2 infrastructure and distributed robotics systems",
+      name: t("roboticsSection.techStackItems.roboticsMiddleware.name"),
+      description: t(
+        "roboticsSection.techStackItems.roboticsMiddleware.description",
+      ),
     },
     {
-      name: "Embedded Systems",
-      description:
-        "Real-time control systems and intelligent hardware platforms",
+      name: t("roboticsSection.techStackItems.embeddedSystems.name"),
+      description: t(
+        "roboticsSection.techStackItems.embeddedSystems.description",
+      ),
     },
     {
-      name: "Mobility Systems",
-      description: "Actuation, locomotion, and robotics motion systems",
+      name: t("roboticsSection.techStackItems.mobilitySystems.name"),
+      description: t(
+        "roboticsSection.techStackItems.mobilitySystems.description",
+      ),
     },
     {
-      name: "Operational Intelligence",
-      description: "Software systems supporting autonomous operations",
+      name: t("roboticsSection.techStackItems.operationalIntelligence.name"),
+      description: t(
+        "roboticsSection.techStackItems.operationalIntelligence.description",
+      ),
     },
     {
-      name: "AI & Autonomy",
-      description:
-        "Future intelligent decision-making and autonomous robotics infrastructure",
+      name: t("roboticsSection.techStackItems.aiAutonomy.name"),
+      description: t("roboticsSection.techStackItems.aiAutonomy.description"),
     },
   ];
 
@@ -103,69 +109,28 @@ export default function RoboticsSection() {
           <div className="mb-4 flex items-center justify-center gap-3">
             <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
             <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
-              Advanced Robotics Programs
+              {t("roboticsSection.badge")}
             </span>
             <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
           </div>
 
           <h2 className="font-heading text-2xl font-semibold uppercase leading-tight text-[var(--color-text-primary)] md:text-4xl">
-            Building Next-Generation
+            {t("roboticsSection.headingPrefix")}
             <br />
             <span className="text-[var(--color-secondary-500)]">
-              Robotics Systems
+              {t("roboticsSection.headingHighlight")}
             </span>
           </h2>
-          {/* 
-          <p className="mx-auto mt-6 max-w-2xl font-mono text-sm leading-relaxed text-[var(--color-text-secondary)] md:text-base">
-            Developing intelligent robotics platforms for industrial automation,
-            mobility, inspection, and future autonomous systems
-          </p> */}
         </motion.div>
-
-        {/* Robotics Philosophy */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-20 rounded-2xl border border-white/10 bg-white/[0.02] p-8 backdrop-blur-sm md:p-12"
-        >
-          <div className="grid gap-8 md:grid-cols-2">
-            <div>
-              <h3 className="mb-4 font-heading text-2xl font-semibold text-white">
-                Robotics Built for Real Industrial Systems
-              </h3>
-              <p className="font-mono text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                VNX Robotics approaches robotics as part of larger intelligent
-                operational ecosystems combining automation, embedded systems,
-                software infrastructure, and industrial intelligence.
-              </p>
-            </div>
-            <div className="space-y-3">
-              {[
-                "Operational Usefulness",
-                "Intelligent Mobility",
-                "Scalable Autonomy",
-                "Long-term Robotics Infrastructure",
-              ].map((focus, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  <div className="h-1.5 w-1.5 rounded-full bg-[var(--color-primary-500)]" />
-                  <span className="font-mono text-sm text-[var(--color-text-secondary)]">
-                    {focus}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div> */}
 
         <div className="mb-20">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
             <div>
               <h3 className="font-heading text-2xl font-semibold text-white md:text-3xl">
-                Development Programs
+                {t("roboticsSection.developmentPrograms")}
               </h3>
               <p className="mt-2 font-mono text-sm text-[var(--color-text-muted)]">
-                Active robotics initiatives showing real engineering progress
+                {t("roboticsSection.developmentSubtitle")}
               </p>
             </div>
             <div className="flex gap-2">
@@ -179,7 +144,9 @@ export default function RoboticsSection() {
                       : "border border-white/20 text-[var(--color-text-secondary)] hover:border-white/40"
                   }`}
                 >
-                  {idx === 0 ? "Reception Robot" : "Quadruped Robot"}
+                  {idx === 0
+                    ? t("roboticsSection.receptionRobot")
+                    : t("roboticsSection.quadrupedRobot")}
                 </button>
               ))}
             </div>
@@ -194,8 +161,7 @@ export default function RoboticsSection() {
           >
             <div className="grid md:grid-cols-2">
               {/* Visual Side - Video/Image */}
-              <div className="relative aspect-video md:aspect-auto bg-linear-to-br from-[#006db1]/10 to-transparent overflow-hidden">
-                {/* Video Player */}
+              <div className="relative aspect-video md:aspect-auto bg-gradient-to-br from-[#006db1]/10 to-transparent overflow-hidden">
                 <video
                   autoPlay
                   muted
@@ -208,7 +174,6 @@ export default function RoboticsSection() {
                     src={programs[activeProgram].videoSrc}
                     type="video/mp4"
                   />
-                  {/* Fallback image if video fails */}
                   <img
                     src={programs[activeProgram].imageSrc}
                     alt={programs[activeProgram].title}
@@ -216,10 +181,8 @@ export default function RoboticsSection() {
                   />
                 </video>
 
-                {/* Gradient Overlay for better text readability */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-                {/* Status Badge */}
                 <div className="absolute bottom-4 right-4">
                   <span className="rounded-full bg-[var(--color-primary-500)]/20 backdrop-blur-sm px-3 py-1 font-mono text-xs text-[var(--color-primary-500)] border border-[var(--color-primary-500)]/30">
                     {programs[activeProgram].status}
@@ -252,7 +215,7 @@ export default function RoboticsSection() {
                   href="/robotics"
                   className="inline-flex items-center gap-2 font-mono text-sm text-[var(--color-primary-500)] transition-all hover:gap-3"
                 >
-                  Learn more about this program <IoArrowForward size={16} />
+                  {t("roboticsSection.learnMore")} <IoArrowForward size={16} />
                 </Link>
               </div>
             </div>
@@ -263,10 +226,10 @@ export default function RoboticsSection() {
         <div className="mb-20">
           <div className="mb-10 text-center">
             <h3 className="font-heading text-2xl font-semibold text-white md:text-3xl">
-              Technology Stack
+              {t("roboticsSection.techStack")}
             </h3>
             <p className="mt-2 font-mono text-sm text-[var(--color-text-muted)]">
-              Technical capabilities powering our robotics development
+              {t("roboticsSection.techSubtitle")}
             </p>
           </div>
 
@@ -299,14 +262,14 @@ export default function RoboticsSection() {
           className="mt-16 text-center"
         >
           <p className="mx-auto mb-8 max-w-xl font-mono text-sm text-[var(--color-text-secondary)]">
-            Explore collaboration opportunities and advanced robotics programs
+            {t("roboticsSection.exploreCollaboration")}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/contact" className="btn-primary">
-              Discuss Collaboration →
+              {t("roboticsSection.discussCollaboration")}
             </Link>
             <Link href="/robotics" className="btn-secondary">
-              Explore Robotics Programs
+              {t("roboticsSection.exploreRobotics")}
             </Link>
           </div>
         </motion.div>

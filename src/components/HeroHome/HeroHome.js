@@ -50,7 +50,6 @@ export default function HeroHome() {
     }
 
     if (newVideoUrl && newVideoUrl !== currentVideoSrc.current) {
-      console.log("Updating video URL to:", newVideoUrl);
       currentVideoSrc.current = newVideoUrl;
       setVideoSrc(newVideoUrl);
     }
