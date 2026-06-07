@@ -11,6 +11,7 @@ export default function AboutPage() {
     hero: useRef(null),
     introduction: useRef(null),
     visionMission: useRef(null),
+    coreValues: useRef(null),
     leadership: useRef(null),
     culture: useRef(null),
     collaborations: useRef(null),
@@ -28,6 +29,7 @@ export default function AboutPage() {
       once: true,
       amount: 0.2,
     }),
+    coreValues: useInView(sectionRefs.coreValues, { once: true, amount: 0.2 }),
     leadership: useInView(sectionRefs.leadership, { once: true, amount: 0.2 }),
     culture: useInView(sectionRefs.culture, { once: true, amount: 0.2 }),
     collaborations: useInView(sectionRefs.collaborations, {
@@ -296,6 +298,172 @@ export default function AboutPage() {
               </p>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* ========== CORE VALUES ========== */}
+      <section
+        ref={sectionRefs.coreValues}
+        className="relative py-5 overflow-hidden bg-[var(--color-dark-200)]"
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView.coreValues ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            {/* <div className="mb-3 flex justify-center">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+            </div> */}
+            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
+              Our Core{" "}
+              <span className="text-[var(--color-secondary-400)]">Values</span>
+            </h2>
+            <p className="font-mono text-sm text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+              The principles that guide everything we build and every decision
+              we make
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                title: "Motion Excellence",
+                description:
+                  "Optimal precision, flexibility, and efficiency in every movement of the robot.",
+              },
+              {
+                title: "Control Precision",
+                description:
+                  "Accurate control is the foundation for reliability and outstanding performance.",
+              },
+              {
+                title: "Practical Innovation",
+                description:
+                  "Innovation that generates practical value, not merely experimental.",
+              },
+              {
+                title: "Vietnamese Technological Autonomy",
+                description:
+                  "The aspiration to master robotics through systems designed and built entirely by Vietnamese people.",
+              },
+            ].map((value, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView.coreValues ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all duration-300 hover:border-[var(--color-secondary-400)]/40 hover:bg-white/[0.05]"
+              >
+                <div className="mb-4 h-1 w-12 bg-[var(--color-secondary-400)] group-hover:w-16 transition-all duration-300" />
+                <h3 className="font-heading text-xl font-semibold text-white mb-3 group-hover:text-[var(--color-secondary-400)] transition-colors">
+                  {value.title}
+                </h3>
+                <p className="font-mono text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {value.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========== BUSINESS PHILOSOPHY ========== */}
+      <section className="relative py-5 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div
+            className="h-full w-full"
+            style={{
+              backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+        `,
+              backgroundSize: "60px 60px",
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="mb-3 flex justify-center">
+              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
+            </div>
+            <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
+              Business{" "}
+              <span className="text-[var(--color-secondary-400)]">
+                Philosophy
+              </span>
+            </h2>
+            <p className="font-heading text-5xl md:text-6xl font-bold text-[var(--color-secondary-400)] mb-6">
+              Excellence is in our DNA
+            </p>
+            <div className="max-w-3xl mx-auto space-y-4">
+              <p className="font-mono text-xl text-white leading-relaxed">
+                We don't aim to be just another option — we aim to be
+                irreplaceable.
+              </p>
+              <p className="font-mono text-lg text-[var(--color-text-secondary)] leading-relaxed">
+                Our clients choose us because no one else delivers excellence
+                the way we do.
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-3 mt-12">
+            {[
+              {
+                title: "Uncompromising Quality",
+                description:
+                  "Every product meets the highest standards. Mediocrity is not an option.",
+              },
+              {
+                title: "Unmatched Value",
+                description:
+                  "We create unique value for clients that competitors simply cannot replicate.",
+              },
+              {
+                title: "Trusted Partnership",
+                description:
+                  "We act with integrity, take full responsibility, and commit ourselves to every client we serve.",
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className="group rounded-xl border border-white/10 bg-white/[0.02] p-8 text-center transition-all duration-300 hover:border-[var(--color-secondary-400)]/40 hover:bg-white/[0.05]"
+              >
+                <div className="mb-4 h-1 w-12 bg-[var(--color-secondary-400)] mx-auto group-hover:w-20 transition-all duration-300" />
+                <h3 className="font-heading text-xl font-semibold text-white mb-3 group-hover:text-[var(--color-secondary-400)] transition-colors">
+                  {item.title}
+                </h3>
+                <p className="font-mono text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <p className="font-heading text-2xl font-semibold text-white">
+              Excellence is in our DNA
+            </p>
+          </motion.div>
         </div>
       </section>
 

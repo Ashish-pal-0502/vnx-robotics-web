@@ -2,7 +2,8 @@
 
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import ProductCard from "../../components/Cards/productCard";
 import {
   IoArrowForward,
   IoBuildOutline,
@@ -14,8 +15,82 @@ import {
   IoHardwareChipOutline,
   IoRocketOutline,
 } from "react-icons/io5";
+import apiClient from "./../../api/client";
+
+// Fixed product categories (tabs)
+const productCategories = [
+  {
+    id: "robotics",
+    title: "Robots",
+    icon: <IoGitNetworkOutline size={24} />,
+  },
+  {
+    id: "embedded",
+    title: "Controllers",
+    icon: <IoHardwareChipOutline size={24} />,
+  },
+  {
+    id: "industrial",
+    title: "Equipment",
+    icon: <IoBuildOutline size={24} />,
+  },
+  {
+    id: "software",
+    title: "Software",
+    icon: <IoCodeSlashOutline size={24} />,
+  },
+];
+
+// Helper function to strip HTML tags
+const stripHtml = (html) => {
+  if (!html) return "";
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+};
+
+// Map category id to matching keywords for filtering
+const getCategoryKeywords = (categoryId) => {
+  switch (categoryId) {
+    case "robotics":
+      return ["robot", "quadruped", "amr", "mobile robot", "inspection"];
+    case "embedded":
+      return [
+        "controller",
+        "power distribution",
+        "jetson",
+        "interface",
+        "embedded",
+        "board",
+      ];
+    case "industrial":
+      return [
+        "conveyor",
+        "sorting",
+        "picking",
+        "vision inspection",
+        "industrial",
+        "equipment",
+      ];
+    case "software":
+      return [
+        "software",
+        "platform",
+        "middleware",
+        "intelligence",
+        "dashboard",
+        "factory",
+      ];
+    default:
+      return [];
+  }
+};
 
 export default function ProductsPage() {
+  const [activeCategory, setActiveCategory] = useState("robotics");
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const sectionRefs = {
     hero: useRef(null),
     products: useRef(null),
@@ -26,63 +101,77 @@ export default function ProductsPage() {
     products: useInView(sectionRefs.products, { once: true, amount: 0.1 }),
   };
 
-  const productCategories = [
-    {
-      id: "robotics",
-      title: "Robotics Products",
-      icon: <IoGitNetworkOutline size={28} />,
-      description:
-        "Advanced robotics platforms for industrial mobility and autonomous operations",
-      link: "/robotics",
-      items: [
-        "Quadruped Robots",
-        "Single-Leg Quadruped Development Kit",
-        "Future AMR Products",
-        "Educational & Research Robots",
-      ],
-    },
-    {
-      id: "embedded",
-      title: "Embedded Products",
-      icon: <IoHardwareChipOutline size={28} />,
-      description:
-        "Embedded systems and controllers powering intelligent robotics",
-      link: "",
-      items: [
-        "AMR Power Distribution Board - Standard Version",
-        "AMR Power Distribution Board - Jetson Nano Integrated",
-        "Reception / Interface Board",
-        "Future Embedded Controllers",
-      ],
-    },
-    {
-      id: "industrial",
-      title: "Industrial Automation Products",
-      icon: <IoBuildOutline size={28} />,
-      description:
-        "Complete automation solutions for manufacturing and logistics",
-      link: "",
-      items: [
-        "Conveyor Systems",
-        "Picking & Sorting Systems",
-        "Automation Controllers",
-        "Vision Inspection Systems",
-      ],
-    },
-    {
-      id: "software",
-      title: "Software Products",
-      icon: <IoCodeSlashOutline size={28} />,
-      description: "Intelligent software platforms for operational excellence",
-      link: "",
-      items: [
-        "Smart Factory Solution",
-        "Operational Dashboards",
-        "Robotics Middleware",
-        "Warehouse Intelligence Platform",
-      ],
-    },
-  ];
+  // Map category string from backend to category id
+  const mapCategoryToId = (category) => {
+    const categoryMap = {
+      Robots: "robotics",
+      Controllers: "embedded",
+      Equipment: "industrial",
+      Software: "software",
+    };
+    return categoryMap[category] || "robotics";
+  };
+
+  const getAllProducts = async () => {
+    try {
+      const response = await apiClient.get("/robot/get");
+
+      if (response.ok && response.data?.success) {
+        const robotsData = response.data.robots || [];
+
+        // Transform products to match ProductCard format
+        const transformedProducts = robotsData.map((robot) => ({
+          _id: robot._id,
+          title: stripHtml(robot.name),
+          slug: robot.slug,
+          image: robot.images?.[0]?.url || "/images/placeholder-robot.jpg",
+          description: stripHtml(
+            robot.description ||
+              "Advanced robotics platform under development.",
+          ),
+          category: robot.category || "",
+          // Map category string to category id for filtering
+          categoryId: mapCategoryToId(robot.category),
+          keyPoints: robot.keyPoints || [],
+          searchText:
+            `${stripHtml(robot.name)} ${robot.category || ""} ${stripHtml(robot.description || "")}`.toLowerCase(),
+        }));
+
+        setAllProducts(transformedProducts);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  // Filter products based on active category
+  // const getFilteredProducts = () => {
+  //   const keywords = getCategoryKeywords(activeCategory);
+
+  //   return allProducts.filter((product) => {
+  //     const searchText = product.searchText;
+  //     // Check if product matches any keyword for this category
+  //     return keywords.some((keyword) => searchText.includes(keyword));
+  //   });
+  // };
+
+  const getFilteredProducts = () => {
+    return allProducts.filter((product) => {
+      return product.categoryId === activeCategory;
+    });
+  };
+
+  const filteredProducts = getFilteredProducts();
+  const selectedCategory = productCategories.find(
+    (cat) => cat.id === activeCategory,
+  );
+  const hasNoProducts = filteredProducts.length === 0;
 
   const roboticsHighlights = [
     {
@@ -110,10 +199,9 @@ export default function ProductsPage() {
   return (
     <main className="bg-[var(--color-dark-100)]">
       {/* ========== HERO SECTION ========== */}
-
       <section
         ref={sectionRefs.hero}
-        className="relative min-h-[60vh] lg:min-h-screen  flex items-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-20"
+        className="relative min-h-[60vh] lg:min-h-screen flex items-center overflow-hidden pt-24 pb-12 md:pt-32 md:pb-20"
       >
         {/* Grid Background */}
         <div className="absolute inset-0 opacity-[0.03]">
@@ -165,7 +253,7 @@ export default function ProductsPage() {
               <Link href="/contact" className="btn-primary">
                 Discuss Your Requirements →
               </Link>
-              <Link href="/solutions" className="btn-secondary">
+              <Link href="/robotics" className="btn-secondary">
                 Explore Solutions
               </Link>
             </div>
@@ -173,76 +261,89 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* ========== PRODUCT CATEGORIES ========== */}
+      {/* ========== PRODUCTS ========== */}
       <section
         ref={sectionRefs.products}
-        className="relative py-4 overflow-hidden"
+        className="relative py-20 overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div
-            className="h-full w-full"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: "60px 60px",
-            }}
-          />
-        </div>
-
-        <div className="absolute -left-32 top-1/3 h-80 w-80 rounded-full bg-[#006db1]/15 blur-3xl" />
-        <div className="absolute -right-32 bottom-1/4 h-80 w-80 rounded-full bg-[#ffba22]/5 blur-3xl" />
-
         <div className="relative z-10 max-w-7xl mx-auto px-6">
-          {/* Product Categories Grid */}
-          <div className="grid gap-8 md:grid-cols-2">
-            {productCategories.map((category, idx) => (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView.products ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true, amount: 0.1 }}
-                className="group rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden hover:border-[var(--color-primary-500)]/30 transition-all duration-300"
-              >
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="text-[var(--color-primary-500)] group-hover:text-[var(--color-secondary-400)] transition-colors">
-                      {category.icon}
-                    </div>
-                    {category.link && (
-                      <Link
-                        href={category.link}
-                        className="inline-flex items-center gap-1 text-sm font-mono text-[var(--color-text-muted)] hover:text-[var(--color-secondary-400)] transition-colors"
-                      >
-                        View all <IoArrowForward size={12} />
-                      </Link>
-                    )}
-                  </div>
+          {/* Heading */}
+          <div className="mb-12">
+            <h2 className="font-heading text-4xl md:text-5xl font-bold uppercase text-white mb-8">
+              Products
+            </h2>
 
-                  <h3 className="font-heading text-2xl font-semibold text-white mb-2">
-                    {category.title}
-                  </h3>
+            {/* Category Tabs - Fixed categories */}
+            <div className="flex flex-wrap gap-8 mb-12 border-b border-white/10">
+              {productCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`
+                    relative
+                    pb-5
+                    text-lg
+                    font-medium
+                    transition-all
+                    duration-300
+                    ${
+                      activeCategory === category.id
+                        ? "text-white"
+                        : "text-gray-400 hover:text-white cursor-pointer font-mono"
+                    }
+                  `}
+                >
+                  {category.title}
 
-                  <p className="font-mono text-sm text-[var(--color-text-secondary)] mb-4">
-                    {category.description}
-                  </p>
+                  {activeCategory === category.id && (
+                    <span className="absolute left-0 bottom-0 h-[3px] w-full bg-blue-400" />
+                  )}
+                </button>
+              ))}
+            </div>
 
-                  <div className="space-y-2 pt-4 border-t border-white/10">
-                    {category.items.map((item, itemIdx) => (
-                      <div key={itemIdx} className="flex items-center gap-2">
-                        <div className="w-1 h-1 rounded-full bg-[var(--color-secondary-400)]" />
-                        <span className="font-body text-sm text-[var(--color-text-muted)] group-hover:text-[var(--color-text-secondary)] transition-colors">
-                          {item}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            {/* Category Icon & Title */}
+            {selectedCategory && (
+              <div className="flex items-center gap-4 mb-10">
+                <div className="text-[#0088db]">{selectedCategory.icon}</div>
+                <h3 className="text-2xl font-semibold text-white">
+                  {selectedCategory.title}
+                </h3>
+              </div>
+            )}
           </div>
+
+          {/* Products Grid */}
+          {hasNoProducts ? (
+            <div className="text-center py-20">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/5 mb-6">
+                <IoBuildOutline
+                  size={40}
+                  className="text-[var(--color-text-muted)]"
+                />
+              </div>
+              <h3 className="font-heading text-2xl font-semibold text-white mb-2">
+                No Products in {selectedCategory?.title}
+              </h3>
+              <p className="font-mono text-[var(--color-text-secondary)] max-w-md mx-auto">
+                We're currently adding products to this category. Please check
+                back soon for our latest robotics and automation solutions.
+              </p>
+              <Link href="/contact" className="btn-primary inline-flex mt-8">
+                Contact for Inquiries
+              </Link>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+              {filteredProducts.map((product, index) => (
+                <ProductCard
+                  key={product._id}
+                  product={product}
+                  index={index}
+                />
+              ))}
+            </div>
+          )}
 
           {/* Robotics Highlights Section */}
           <motion.div
@@ -294,7 +395,7 @@ export default function ProductsPage() {
             </div>
           </motion.div>
 
-          {/* CTA Section */}
+          {/* Custom Solution CTA */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView.products ? { opacity: 1, y: 0 } : {}}
