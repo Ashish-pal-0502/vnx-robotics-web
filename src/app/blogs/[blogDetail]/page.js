@@ -48,10 +48,10 @@ export default function BlogDetailPage() {
 
   if (loading) {
     return (
-      <main className="bg-[var(--color-dark-100)] min-h-screen flex items-center justify-center">
+      <main className="bg-(--color-dark-100) min-h-screen flex items-center justify-center">
         <div className="text-center px-6">
-          <div className="w-12 h-12 border-4 border-[var(--color-secondary-400)] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-[var(--color-text-secondary)]">
+          <div className="w-12 h-12 border-4 border-(--color-secondary-400) border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-(--color-text-secondary)">
             Loading article...
           </p>
         </div>
@@ -61,12 +61,12 @@ export default function BlogDetailPage() {
 
   if (!blog) {
     return (
-      <main className="bg-[var(--color-dark-100)] min-h-screen font-body flex items-center justify-center">
+      <main className="bg-(--color-dark-100) min-h-screen font-body flex items-center justify-center">
         <div className="text-center px-6">
           <h1 className="font-heading text-4xl font-bold text-white mb-4">
             Blog Not Found
           </h1>
-          <p className="text-[var(--color-text-secondary)] mb-8">
+          <p className="text-(--color-text-secondary) mb-8">
             The article you're looking for doesn't exist.
           </p>
           <Link
@@ -81,7 +81,7 @@ export default function BlogDetailPage() {
   }
 
   return (
-    <main className="bg-[var(--color-dark-100)] min-h-screen">
+    <main className="bg-(--color-dark-100) min-h-screen">
       {/* ========== HERO SECTION ========== */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-20 overflow-hidden">
         {/* Grid Background */}
@@ -99,7 +99,7 @@ export default function BlogDetailPage() {
         </div>
 
         {/* Subtle Radial Glow */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] max-w-3xl h-[40vh] rounded-full bg-[var(--color-primary-500)]/8 blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] max-w-3xl h-[40vh] rounded-full bg-(--color-primary-500)/8 blur-3xl" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6">
           <motion.div
@@ -110,7 +110,7 @@ export default function BlogDetailPage() {
             {/* Back Button */}
             <Link
               href="/blogs"
-              className="inline-flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-[var(--color-secondary-400)] transition-colors mb-8 font-mono text-sm group"
+              className="inline-flex items-center gap-2 text-(--color-text-secondary) hover:text-(--color-secondary-400) transition-colors mb-8 font-mono text-sm group"
             >
               <IoArrowBack
                 size={16}
@@ -121,9 +121,9 @@ export default function BlogDetailPage() {
 
             {/* Category Badge */}
             {blog.category && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--color-secondary-400)]/20 bg-[var(--color-secondary-400)]/5 mb-6">
-                <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-secondary-400)]" />
-                <span className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--color-secondary-400)]">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-(--color-secondary-400)/20 bg-(--color-secondary-400)/5 mb-6">
+                <div className="w-1.5 h-1.5 rounded-full bg-(--color-secondary-400)" />
+                <span className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-(--color-secondary-400)">
                   {blog.category}
                 </span>
               </div>
@@ -139,7 +139,7 @@ export default function BlogDetailPage() {
 
             {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-6 mb-8 pb-8 border-b border-white/10">
-              <div className="flex items-center gap-2 text-[var(--color-text-muted)]">
+              <div className="flex items-center gap-2 text-(--color-text-muted)">
                 <IoCalendarOutline size={16} />
                 <span className="font-mono text-sm">
                   {new Date(blog.createdAt).toLocaleDateString("en-IN", {
@@ -149,13 +149,13 @@ export default function BlogDetailPage() {
                   })}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-[var(--color-text-muted)]">
+              <div className="flex items-center gap-2 text-(--color-text-muted)">
                 <IoTimeOutline size={16} />
                 <span className="font-mono text-sm">{"3 min read"}</span>
               </div>
               {/* {blog.readTime && (
               )} */}
-              <div className="flex items-center gap-2 text-[var(--color-text-muted)]">
+              <div className="flex items-center gap-2 text-(--color-text-muted)">
                 <IoPersonOutline size={16} />
                 <span className="font-mono text-sm">{"Dharmendra Dev"}</span>
               </div>
@@ -165,7 +165,7 @@ export default function BlogDetailPage() {
 
             {/* Featured Image */}
             {blog.image && blog.image[0]?.url && (
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 mb-10 aspect-[16/9]">
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 mb-10 aspect-video">
                 <Image
                   src={blog.image[0].url}
                   alt={blog.heading || blog.title}
@@ -183,7 +183,7 @@ export default function BlogDetailPage() {
                   navigator.clipboard.writeText(window.location.href);
                   toast.success("Link copied to clipboard!");
                 }}
-                className="inline-flex items-center cursor-pointer gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-secondary-400)] hover:border-[var(--color-secondary-400)]/30 transition-all"
+                className="inline-flex items-center cursor-pointer gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/2 font-mono text-sm text-(--color-text-secondary) hover:text-(--color-secondary-400) hover:border-(--color-secondary-400)/30 transition-all"
               >
                 <IoShareSocialOutline size={16} /> Share
               </button>
@@ -206,7 +206,7 @@ export default function BlogDetailPage() {
                 // Optional: Customize specific elements
                 if (node.name === "img") {
                   return (
-                    <div className="relative w-full h-[400px] my-8 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-100 my-8 rounded-xl overflow-hidden">
                       <Image
                         src={node.attribs.src}
                         alt={node.attribs.alt || "Blog image"}
@@ -235,7 +235,7 @@ export default function BlogDetailPage() {
                   navigator.clipboard.writeText(window.location.href);
                   toast.success("Link copied to clipboard!");
                 }}
-                className="inline-flex items-center cursor-pointer gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-secondary-400)] transition-all"
+                className="inline-flex items-center cursor-pointer gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/2 font-mono text-sm text-(--color-text-secondary) hover:text-(--color-secondary-400) transition-all"
               >
                 <IoShareSocialOutline size={16} /> Share this article
               </button>

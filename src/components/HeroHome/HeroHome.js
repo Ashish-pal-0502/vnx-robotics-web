@@ -123,7 +123,7 @@ export default function HeroHome() {
 
         {/* Fallback gradient while video loads */}
         {!videoSrc && (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a2e]" />
+          <div className="absolute inset-0 bg-linear-to-br from-[#0a0a0a] to-[#1a1a2e]" />
         )}
 
         {/* CONTENT */}

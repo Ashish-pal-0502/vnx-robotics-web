@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useMemo, useState } from "react";
 import apiClient from "@/api/client";
 import toast from "react-hot-toast";
@@ -12,10 +11,8 @@ import {
   FiChevronRight,
   FiSearch,
   FiX,
-  FiFilter,
   FiGrid,
   FiList,
-  FiEye,
   FiClock,
   FiTag,
 } from "react-icons/fi";
@@ -141,7 +138,7 @@ const BlogList = ({ onEdit }) => {
   };
 
   /* =========================
-     HIGHLIGHT TEXT
+     HIGHLIGHT TEXT (Dark Theme)
   ========================= */
   const highlightText = (text, query) => {
     if (!query || !text) return text;
@@ -154,7 +151,7 @@ const BlogList = ({ onEdit }) => {
       regex.test(part) ? (
         <mark
           key={index}
-          className="bg-yellow-200 text-gray-900 px-0.5 rounded"
+          className="bg-[#ffba22]/30 text-[#ffba22] px-0.5 rounded"
         >
           {part}
         </mark>
@@ -165,26 +162,26 @@ const BlogList = ({ onEdit }) => {
   };
 
   /* =========================
-     LOADING SKELETON
+     LOADING SKELETON (Dark Theme)
   ========================= */
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+      <div className="min-h-screen bg-linear-to-br from-[#0b1020] to-[#050816] p-4 md:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-pulse">
-            <div className="p-6 border-b border-gray-100">
+          <div className="bg-[#111827] rounded-2xl border border-[#27324a] overflow-hidden animate-pulse">
+            <div className="p-6 border-b border-[#27324a]">
               <div className="flex justify-between items-center">
                 <div className="space-y-3">
-                  <div className="h-8 w-48 bg-gray-200 rounded-lg"></div>
-                  <div className="h-4 w-64 bg-gray-100 rounded-lg"></div>
+                  <div className="h-8 w-48 bg-[#1f2638] rounded-lg"></div>
+                  <div className="h-4 w-64 bg-[#1f2638] rounded-lg"></div>
                 </div>
-                <div className="h-12 w-32 bg-gray-100 rounded-xl"></div>
+                <div className="h-12 w-32 bg-[#1f2638] rounded-xl"></div>
               </div>
             </div>
             <div className="p-6">
               <div className="space-y-4">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="h-32 bg-gray-100 rounded-xl"></div>
+                  <div key={i} className="h-32 bg-[#1f2638] rounded-xl"></div>
                 ))}
               </div>
             </div>
@@ -195,39 +192,39 @@ const BlogList = ({ onEdit }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-linear-to-br from-[#0b1020] to-[#050816] p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-6 md:mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-xl shadow-lg">
+              <div className="p-3 bg-linear-to-br from-[#0088db] to-[#006db1] rounded-xl shadow-lg">
                 <FiFileText className="text-white" size={24} />
               </div>
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+                <h1 className="text-2xl md:text-3xl font-heading font-bold text-[#f3f4f6]">
                   Blog Management
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-[#a1a1aa] mt-1">
                   Manage, edit and organize your blog posts
                 </p>
               </div>
             </div>
 
-            {/* Stats Cards */}
+            {/* Stats Cards - Dark Theme */}
             <div className="flex gap-3">
-              <div className="bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100">
-                <p className="text-xs text-gray-500 uppercase">Total Blogs</p>
-                <p className="text-2xl font-bold text-[#1f3b57]">
+              <div className="bg-[#111827] rounded-xl px-4 py-2 shadow-md border border-[#27324a]">
+                <p className="text-xs text-[#71717a] uppercase">Total Blogs</p>
+                <p className="text-2xl font-bold text-[#0088db]">
                   {blogs.length}
                 </p>
               </div>
               {searchQuery && (
-                <div className="bg-blue-50 rounded-xl px-4 py-2 shadow-sm border border-blue-100">
-                  <p className="text-xs text-blue-600 uppercase">
+                <div className="bg-[#0088db]/10 rounded-xl px-4 py-2 shadow-md border border-[#0088db]/20">
+                  <p className="text-xs text-[#0088db] uppercase">
                     Search Results
                   </p>
-                  <p className="text-2xl font-bold text-blue-700">
+                  <p className="text-2xl font-bold text-[#0088db]">
                     {filteredBlogs.length}
                   </p>
                 </div>
@@ -237,14 +234,14 @@ const BlogList = ({ onEdit }) => {
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-[#111827] rounded-2xl shadow-xl border border-[#27324a] overflow-hidden">
           {/* Search and Filters Bar */}
-          <div className="border-b border-gray-100 bg-gray-50/50 p-4 md:p-6">
+          <div className="border-b border-[#27324a] bg-[#0b1020] p-4 md:p-6">
             <div className="flex flex-col md:flex-row gap-4">
               {/* Search Bar */}
               <div className="flex-1 relative">
                 <FiSearch
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-[#71717a]"
                   size={18}
                 />
                 <input
@@ -252,12 +249,12 @@ const BlogList = ({ onEdit }) => {
                   placeholder="Search blogs by title or description..."
                   value={searchQuery}
                   onChange={handleSearch}
-                  className="w-full pl-11 pr-10 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#1f3b57]/20 focus:border-[#1f3b57] transition"
+                  className="w-full pl-11 pr-10 py-3 rounded-xl border border-[#27324a] bg-[#0b1020] text-[#f3f4f6] placeholder:text-[#71717a] focus:outline-none focus:ring-2 focus:ring-[#0088db]/20 focus:border-[#0088db] transition"
                 />
                 {searchQuery && (
                   <button
                     onClick={clearSearch}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#71717a] hover:text-[#a1a1aa]"
                   >
                     <FiX size={18} />
                   </button>
@@ -269,24 +266,32 @@ const BlogList = ({ onEdit }) => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#1f3b57]/20 text-sm"
+                  className="px-4 py-3 rounded-xl border border-[#27324a] bg-[#0b1020] text-[#f3f4f6] focus:outline-none focus:ring-2 focus:ring-[#0088db]/20 text-sm cursor-pointer"
                 >
                   <option value="newest">Newest First</option>
                   <option value="oldest">Oldest First</option>
                   <option value="title">Sort by Title</option>
                 </select>
 
-                <div className="flex border border-gray-200 rounded-xl overflow-hidden bg-white">
+                <div className="flex border border-[#27324a] rounded-xl overflow-hidden bg-[#0b1020]">
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`p-3 px-4 transition ${viewMode === "list" ? "bg-[#1f3b57] text-white" : "text-gray-600 hover:bg-gray-50"}`}
+                    className={`p-3 px-4 transition ${
+                      viewMode === "list"
+                        ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white"
+                        : "text-[#a1a1aa] hover:bg-[#1f2638]"
+                    }`}
                     title="List View"
                   >
                     <FiList size={18} />
                   </button>
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`p-3 px-4 transition ${viewMode === "grid" ? "bg-[#1f3b57] text-white" : "text-gray-600 hover:bg-gray-50"}`}
+                    className={`p-3 px-4 transition ${
+                      viewMode === "grid"
+                        ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white"
+                        : "text-[#a1a1aa] hover:bg-[#1f2638]"
+                    }`}
                     title="Grid View"
                   >
                     <FiGrid size={18} />
@@ -296,20 +301,20 @@ const BlogList = ({ onEdit }) => {
             </div>
           </div>
 
-          {/* Empty State */}
+          {/* Empty State - Dark Theme */}
           {filteredBlogs.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
+              <div className="w-24 h-24 bg-linear-to-br from-[#1f2638] to-[#1f2638] rounded-full flex items-center justify-center mb-6">
                 {searchQuery ? (
-                  <FiSearch size={40} className="text-gray-400" />
+                  <FiSearch size={40} className="text-[#71717a]" />
                 ) : (
-                  <FiFileText size={40} className="text-gray-400" />
+                  <FiFileText size={40} className="text-[#71717a]" />
                 )}
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <h3 className="text-xl font-semibold text-[#f3f4f6] mb-2">
                 {searchQuery ? "No Matching Blogs Found" : "No Blogs Yet"}
               </h3>
-              <p className="text-gray-500 max-w-md">
+              <p className="text-[#a1a1aa] max-w-md">
                 {searchQuery
                   ? `No blogs match "${searchQuery}". Try a different search term.`
                   : "There are currently no blog posts available."}
@@ -317,7 +322,7 @@ const BlogList = ({ onEdit }) => {
               {searchQuery && (
                 <button
                   onClick={clearSearch}
-                  className="mt-6 px-6 py-2 bg-[#1f3b57] text-white rounded-xl hover:bg-[#2a4d72] transition"
+                  className="mt-6 px-6 py-2 btn-primary"
                 >
                   Clear Search
                 </button>
@@ -325,9 +330,9 @@ const BlogList = ({ onEdit }) => {
             </div>
           ) : (
             <>
-              {/* Blog List View */}
+              {/* Blog List View - Dark Theme */}
               {viewMode === "list" && (
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-[#27324a]">
                   {paginatedBlogs.map((blog, index) => {
                     const cleanHeading = stripHtml(blog.heading);
                     const cleanDescription = stripHtml(
@@ -339,12 +344,12 @@ const BlogList = ({ onEdit }) => {
                     return (
                       <div
                         key={blog._id}
-                        className="p-4 md:p-6 hover:bg-gray-50 transition group"
+                        className="p-4 md:p-6 hover:bg-[#1f2638] transition group"
                       >
                         <div className="flex flex-col md:flex-row gap-4">
                           {/* Image */}
                           {firstImage && (
-                            <div className="relative md:w-48 h-48 md:h-32 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+                            <div className="relative md:w-48 h-48 md:h-32 rounded-xl overflow-hidden bg-[#0b1020] shrink-0 border border-[#27324a]">
                               <img
                                 src={firstImage}
                                 alt={cleanHeading}
@@ -355,7 +360,7 @@ const BlogList = ({ onEdit }) => {
 
                           {/* Content */}
                           <div className="flex-1">
-                            <h3 className="font-semibold text-lg md:text-xl text-gray-800 mb-2 line-clamp-1">
+                            <h3 className="font-heading font-semibold text-lg md:text-xl text-[#f3f4f6] mb-2 line-clamp-1">
                               {searchQuery
                                 ? highlightText(
                                     cleanHeading || "Untitled",
@@ -364,7 +369,7 @@ const BlogList = ({ onEdit }) => {
                                 : cleanHeading || "Untitled"}
                             </h3>
 
-                            <p className="text-gray-500 text-sm leading-6 line-clamp-2 mb-3">
+                            <p className="text-[#a1a1aa] text-sm leading-6 line-clamp-2 mb-3">
                               {searchQuery && cleanDescription
                                 ? highlightText(
                                     cleanDescription.slice(0, 150),
@@ -375,7 +380,7 @@ const BlogList = ({ onEdit }) => {
                             </p>
 
                             <div className="flex flex-wrap items-center justify-between gap-3">
-                              <div className="flex items-center gap-4 text-xs text-gray-400">
+                              <div className="flex items-center gap-4 text-xs text-[#71717a]">
                                 <div className="flex items-center gap-1">
                                   <FiCalendar size={12} />
                                   {new Date(
@@ -400,14 +405,14 @@ const BlogList = ({ onEdit }) => {
                               <div className="flex gap-2">
                                 <button
                                   onClick={() => onEdit(blog)}
-                                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1f3b57] text-white text-sm hover:bg-[#2a4d72] transition shadow-sm"
+                                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-linear-to-r from-[#0088db] to-[#006db1] text-white text-sm hover:shadow-lg transition shadow-md"
                                 >
                                   <FiEdit2 size={14} />
                                   Edit
                                 </button>
                                 <button
                                   onClick={() => handleDelete(blog._id)}
-                                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 text-red-600 text-sm hover:bg-red-100 transition"
+                                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 text-red-400 text-sm hover:bg-red-500/20 transition"
                                 >
                                   <FiTrash2 size={14} />
                                   Delete
@@ -422,7 +427,7 @@ const BlogList = ({ onEdit }) => {
                 </div>
               )}
 
-              {/* Blog Grid View */}
+              {/* Blog Grid View - Dark Theme */}
               {viewMode === "grid" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
                   {paginatedBlogs.map((blog) => {
@@ -436,10 +441,10 @@ const BlogList = ({ onEdit }) => {
                     return (
                       <div
                         key={blog._id}
-                        className="group bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300"
+                        className="group bg-[#0b1020] rounded-xl overflow-hidden border border-[#27324a] hover:border-[#0088db]/30 hover:shadow-xl transition-all duration-300"
                       >
                         {/* Image */}
-                        <div className="relative h-48 overflow-hidden bg-gray-100">
+                        <div className="relative h-48 overflow-hidden bg-[#1f2638]">
                           {firstImage ? (
                             <img
                               src={firstImage}
@@ -447,12 +452,15 @@ const BlogList = ({ onEdit }) => {
                               className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                             />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                              <FiFileText size={48} className="text-gray-400" />
+                            <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-[#1f2638] to-[#1f2638]">
+                              <FiFileText
+                                size={48}
+                                className="text-[#71717a]"
+                              />
                             </div>
                           )}
                           <div className="absolute top-2 right-2">
-                            <span className="bg-black/50 backdrop-blur text-white text-xs px-2 py-1 rounded-full">
+                            <span className="bg-black/70 backdrop-blur text-[#a1a1aa] text-xs px-2 py-1 rounded-full">
                               {new Date(blog.createdAt).toLocaleDateString()}
                             </span>
                           </div>
@@ -460,7 +468,7 @@ const BlogList = ({ onEdit }) => {
 
                         {/* Content */}
                         <div className="p-4">
-                          <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[3rem]">
+                          <h3 className="font-heading font-semibold text-[#f3f4f6] mb-2 line-clamp-2 min-h-[3rem]">
                             {searchQuery
                               ? highlightText(
                                   cleanHeading || "Untitled",
@@ -469,7 +477,7 @@ const BlogList = ({ onEdit }) => {
                               : cleanHeading || "Untitled"}
                           </h3>
 
-                          <p className="text-gray-500 text-sm leading-6 line-clamp-3 mb-4 min-h-[4.5rem]">
+                          <p className="text-[#a1a1aa] text-sm leading-6 line-clamp-3 mb-4 min-h-[4.5rem]">
                             {cleanDescription?.slice(0, 100) ||
                               "No description available"}
                           </p>
@@ -477,14 +485,14 @@ const BlogList = ({ onEdit }) => {
                           <div className="flex gap-2">
                             <button
                               onClick={() => onEdit(blog)}
-                              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-[#1f3b57] text-white text-sm hover:bg-[#2a4d72] transition"
+                              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-linear-to-r from-[#0088db] to-[#006db1] text-white text-sm hover:shadow-lg transition"
                             >
                               <FiEdit2 size={14} />
                               Edit
                             </button>
                             <button
                               onClick={() => handleDelete(blog._id)}
-                              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-50 text-red-600 text-sm hover:bg-red-100 transition"
+                              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 text-red-400 text-sm hover:bg-red-500/20 transition"
                             >
                               <FiTrash2 size={14} />
                               Delete
@@ -497,22 +505,22 @@ const BlogList = ({ onEdit }) => {
                 </div>
               )}
 
-              {/* Pagination */}
+              {/* Pagination - Dark Theme */}
               {totalPages > 1 && (
-                <div className="border-t border-gray-100 px-4 py-5 md:px-6 bg-gray-50/50">
+                <div className="border-t border-[#27324a] px-4 py-5 md:px-6 bg-[#0b1020]/30">
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-[#71717a]">
                       Showing{" "}
-                      <span className="font-semibold text-gray-700">
+                      <span className="font-semibold text-[#f3f4f6]">
                         {paginatedBlogs.length}
                       </span>{" "}
                       of{" "}
-                      <span className="font-semibold text-gray-700">
+                      <span className="font-semibold text-[#f3f4f6]">
                         {filteredBlogs.length}
                       </span>{" "}
                       blogs
                       {searchQuery && (
-                        <span className="ml-2 text-blue-600">(Filtered)</span>
+                        <span className="ml-2 text-[#0088db]">(Filtered)</span>
                       )}
                     </div>
 
@@ -520,7 +528,7 @@ const BlogList = ({ onEdit }) => {
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
+                        className="px-4 py-2 rounded-xl border border-[#27324a] bg-[#0b1020] hover:bg-[#1f2638] disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium text-[#a1a1aa]"
                       >
                         <FiChevronLeft size={16} />
                         Previous
@@ -545,10 +553,10 @@ const BlogList = ({ onEdit }) => {
                               <button
                                 key={pageNum}
                                 onClick={() => handlePageChange(pageNum)}
-                                className={`w-10 h-10 rounded-lg text-sm font-semibold transition ${
+                                className={`w-10 h-10 rounded-xl text-sm font-semibold transition ${
                                   currentPage === pageNum
-                                    ? "bg-[#1f3b57] text-white shadow-md"
-                                    : "bg-white border border-gray-200 hover:bg-gray-50 text-gray-700"
+                                    ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white shadow-md"
+                                    : "bg-[#0b1020] border border-[#27324a] hover:bg-[#1f2638] text-[#a1a1aa]"
                                 }`}
                               >
                                 {pageNum}
@@ -561,7 +569,7 @@ const BlogList = ({ onEdit }) => {
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
+                        className="px-4 py-2 rounded-xl border border-[#27324a] bg-[#0b1020] hover:bg-[#1f2638] disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium text-[#a1a1aa]"
                       >
                         Next
                         <FiChevronRight size={16} />

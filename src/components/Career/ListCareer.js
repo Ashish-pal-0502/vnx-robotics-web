@@ -17,9 +17,12 @@ import {
   FiFilter,
   FiX,
   FiSearch,
+  FiUsers,
+  FiTrendingUp,
+  FiAward,
 } from "react-icons/fi";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 6;
 
 const ListCareer = ({ onEdit }) => {
   const [careers, setCareers] = useState([]);
@@ -62,13 +65,13 @@ const ListCareer = ({ onEdit }) => {
   ========================= */
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this career?",
+      "Are you sure you want to delete this career opportunity?",
     );
     if (!confirmDelete) return;
 
     try {
       const res = await apiClient.delete(`/career/delete/${id}`);
-      toast.success(res?.data?.message || "Career deleted");
+      toast.success(res?.data?.message || "Career deleted successfully");
       fetchCareers();
     } catch (error) {
       console.error("Delete failed:", error);
@@ -139,17 +142,49 @@ const ListCareer = ({ onEdit }) => {
   };
 
   /* =========================
-     GET JOB TYPE COLOR
+     GET JOB TYPE STYLES (Dark Theme)
   ========================= */
-  const getJobTypeColor = (jobType) => {
-    const colors = {
-      "Full Time": "bg-green-100 text-green-700 border-green-200",
-      "Part Time": "bg-blue-100 text-blue-700 border-blue-200",
-      Internship: "bg-purple-100 text-purple-700 border-purple-200",
-      Contract: "bg-orange-100 text-orange-700 border-orange-200",
-      Remote: "bg-teal-100 text-teal-700 border-teal-200",
+  const getJobTypeStyles = (jobType) => {
+    const styles = {
+      "Full Time": {
+        bg: "bg-emerald-500/10",
+        text: "text-emerald-400",
+        border: "border-emerald-500/20",
+        icon: "💼",
+      },
+      "Part Time": {
+        bg: "bg-blue-500/10",
+        text: "text-blue-400",
+        border: "border-blue-500/20",
+        icon: "⏰",
+      },
+      Internship: {
+        bg: "bg-purple-500/10",
+        text: "text-purple-400",
+        border: "border-purple-500/20",
+        icon: "🎓",
+      },
+      Contract: {
+        bg: "bg-amber-500/10",
+        text: "text-amber-400",
+        border: "border-amber-500/20",
+        icon: "📄",
+      },
+      Remote: {
+        bg: "bg-indigo-500/10",
+        text: "text-indigo-400",
+        border: "border-indigo-500/20",
+        icon: "🏠",
+      },
     };
-    return colors[jobType] || "bg-gray-100 text-gray-700 border-gray-200";
+    return (
+      styles[jobType] || {
+        bg: "bg-gray-500/10",
+        text: "text-gray-400",
+        border: "border-gray-500/20",
+        icon: "📌",
+      }
+    );
   };
 
   const clearFilters = () => {
@@ -158,27 +193,55 @@ const ListCareer = ({ onEdit }) => {
     setShowFilters(false);
   };
 
+  // Calculate statistics
+  const stats = useMemo(() => {
+    const total = careers.length;
+    const uniqueCategories = [
+      ...new Set(careers.map((c) => c.category).filter(Boolean)),
+    ].length;
+    const jobTypeCount = careers.reduce((acc, curr) => {
+      acc[curr.jobType] = (acc[curr.jobType] || 0) + 1;
+      return acc;
+    }, {});
+    return { total, uniqueCategories, jobTypeCount };
+  }, [careers]);
+
   /* =========================
-     LOADING SKELETON
+     LOADING SKELETON (Dark Theme)
   ========================= */
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+      <div className="min-h-screen bg-linear-to-br from-[#0b1020] to-[#050816] p-6 md:p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-pulse">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex justify-between items-center">
-                <div className="space-y-3">
-                  <div className="h-8 w-48 bg-gray-200 rounded-lg"></div>
-                  <div className="h-4 w-64 bg-gray-100 rounded-lg"></div>
+          <div className="animate-pulse">
+            {/* Header Skeleton */}
+            <div className="mb-8">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 bg-linear-to-br from-[#1f2638] to-[#1f2638] rounded-2xl"></div>
+                <div className="space-y-2">
+                  <div className="h-8 w-64 bg-[#1f2638] rounded-lg"></div>
+                  <div className="h-4 w-48 bg-[#1f2638] rounded-lg"></div>
                 </div>
-                <div className="h-16 w-32 bg-gray-100 rounded-xl"></div>
               </div>
             </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="h-24 bg-gray-100 rounded-xl"></div>
+
+            {/* Stats Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="bg-[#111827] rounded-2xl p-6 border border-[#27324a]"
+                >
+                  <div className="h-20 bg-[#1f2638] rounded-xl"></div>
+                </div>
+              ))}
+            </div>
+
+            {/* Content Skeleton */}
+            <div className="bg-[#111827] rounded-2xl border border-[#27324a] overflow-hidden">
+              <div className="p-6 space-y-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="h-32 bg-[#1f2638] rounded-xl"></div>
                 ))}
               </div>
             </div>
@@ -189,72 +252,98 @@ const ListCareer = ({ onEdit }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-linear-to-br from-[#0b1020] to-[#050816] p-6 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="mb-6 md:mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-xl shadow-lg">
-              <FiBriefcase className="text-white" size={24} />
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-2">
+            <div className="p-3 bg-linear-to-br from-[#0088db] to-[#006db1] rounded-2xl shadow-lg">
+              <FiBriefcase className="text-white" size={28} />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+              <h1 className="text-3xl md:text-4xl font-heading font-bold bg-linear-to-r from-[#0088db] to-[#ffba22] bg-clip-text text-transparent">
                 Careers Management
               </h1>
-              <p className="text-sm text-gray-500 mt-1">
-                Manage all job openings and applications
+              <p className="text-[#a1a1aa] mt-1">
+                Manage and track all job opportunities
               </p>
             </div>
           </div>
         </div>
 
-        {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header Stats */}
-          <div className="bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] px-6 py-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center text-white">
-                  <FiBriefcase size={22} />
-                </div>
-                <div>
-                  <p className="text-white/60 text-xs uppercase tracking-wide">
-                    Total Careers
-                  </p>
-                  <p className="text-white text-3xl font-bold">
-                    {filteredCareers.length}
-                  </p>
-                </div>
+        {/* Statistics Cards - Dark Theme */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-[#111827] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#27324a]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#a1a1aa] text-sm font-medium mb-1">
+                  Total Positions
+                </p>
+                <p className="text-3xl font-bold text-[#f3f4f6]">
+                  {stats.total}
+                </p>
               </div>
-              {(searchQuery || selectedJobType !== "all") && (
-                <button
-                  onClick={clearFilters}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur rounded-xl text-white hover:bg-white/20 transition"
-                >
-                  <FiX size={16} />
-                  Clear Filters
-                </button>
-              )}
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                <FiBriefcase className="text-emerald-400" size={24} />
+              </div>
             </div>
           </div>
 
-          {/* Search and Filters */}
-          <div className="p-6 border-b border-gray-100 bg-gray-50/50">
-            <div className="flex flex-col md:flex-row gap-4">
+          <div className="bg-[#111827] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#27324a]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#a1a1aa] text-sm font-medium mb-1">
+                  Categories
+                </p>
+                <p className="text-3xl font-bold text-[#f3f4f6]">
+                  {stats.uniqueCategories}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
+                <FiTag className="text-purple-400" size={24} />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-[#111827] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#27324a]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#a1a1aa] text-sm font-medium mb-1">
+                  Job Types
+                </p>
+                <p className="text-3xl font-bold text-[#f3f4f6]">
+                  {Object.keys(stats.jobTypeCount).length}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
+                <FiTrendingUp className="text-blue-400" size={24} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Card - Dark Theme */}
+        <div className="bg-[#111827] rounded-2xl shadow-xl border border-[#27324a] overflow-hidden">
+          {/* Search and Filters Bar */}
+          <div className="p-6 border-b border-[#27324a] bg-[#111827]">
+            <div className="flex flex-col lg:flex-row gap-4">
               {/* Search Bar */}
               <div className="flex-1 relative">
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FiSearch
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-[#71717a]"
+                  size={18}
+                />
                 <input
                   type="text"
                   placeholder="Search by title, description, location, or category..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#1f3b57] focus:ring-2 focus:ring-[#1f3b57]/20 outline-none transition-all bg-white"
+                  className="w-full pl-11 pr-10 py-3 rounded-xl border border-[#27324a] focus:border-[#0088db] focus:ring-2 focus:ring-[#0088db]/20 outline-none transition-all bg-[#0b1020] text-[#f3f4f6] placeholder:text-[#71717a]"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#71717a] hover:text-[#a1a1aa]"
                   >
                     <FiX size={18} />
                   </button>
@@ -264,66 +353,105 @@ const ListCareer = ({ onEdit }) => {
               {/* Filter Toggle Button (Mobile) */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="md:hidden flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl"
+                className="lg:hidden flex items-center justify-center gap-2 px-4 py-3 bg-[#0b1020] border border-[#27324a] rounded-xl hover:bg-[#1f2638] transition"
               >
-                <FiFilter />
-                Filters
+                <FiFilter size={18} className="text-[#a1a1aa]" />
+                <span className="font-medium text-[#f3f4f6]">Filters</span>
                 {selectedJobType !== "all" && (
-                  <span className="w-2 h-2 bg-[#1f3b57] rounded-full"></span>
+                  <span className="w-2 h-2 bg-[#ffba22] rounded-full"></span>
                 )}
               </button>
 
               {/* Job Type Filters */}
               <div
-                className={`${showFilters ? "flex" : "hidden"} md:flex flex-wrap gap-2`}
+                className={`${showFilters ? "flex" : "hidden"} lg:flex flex-wrap gap-2`}
               >
                 <button
                   onClick={() => setSelectedJobType("all")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     selectedJobType === "all"
-                      ? "bg-[#1f3b57] text-white shadow-md"
-                      : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                      ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white shadow-md"
+                      : "bg-[#0b1020] text-[#a1a1aa] hover:bg-[#1f2638] border border-[#27324a]"
                   }`}
                 >
                   All Jobs
                 </button>
-                {jobTypes.map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setSelectedJobType(type)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                      selectedJobType === type
-                        ? "bg-[#1f3b57] text-white shadow-md"
-                        : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
+                {jobTypes.map((type) => {
+                  const styles = getJobTypeStyles(type);
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedJobType(type)}
+                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                        selectedJobType === type
+                          ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white shadow-md"
+                          : `${styles.bg} ${styles.text} border ${styles.border} hover:shadow-sm`
+                      }`}
+                    >
+                      <span className="mr-1">{styles.icon}</span>
+                      {type}
+                    </button>
+                  );
+                })}
               </div>
             </div>
+
+            {/* Active Filters Display */}
+            {(searchQuery || selectedJobType !== "all") && (
+              <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-[#27324a]">
+                <span className="text-sm text-[#71717a]">Active filters:</span>
+                {searchQuery && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#0088db]/10 text-[#0088db] rounded-lg text-xs">
+                    Search: {searchQuery}
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="hover:text-[#006db1]"
+                    >
+                      <FiX size={12} />
+                    </button>
+                  </span>
+                )}
+                {selectedJobType !== "all" && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/10 text-purple-400 rounded-lg text-xs">
+                    Type: {selectedJobType}
+                    <button
+                      onClick={() => setSelectedJobType("all")}
+                      className="hover:text-purple-300"
+                    >
+                      <FiX size={12} />
+                    </button>
+                  </span>
+                )}
+                <button
+                  onClick={clearFilters}
+                  className="text-sm text-[#71717a] hover:text-[#a1a1aa] underline"
+                >
+                  Clear all
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* Empty State */}
+          {/* Empty State - Dark Theme */}
           {filteredCareers.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
-                <FiBriefcase className="text-4xl text-gray-400" />
+              <div className="w-32 h-32 bg-linear-to-br from-[#1f2638] to-[#1f2638] rounded-full flex items-center justify-center mb-6">
+                <FiBriefcase className="text-5xl text-[#71717a]" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <h3 className="text-2xl font-semibold text-[#f3f4f6] mb-2">
                 {careers.length === 0
                   ? "No Careers Found"
                   : "No Matching Careers"}
               </h3>
-              <p className="text-gray-500 max-w-md">
+              <p className="text-[#a1a1aa] max-w-md">
                 {careers.length === 0
-                  ? "There are currently no career opportunities available."
-                  : "Try adjusting your search or filter criteria."}
+                  ? "Get started by creating your first career opportunity."
+                  : "Try adjusting your search or filter criteria to find what you're looking for."}
               </p>
               {(searchQuery || selectedJobType !== "all") && (
                 <button
                   onClick={clearFilters}
-                  className="mt-6 px-6 py-2 bg-[#1f3b57] text-white rounded-xl hover:bg-[#2a4d72] transition"
+                  className="mt-6 px-6 py-2.5 btn-primary"
                 >
                   Clear All Filters
                 </button>
@@ -331,207 +459,124 @@ const ListCareer = ({ onEdit }) => {
             </div>
           ) : (
             <>
-              {/* Desktop Table View */}
-              <div className="hidden lg:block overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Job Title
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Description
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Location
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Type
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Created
-                      </th>
-                      <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {paginatedCareers.map((career, index) => (
-                      <tr
+              {/* Career Cards Grid - Dark Theme */}
+              <div className="p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {paginatedCareers.map((career) => {
+                    const jobStyles = getJobTypeStyles(career.jobType);
+                    const description = stripHtml(career.description);
+                    const truncatedDesc =
+                      description.length > 120
+                        ? description.substring(0, 120) + "..."
+                        : description;
+
+                    return (
+                      <div
                         key={career._id}
-                        className="hover:bg-gray-50/50 transition group"
+                        className="group bg-[#0b1020] rounded-2xl border border-[#27324a] hover:border-[#0088db]/30 hover:shadow-xl transition-all duration-300 overflow-hidden"
                       >
-                        <td className="px-6 py-4">
-                          <div className="max-w-[280px]">
-                            <h3 className="font-semibold text-gray-800 text-sm line-clamp-2">
-                              {stripHtml(career.title)}
-                            </h3>
+                        {/* Card Header */}
+                        <div className="p-6 pb-4 border-b border-[#27324a]">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-[#f3f4f6] mb-2 line-clamp-2">
+                                {stripHtml(career.title)}
+                              </h3>
+                              <div className="flex flex-wrap gap-2">
+                                <span
+                                  className={`inline-flex items-center gap-1 px-3 py-1 rounded-xl text-xs font-semibold ${jobStyles.bg} ${jobStyles.text} border ${jobStyles.border}`}
+                                >
+                                  <span>{jobStyles.icon}</span>
+                                  {career.jobType}
+                                </span>
+                                {career.category && (
+                                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#1f2638] text-[#a1a1aa] rounded-xl text-xs font-medium border border-[#27324a]">
+                                    <FiTag size={12} />
+                                    {career.category}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex gap-1 ml-4">
+                              <button
+                                onClick={() => onEdit(career)}
+                                className="p-2 text-[#71717a] hover:text-[#0088db] hover:bg-[#1f2638] rounded-xl transition-all duration-200"
+                                title="Edit"
+                              >
+                                <FiEdit2 size={18} />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(career._id)}
+                                className="p-2 text-[#71717a] hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-200"
+                                title="Delete"
+                              >
+                                <FiTrash2 size={18} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-6 pt-4 space-y-4">
+                          {/* Location */}
+                          {career.location && (
+                            <div className="flex items-center gap-2 text-sm text-[#a1a1aa]">
+                              <FiMapPin
+                                className="text-[#71717a] shrink-0"
+                                size={16}
+                              />
+                              <span>{career.location}</span>
+                            </div>
+                          )}
+
+                          {/* Description Preview */}
+                          <div className="bg-[#050816] rounded-xl p-4 border border-[#27324a]">
+                            <p className="text-sm text-[#a1a1aa] leading-relaxed">
+                              {truncatedDesc || "No description provided"}
+                            </p>
+                          </div>
+
+                          {/* Footer */}
+                          <div className="flex items-center justify-between pt-2">
+                            <div className="flex items-center gap-2 text-xs text-[#71717a]">
+                              <FiCalendar size={14} />
+                              <span>
+                                Posted{" "}
+                                {new Date(
+                                  career.createdAt,
+                                ).toLocaleDateString()}
+                              </span>
+                            </div>
                             {career.applyLink && (
                               <a
                                 href={career.applyLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-xs text-blue-600 mt-1 hover:underline"
+                                className="inline-flex items-center gap-2 px-4 py-2 btn-primary text-sm"
                               >
                                 Apply Now
-                                <FiExternalLink size={10} />
+                                <FiExternalLink size={14} />
                               </a>
                             )}
                           </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className="max-w-[320px] text-sm text-gray-500 line-clamp-2">
-                            {stripHtml(career.description)?.slice(0, 100) ||
-                              "No description"}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-1.5">
-                            <FiMapPin className="text-gray-400 text-sm" />
-                            <span className="text-sm text-gray-700">
-                              {career.location || "Not specified"}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span
-                            className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${getJobTypeColor(career.jobType)}`}
-                          >
-                            {career.jobType || "Not specified"}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-1.5">
-                            <FiTag className="text-gray-400 text-sm" />
-                            <span className="text-sm text-gray-700">
-                              {career.category || "Not specified"}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-2 text-sm text-gray-500">
-                            <FiCalendar size={14} />
-                            {new Date(career.createdAt).toLocaleDateString()}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={() => onEdit(career)}
-                              className="p-2 text-gray-600 hover:text-[#1f3b57] hover:bg-gray-100 rounded-lg transition"
-                              title="Edit"
-                            >
-                              <FiEdit2 size={18} />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(career._id)}
-                              className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
-                              title="Delete"
-                            >
-                              <FiTrash2 size={18} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Mobile Card View */}
-              <div className="lg:hidden divide-y divide-gray-100">
-                {paginatedCareers.map((career) => (
-                  <div
-                    key={career._id}
-                    className="p-6 hover:bg-gray-50 transition"
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-800 text-base leading-6">
-                          {stripHtml(career.title)}
-                        </h3>
-                        <div className="flex items-center gap-2 mt-2">
-                          <span
-                            className={`inline-flex px-2 py-1 rounded-full text-xs font-medium border ${getJobTypeColor(career.jobType)}`}
-                          >
-                            {career.jobType || "Not specified"}
-                          </span>
                         </div>
                       </div>
-                      <div className="flex gap-1">
-                        <button
-                          onClick={() => onEdit(career)}
-                          className="p-2 text-gray-600 hover:text-[#1f3b57] rounded-lg transition"
-                        >
-                          <FiEdit2 size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(career._id)}
-                          className="p-2 text-gray-600 hover:text-red-600 rounded-lg transition"
-                        >
-                          <FiTrash2 size={18} />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 mb-3">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <FiMapPin
-                          className="text-gray-400 shrink-0"
-                          size={14}
-                        />
-                        <span>
-                          {career.location || "Location not specified"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <FiTag className="text-gray-400 shrink-0" size={14} />
-                        <span>
-                          {career.category || "Category not specified"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <FiCalendar size={12} />
-                        {new Date(career.createdAt).toLocaleDateString()}
-                      </div>
-                    </div>
-
-                    <p className="text-sm text-gray-500 leading-6 mb-3">
-                      {stripHtml(career.description)?.slice(0, 120) ||
-                        "No description"}
-                      {stripHtml(career.description)?.length > 120 && "..."}
-                    </p>
-
-                    {career.applyLink && (
-                      <a
-                        href={career.applyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline"
-                      >
-                        Apply Now
-                        <FiExternalLink size={12} />
-                      </a>
-                    )}
-                  </div>
-                ))}
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Pagination */}
+              {/* Pagination - Dark Theme */}
               {totalPages > 1 && (
-                <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+                <div className="px-6 py-4 border-t border-[#27324a] bg-[#0b1020]/30">
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-[#71717a]">
                       Showing{" "}
-                      <span className="font-semibold text-gray-700">
+                      <span className="font-semibold text-[#f3f4f6]">
                         {paginatedCareers.length}
                       </span>{" "}
                       of{" "}
-                      <span className="font-semibold text-gray-700">
+                      <span className="font-semibold text-[#f3f4f6]">
                         {filteredCareers.length}
                       </span>{" "}
                       careers
@@ -541,13 +586,13 @@ const ListCareer = ({ onEdit }) => {
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
+                        className="px-4 py-2 rounded-xl border border-[#27324a] bg-[#0b1020] hover:bg-[#1f2638] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 text-sm font-medium text-[#a1a1aa]"
                       >
                         <FiChevronLeft size={16} />
                         Previous
                       </button>
 
-                      <div className="hidden sm:flex gap-2">
+                      <div className="hidden md:flex gap-2">
                         {Array.from(
                           { length: Math.min(5, totalPages) },
                           (_, i) => {
@@ -566,10 +611,10 @@ const ListCareer = ({ onEdit }) => {
                               <button
                                 key={pageNum}
                                 onClick={() => handlePageChange(pageNum)}
-                                className={`w-10 h-10 rounded-lg text-sm font-semibold transition ${
+                                className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all duration-200 ${
                                   currentPage === pageNum
-                                    ? "bg-[#1f3b57] text-white shadow-md"
-                                    : "bg-white border border-gray-200 hover:bg-gray-50 text-gray-700"
+                                    ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white shadow-md"
+                                    : "bg-[#0b1020] border border-[#27324a] hover:bg-[#1f2638] text-[#a1a1aa]"
                                 }`}
                               >
                                 {pageNum}
@@ -582,7 +627,7 @@ const ListCareer = ({ onEdit }) => {
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2 text-sm font-medium"
+                        className="px-4 py-2 rounded-xl border border-[#27324a] bg-[#0b1020] hover:bg-[#1f2638] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 text-sm font-medium text-[#a1a1aa]"
                       >
                         Next
                         <FiChevronRight size={16} />

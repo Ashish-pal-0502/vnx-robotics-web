@@ -434,7 +434,7 @@ function OurWorldWideReach() {
       </div>
 
       {/* BOTTOM FADE */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32 bg-gradient-to-t from-[#050816] to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32 bg-linear-to-t from-[#050816] to-transparent pointer-events-none" />
 
       {/* Cursor glow element */}
       <div

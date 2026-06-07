@@ -162,7 +162,7 @@ function Page() {
         >
           <div className="flex flex-col lg:flex-row">
             {/* Left Side - Branding */}
-            <div className="flex-1 p-8 lg:p-10 bg-gradient-to-br from-[var(--color-primary-500)]/5 to-transparent border-b lg:border-b-0 lg:border-r border-white/10">
+            <div className="flex-1 p-8 lg:p-10 bg-linear-to-br from-[var(--color-primary-500)]/5 to-transparent border-b lg:border-b-0 lg:border-r border-white/10">
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 {/* Logo */}
                 <div className="mb-8">
@@ -185,7 +185,7 @@ function Page() {
 
                 {/* Decorative Elements */}
                 <div className="hidden lg:block mt-8">
-                  <div className="w-16 h-[2px] bg-gradient-to-r from-[var(--color-secondary-400)] to-transparent mb-4" />
+                  <div className="w-16 h-[2px] bg-linear-to-r from-[var(--color-secondary-400)] to-transparent mb-4" />
                   <p className="font-mono text-xs text-[var(--color-text-muted)]">
                     Join the future of robotics innovation
                   </p>

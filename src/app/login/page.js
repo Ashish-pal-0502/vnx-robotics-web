@@ -78,7 +78,7 @@ function Page() {
   };
 
   return (
-    <main className="bg-[var(--color-dark-100)] min-h-screen pt-20 flex items-center justify-center relative overflow-hidden">
+    <main className="bg-(--color-dark-100) min-h-screen pt-20 flex items-center justify-center relative overflow-hidden">
       {/* Grid Background */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div
@@ -94,7 +94,7 @@ function Page() {
       </div>
 
       {/* Subtle Radial Glow */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] max-w-4xl h-[60vh] rounded-full bg-[var(--color-primary-500)]/8 blur-3xl" />
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] max-w-4xl h-[60vh] rounded-full bg-(--color-primary-500)/8 blur-3xl" />
 
       {/* Login Card - Horizontal Layout on LG */}
       <div className="relative z-10 w-full max-w-5xl px-4 py-8 md:px-6">
@@ -103,11 +103,11 @@ function Page() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden shadow-2xl"
+          className="rounded-2xl border border-white/10 bg-white/2 backdrop-blur-sm overflow-hidden shadow-2xl"
         >
           <div className="flex flex-col lg:flex-row">
             {/* Left Side - Branding */}
-            <div className="flex-1 p-8 lg:p-10 bg-gradient-to-br from-[var(--color-primary-500)]/5 to-transparent border-b lg:border-b-0 lg:border-r border-white/10">
+            <div className="flex-1 p-8 lg:p-10 bg-linear-to-br from-(--color-primary-500)/5 to-transparent border-b lg:border-b-0 lg:border-r border-white/10">
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 {/* Logo */}
                 <div className="mb-8">
@@ -124,14 +124,14 @@ function Page() {
                 <h1 className="font-heading text-3xl lg:text-4xl font-bold text-white mb-4">
                   Welcome Back
                 </h1>
-                <p className="font-body text-base text-[var(--color-text-secondary)] mb-6">
+                <p className="font-body text-base text-(--color-text-secondary) mb-6">
                   Login to continue to VNX Robotics
                 </p>
 
                 {/* Decorative Elements */}
                 <div className="hidden lg:block mt-8">
-                  <div className="w-16 h-[2px] bg-gradient-to-r from-[var(--color-secondary-400)] to-transparent mb-4" />
-                  <p className="font-mono text-xs text-[var(--color-text-muted)]">
+                  <div className="w-16 h-0.5 bg-linear-to-r from-(--color-secondary-400) to-transparent mb-4" />
+                  <p className="font-mono text-xs text-(--color-text-muted)">
                     Secure access to your robotics platform
                   </p>
                 </div>
@@ -149,7 +149,7 @@ function Page() {
                 {/* Email Field */}
                 <div className="relative">
                   <IoMailOutline
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-(--color-text-muted)"
                     size={18}
                   />
                   <input
@@ -159,14 +159,14 @@ function Page() {
                     placeholder="Email address"
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-white/[0.02] font-body text-sm text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-secondary-400)]/50 transition-colors"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-white/2 font-body text-sm text-white placeholder:text-(--color-text-muted) focus:outline-none focus:border-(--color-secondary-400)/50 transition-colors"
                   />
                 </div>
 
                 {/* Password Field */}
                 <div className="relative">
                   <IoLockClosedOutline
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-(--color-text-muted)"
                     size={18}
                   />
                   <input
@@ -176,7 +176,7 @@ function Page() {
                     placeholder="Password"
                     value={form.password}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-white/[0.02] font-body text-sm text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-secondary-400)]/50 transition-colors"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-white/2 font-body text-sm text-white placeholder:text-(--color-text-muted) focus:outline-none focus:border-(--color-secondary-400)/50 transition-colors"
                   />
                 </div>
 
@@ -193,11 +193,11 @@ function Page() {
 
               {/* Signup Link */}
               <div className="text-center mt-6">
-                <p className="font-body text-sm text-[var(--color-text-muted)]">
+                <p className="font-body text-sm text-(--color-text-muted)">
                   Don't have an account?{" "}
                   <Link
                     href="/register"
-                    className="text-[var(--color-secondary-400)] cursor-pointer  font-semibold hover:underline transition-colors"
+                    className="text-(--color-secondary-400) cursor-pointer  font-semibold hover:underline transition-colors"
                   >
                     Sign up
                   </Link>
@@ -207,7 +207,7 @@ function Page() {
               {/* Divider */}
               <div className="flex items-center gap-3 my-6">
                 <div className="flex-1 h-px bg-white/10"></div>
-                <span className="font-mono text-xs text-[var(--color-text-muted)]">
+                <span className="font-mono text-xs text-(--color-text-muted)">
                   OR
                 </span>
                 <div className="flex-1 h-px bg-white/10"></div>

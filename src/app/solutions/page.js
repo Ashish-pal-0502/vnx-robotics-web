@@ -151,7 +151,7 @@ export default function SolutionsPage() {
         className="relative min-h-screen flex items-center overflow-hidden"
       >
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent z-10" />
           <img
             src="https://media.istockphoto.com/id/1172940354/vector/vector-circle-tech-with-light-blue-and-lamp-bulb-on-technology-background.jpg?s=612x612&w=0&k=20&c=8bUJ3-cIkAQz1E-1mugZodjYoKNt5g9k0t7b-SB8qH8="
             alt="Industrial automation background"
@@ -280,7 +280,7 @@ export default function SolutionsPage() {
                 >
                   Learn more <IoArrowForward size={14} />
                 </Link>
-                <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-secondary-400)] transition-all duration-300 group-hover:w-full" />
+                <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r from-[var(--color-primary-500)] to-[var(--color-secondary-400)] transition-all duration-300 group-hover:w-full" />
               </motion.div>
             ))}
           </div>
@@ -317,7 +317,7 @@ export default function SolutionsPage() {
                 {warehouseCapabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-[var(--color-secondary-400)] shrink-0"
                       size={16}
                     />
                     <span className="font-mono text-sm text-[var(--color-text-secondary)]">
@@ -345,7 +345,7 @@ export default function SolutionsPage() {
                 alt="Warehouse Automation"
                 className="w-full h-auto object-cover rounded-xl border border-white/10"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
             </motion.div>
           </div>
         </div>
@@ -395,7 +395,7 @@ export default function SolutionsPage() {
                 {industrialCapabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-[var(--color-secondary-400)] shrink-0"
                       size={16}
                     />
                     <span className="font-mono text-sm text-[var(--color-text-secondary)]">
@@ -445,7 +445,7 @@ export default function SolutionsPage() {
                 {roboticsCapabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-[var(--color-secondary-400)] shrink-0"
                       size={16}
                     />
                     <span className="font-mono text-sm text-[var(--color-text-secondary)]">
@@ -522,7 +522,7 @@ export default function SolutionsPage() {
                 {softwareCapabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-[var(--color-secondary-400)] shrink-0"
                       size={16}
                     />
                     <span className="font-mono text-sm text-[var(--color-text-secondary)]">
@@ -603,7 +603,7 @@ export default function SolutionsPage() {
                   </span>
                 </div>
                 {idx < integrationLayers.length - 1 && (
-                  <div className="absolute left-1.5 top-12 bottom-0 w-px bg-gradient-to-b from-[var(--color-primary-500)] to-[var(--color-secondary-400)] opacity-50" />
+                  <div className="absolute left-1.5 top-12 bottom-0 w-px bg-linear-to-b from-[var(--color-primary-500)] to-[var(--color-secondary-400)] opacity-50" />
                 )}
               </motion.div>
             ))}
@@ -630,7 +630,7 @@ export default function SolutionsPage() {
             alt="Industrial background"
             className="h-full w-full object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-dark-100)] via-transparent to-[var(--color-dark-100)]" />
+          <div className="absolute inset-0 bg-linear-to-r from-[var(--color-dark-100)] via-transparent to-[var(--color-dark-100)]" />
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">

@@ -134,7 +134,7 @@
 //       {/* Hero Section */}
 //       <section className="relative min-h-screen flex items-center overflow-hidden">
 //         <div className="absolute inset-0">
-//           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+//           <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent z-10" />
 //           <img
 //             src={robot.image}
 //             alt={robot.name}
@@ -231,7 +231,7 @@
 //               initial={{ opacity: 0, x: 30 }}
 //               animate={{ opacity: 1, x: 0 }}
 //               transition={{ duration: 0.6, delay: 0.2 }}
-//               className="bg-gradient-to-br from-[#0b1020] to-transparent rounded-xl border border-white/10 p-6"
+//               className="bg-linear-to-br from-[#0b1020] to-transparent rounded-xl border border-white/10 p-6"
 //             >
 //               <h3 className="font-heading text-xl font-semibold text-white mb-4 flex items-center gap-2">
 //                 <IoCheckmarkCircle
@@ -451,7 +451,7 @@ export default function RobotDetailPage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent z-10" />
           <img
             src={robot.images?.[0]?.url || "/images/placeholder-robot.jpg"}
             alt={stripHtml(robot.name)}
@@ -566,7 +566,7 @@ export default function RobotDetailPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-gradient-to-br from-[#0b1020] to-transparent rounded-xl border border-white/10 p-6"
+              className="bg-linear-to-br from-[#0b1020] to-transparent rounded-xl border border-white/10 p-6"
             >
               <h3 className="font-heading text-xl font-semibold text-white mb-4 flex items-center gap-2">
                 <IoCheckmarkCircle

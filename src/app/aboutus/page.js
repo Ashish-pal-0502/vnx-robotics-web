@@ -109,14 +109,14 @@ export default function AboutPage() {
   ];
 
   return (
-    <main className="bg-[var(--color-dark-100)]">
+    <main className="bg-(--color-dark-100)">
       {/* ========== HERO SECTION ========== */}
       <section
         ref={sectionRefs.hero}
         className="relative min-h-screen flex items-center overflow-hidden"
       >
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent z-10" />
           <img
             src="https://www.shutterstock.com/image-vector/contact-us-customer-support-hotline-600nw-2561218445.jpg"
             alt="Industrial engineering background"
@@ -145,8 +145,8 @@ export default function AboutPage() {
             className="max-w-3xl"
           >
             <div className="mb-5 mt-10 flex items-center gap-3">
-              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
-              <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+              <div className="h-0.5 w-12 bg-(--color-secondary-400)" />
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-(--color-secondary-400)">
                 About VNX Robotics
               </span>
             </div>
@@ -155,7 +155,7 @@ export default function AboutPage() {
               Intelligent Automation & Robotics Systems
             </h1>
 
-            <p className="font-mono text-base md:text-lg text-[var(--color-text-secondary)] max-w-2xl">
+            <p className="font-mono text-base md:text-lg text-(--color-text-secondary) max-w-2xl">
               VNX Robotics is developing intelligent industrial automation and
               robotics technologies focused on scalable systems, operational
               intelligence, and future autonomous infrastructure.
@@ -175,7 +175,7 @@ export default function AboutPage() {
             >
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
                 Engineering the Future of{" "}
-                <span className="text-[var(--color-secondary-400)]">
+                <span className="text-(--color-secondary-400)">
                   Intelligent Industry
                 </span>
               </h2>
@@ -190,10 +190,10 @@ export default function AboutPage() {
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-(--color-secondary-400) shrink-0"
                       size={18}
                     />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)] capitalize">
+                    <span className="font-mono text-sm text-(--color-text-secondary) capitalize">
                       {item}
                     </span>
                   </div>
@@ -207,15 +207,15 @@ export default function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative rounded-xl overflow-hidden"
             >
-              <div className="absolute -inset-1 bg-gradient-to-r from-[var(--color-primary-500)]/20 to-[var(--color-secondary-400)]/20 blur-xl rounded-xl" />
-              <div className="relative bg-[var(--color-dark-200)] rounded-xl border border-white/10 p-8">
+              <div className="absolute -inset-1 bg-linear-to-r from-(--color-primary-500)/20 to-(--color-secondary-400)/20 blur-xl rounded-xl" />
+              <div className="relative bg-(--color-dark-200) rounded-xl border border-white/10 p-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-[2px] w-8 bg-[var(--color-secondary-400)]" />
-                  <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+                  <div className="h-0.5 w-8 bg-(--color-secondary-400)" />
+                  <span className="font-mono text-xs uppercase tracking-[0.28em] text-(--color-secondary-400)">
                     Our Approach
                   </span>
                 </div>
-                <p className="font-mono text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                <p className="font-mono text-sm text-(--color-text-secondary) leading-relaxed">
                   Our approach emphasizes scalable architecture, operational
                   understanding, realistic deployment, and long-term technology
                   capability building.
@@ -229,7 +229,7 @@ export default function AboutPage() {
       {/* ========== VISION & MISSION ========== */}
       <section
         ref={sectionRefs.visionMission}
-        className="relative py-5 overflow-hidden bg-[var(--color-dark-200)]"
+        className="relative py-5 overflow-hidden bg-(--color-dark-200)"
       >
         <div className="absolute inset-0 opacity-[0.03]">
           <div
@@ -250,15 +250,15 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView.visionMission ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
-              className="rounded-xl border border-white/10 bg-white/[0.02] p-8"
+              className="rounded-xl border border-white/10 bg-white/2 p-8"
             >
-              <div className="mb-4 text-[var(--color-secondary-400)]">
+              <div className="mb-4 text-(--color-secondary-400)">
                 <IoFlashOutline size={32} />
               </div>
               <h3 className="font-heading text-2xl font-semibold text-white mb-4">
                 Vision
               </h3>
-              <p className="font-mono text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              <p className="font-mono text-sm text-(--color-text-secondary) leading-relaxed">
                 To build intelligent automation and robotics systems that
                 transform industrial operations through scalable automation,
                 operational intelligence, and advanced autonomous technologies.
@@ -269,15 +269,15 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView.visionMission ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="rounded-xl border border-white/10 bg-white/[0.02] p-8"
+              className="rounded-xl border border-white/10 bg-white/2 p-8"
             >
-              <div className="mb-4 text-[var(--color-secondary-400)]">
+              <div className="mb-4 text-(--color-secondary-400)">
                 <IoCheckmarkCircle size={32} />
               </div>
               <h3 className="font-heading text-2xl font-semibold text-white mb-4">
                 Mission
               </h3>
-              <p className="font-mono text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              <p className="font-mono text-sm text-(--color-text-secondary) leading-relaxed">
                 To develop practical industrial automation systems, intelligent
                 robotics platforms, and connected operational technologies that
                 enable modern industry to evolve toward scalable autonomous
@@ -297,7 +297,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="font-logo text-4xl md:text-5xl font-regular text-[var(--color-secondary-400)]">
+            <h2 className="font-logo text-4xl md:text-5xl font-regular text-(--color-secondary-400)">
               Our Leadership
             </h2>
           </motion.div>
@@ -311,14 +311,14 @@ export default function AboutPage() {
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
                 className="group relative overflow-hidden rounded-3xl border border-white/10"
               >
-                <div className="relative h-[450px] lg:h-[500px]">
+                <div className="relative h-112.5 lg:h-125">
                   <img
                     src={leader.image}
                     alt={leader.name}
                     className="h-auto lg:h-full w-full object-cover "
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
 
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <h3 className="font-heading text-2xl text-white">
@@ -376,20 +376,20 @@ export default function AboutPage() {
               className="order-1 lg:order-2"
             >
               <div className="mb-5 flex items-center gap-3">
-                <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
-                <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+                <div className="h-0.5 w-12 bg-(--color-secondary-400)" />
+                <span className="font-mono text-xs uppercase tracking-[0.28em] text-(--color-secondary-400)">
                   Leadership & Engineering Philosophy
                 </span>
               </div>
 
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
                 Deep Roots in{" "}
-                <span className="text-[var(--color-secondary-400)]">
+                <span className="text-(--color-secondary-400)">
                   Robotics & Intelligent Systems
                 </span>
               </h2>
 
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
+              <p className="font-mono text-base text-(--color-text-secondary) mb-6">
                 VNX Robotics was founded with deep roots in robotics,
                 reinforcement learning, intelligent systems, and industrial
                 automation thinking.
@@ -404,16 +404,16 @@ export default function AboutPage() {
                   "long-term technology strategy",
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-secondary-400)]" />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)] capitalize">
+                    <div className="w-1.5 h-1.5 rounded-full bg-(--color-secondary-400)" />
+                    <span className="font-mono text-sm text-(--color-text-secondary) capitalize">
                       {item}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <div className="border-l-2 border-[var(--color-secondary-400)] pl-4">
-                <p className="font-mono text-sm italic text-[var(--color-text-secondary)]">
+              <div className="border-l-2 border-(--color-secondary-400) pl-4">
+                <p className="font-mono text-sm italic text-(--color-text-secondary)">
                   &ldquo;Successful automation systems are built not only
                   through advanced robotics, but through scalable architecture,
                   operational reliability, intelligent integration, and
@@ -428,7 +428,7 @@ export default function AboutPage() {
       {/* ========== TEAM & ENGINEERING CULTURE ========== */}
       <section
         ref={sectionRefs.culture}
-        className="relative py-5 overflow-hidden bg-[var(--color-dark-200)]"
+        className="relative py-5 overflow-hidden bg-(--color-dark-200)"
       >
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
@@ -439,11 +439,11 @@ export default function AboutPage() {
           >
             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
               Building Multidisciplinary{" "}
-              <span className="text-[var(--color-secondary-400)]">
+              <span className="text-(--color-secondary-400)">
                 Engineering Capability
               </span>
             </h2>
-            <p className="font-mono text-sm text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+            <p className="font-mono text-sm text-(--color-text-secondary) max-w-2xl mx-auto">
               VNX Robotics is progressively building teams across key technology
               domains
             </p>
@@ -456,9 +456,9 @@ export default function AboutPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={isInView.culture ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="group rounded-xl border border-white/10 bg-white/[0.02] p-5 text-center transition-all duration-300 hover:border-[var(--color-secondary-400)]/30"
+                className="group rounded-xl border border-white/10 bg-white/2 p-5 text-center transition-all duration-300 hover:border-(--color-secondary-400)/30"
               >
-                <h4 className="font-heading text-base font-semibold text-white group-hover:text-[var(--color-secondary-400)] transition-colors">
+                <h4 className="font-heading text-base font-semibold text-white group-hover:text-(--color-secondary-400) transition-colors">
                   {capability}
                 </h4>
               </motion.div>
@@ -480,7 +480,7 @@ export default function AboutPage() {
               ].map((value, idx) => (
                 <span
                   key={idx}
-                  className="rounded-full border border-[var(--color-primary-500)]/30 bg-[var(--color-primary-500)]/10 px-4 py-2 font-mono text-xs text-[var(--color-primary-400)]"
+                  className="rounded-full border border-(--color-primary-500)/30 bg-(--color-primary-500)/10 px-4 py-2 font-mono text-xs text-(--color-primary-400)"
                 >
                   {value}
                 </span>
@@ -493,7 +493,7 @@ export default function AboutPage() {
       {/* ========== TECHNOLOGY & CAPABILITY GROWTH ========== */}
       <section
         ref={sectionRefs.growth}
-        className="relative py-10 overflow-hidden bg-[var(--color-dark-200)]"
+        className="relative py-10 overflow-hidden bg-(--color-dark-200)"
       >
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
@@ -504,11 +504,11 @@ export default function AboutPage() {
           >
             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
               Progressive{" "}
-              <span className="text-[var(--color-secondary-400)]">
+              <span className="text-(--color-secondary-400)">
                 Technology Development
               </span>
             </h2>
-            <p className="font-mono text-sm text-[var(--color-text-secondary)]">
+            <p className="font-mono text-sm text-(--color-text-secondary)">
               Our strategic growth roadmap
             </p>
           </motion.div>
@@ -523,17 +523,17 @@ export default function AboutPage() {
                 className="relative flex gap-6 pb-8"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-4 h-4 rounded-full bg-[var(--color-secondary-400)] z-10" />
+                  <div className="w-4 h-4 rounded-full bg-(--color-secondary-400) z-10" />
                   {idx < growthStages.length - 1 && (
-                    <div className="w-px h-full bg-gradient-to-b from-[var(--color-secondary-400)] to-[var(--color-primary-500)] opacity-50" />
+                    <div className="w-px h-full bg-linear-to-b from-(--color-secondary-400) to-(--color-primary-500) opacity-50" />
                   )}
                 </div>
                 <div className="flex-1 pb-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="font-mono text-xs text-[var(--color-secondary-400)] uppercase tracking-wider">
+                    <span className="font-mono text-xs text-(--color-secondary-400) uppercase tracking-wider">
                       {stage.stage}
                     </span>
-                    <span className="font-mono text-xs text-[var(--color-text-muted)]">
+                    <span className="font-mono text-xs text-(--color-text-muted)">
                       {stage.year}
                     </span>
                   </div>
@@ -554,11 +554,11 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
             Building Toward Intelligent{" "}
-            <span className="text-[var(--color-secondary-400)]">
+            <span className="text-(--color-secondary-400)">
               Autonomous Infrastructure
             </span>
           </h2>
-          <p className="font-mono text-base text-[var(--color-text-secondary)] mb-8">
+          <p className="font-mono text-base text-(--color-text-secondary) mb-8">
             Join us in shaping the future of industrial automation, robotics
             systems, and intelligent operational technologies.
           </p>

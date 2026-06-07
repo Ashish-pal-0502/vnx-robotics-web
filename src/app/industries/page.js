@@ -142,7 +142,7 @@ export default function IndustriesPage() {
   ];
 
   return (
-    <main className="bg-[var(--color-dark-100)]">
+    <main className="bg-(color-dark-100)">
       {/* ========== HERO SECTION ========== */}
       <section
         ref={sectionRefs.hero}
@@ -150,7 +150,7 @@ export default function IndustriesPage() {
       >
         {/* Background Video/Image */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent z-10" />
           <img
             src="https://thumbs.dreamstime.com/b/computer-cogs-technology-background-blue-banner-old-new-using-circuits-old-machine-31582628.jpg"
             alt="Industrial background"
@@ -180,8 +180,8 @@ export default function IndustriesPage() {
             className="max-w-3xl"
           >
             <div className="mb-5 flex items-center gap-3">
-              <div className="h-[2px] w-12 bg-[var(--color-secondary-400)]" />
-              <span className="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-secondary-400)]">
+              <div className="h-0.5 w-12 bg-(color-secondary-400)" />
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-(color-secondary-400)">
                 Industries We Enable
               </span>
             </div>
@@ -190,7 +190,7 @@ export default function IndustriesPage() {
               Industries We Empower
             </h1>
 
-            <p className="font-mono text-base md:text-lg text-[var(--color-text-secondary)] max-w-2xl">
+            <p className="font-mono text-base md:text-lg text-(color-text-secondary) max-w-2xl">
               Building intelligent automation and robotics systems for modern
               industrial operations, logistics, manufacturing, and future
               autonomous industries.
@@ -239,7 +239,7 @@ export default function IndustriesPage() {
             <h2 className="font-heading text-3xl md:text-4xl font-semibold uppercase text-white">
               Industries We Serve
             </h2>
-            <p className="font-mono text-sm text-[var(--color-text-secondary)] mt-3 max-w-2xl mx-auto">
+            <p className="font-mono text-sm text-(color-text-secondary) mt-3 max-w-2xl mx-auto">
               Scalable intelligent systems across global industrial domains
             </p>
           </motion.div>
@@ -252,24 +252,24 @@ export default function IndustriesPage() {
                 animate={isInView.overview ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 whileHover={{ y: -6 }}
-                className="group relative rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all duration-300 hover:border-[var(--color-primary-500)]/30 hover:bg-white/[0.04]"
+                className="group relative rounded-xl border border-white/10 bg-white/2 p-6 transition-all duration-300 hover:border-(color-primary-500)/30 hover:bg-white/4"
               >
-                <div className="mb-4 text-[var(--color-primary-500)] group-hover:text-[var(--color-secondary-400)] transition-colors">
+                <div className="mb-4 text-(color-primary-500) group-hover:text-(color-secondary-400) transition-colors">
                   {industry.icon}
                 </div>
                 <h3 className="font-heading text-xl font-semibold text-white mb-2">
                   {industry.title}
                 </h3>
-                <p className="font-mono text-sm text-[var(--color-text-secondary)] mb-4">
+                <p className="font-mono text-sm text-(color-text-secondary) mb-4">
                   {industry.description}
                 </p>
                 <Link
                   href={`/industries/${industry.title.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-")}`}
-                  className="inline-flex items-center gap-2 font-mono text-sm text-[var(--color-primary-500)] group-hover:gap-3 transition-all"
+                  className="inline-flex items-center gap-2 font-mono text-sm text-(color-primary-500) group-hover:gap-3 transition-all"
                 >
                   Learn more <IoArrowForward size={14} />
                 </Link>
-                <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-[var(--color-primary-500)] to-[var(--color-secondary-400)] transition-all duration-300 group-hover:w-full" />
+                <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r from-(color-primary-500) to-(color-secondary-400) transition-all duration-300 group-hover:w-full" />
               </motion.div>
             ))}
           </div>
@@ -291,7 +291,7 @@ export default function IndustriesPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
                 Intelligent Warehouse Automation
               </h2>
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
+              <p className="font-mono text-base text-(color-text-secondary) mb-6">
                 VNX Robotics develops intelligent warehouse systems focused on
                 automation, orchestration, operational visibility, and scalable
                 material flow infrastructure.
@@ -300,10 +300,10 @@ export default function IndustriesPage() {
                 {industryCards[0].capabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-(color-secondary-400) shrink-0"
                       size={16}
                     />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)]">
+                    <span className="font-mono text-sm text-(color-text-secondary)">
                       {cap}
                     </span>
                   </div>
@@ -311,7 +311,7 @@ export default function IndustriesPage() {
               </div>
               {/* <Link
                 href="/solutions/warehouse-automation"
-                className="inline-flex items-center gap-2 font-mono text-[var(--color-primary-500)] hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 font-mono text-(color-primary-500) hover:gap-3 transition-all"
               >
                 Explore Warehouse Solutions <IoChevronForward size={14} />
               </Link> */}
@@ -362,7 +362,7 @@ export default function IndustriesPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
                 Smart Manufacturing Systems
               </h2>
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
+              <p className="font-mono text-base text-(color-text-secondary) mb-6">
                 Industrial automation systems integrating controls, monitoring,
                 operational analytics, and intelligent production workflows.
               </p>
@@ -370,10 +370,10 @@ export default function IndustriesPage() {
                 {industryCards[1].capabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-(color-secondary-400) shrink-0"
                       size={16}
                     />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)]">
+                    <span className="font-mono text-sm text-(color-text-secondary)">
                       {cap}
                     </span>
                   </div>
@@ -381,7 +381,7 @@ export default function IndustriesPage() {
               </div>
               {/* <Link
                 href="/solutions/industrial-automation"
-                className="inline-flex items-center gap-2 font-mono text-[var(--color-primary-500)] hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 font-mono text-(color-primary-500) hover:gap-3 transition-all"
               >
                 Explore Manufacturing Solutions <IoChevronForward size={14} />
               </Link> */}
@@ -405,7 +405,7 @@ export default function IndustriesPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
                 Robotics Platforms & Autonomous Systems
               </h2>
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
+              <p className="font-mono text-base text-(color-text-secondary) mb-6">
                 Advanced robotics development programs focused on mobility,
                 industrial inspection, autonomy, and intelligent operational
                 systems.
@@ -414,10 +414,10 @@ export default function IndustriesPage() {
                 {industryCards[2].capabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-(color-secondary-400) shrink-0"
                       size={16}
                     />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)]">
+                    <span className="font-mono text-sm text-(color-text-secondary)">
                       {cap}
                     </span>
                   </div>
@@ -425,7 +425,7 @@ export default function IndustriesPage() {
               </div>
               <Link
                 href="/robotics"
-                className="inline-flex items-center gap-2 font-mono text-[var(--color-primary-500)] hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 font-mono text-(color-primary-500) hover:gap-3 transition-all"
               >
                 Explore Robotics Programs <IoChevronForward size={14} />
               </Link>
@@ -476,7 +476,7 @@ export default function IndustriesPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
                 Agriculture & Outdoor Robotics
               </h2>
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
+              <p className="font-mono text-base text-(color-text-secondary) mb-6">
                 Future autonomous robotics systems designed for agricultural
                 operations, outdoor automation, and intelligent field
                 infrastructure.
@@ -485,10 +485,10 @@ export default function IndustriesPage() {
                 {industryCards[3].capabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-(color-secondary-400) shrink-0"
                       size={16}
                     />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)]">
+                    <span className="font-mono text-sm text-(color-text-secondary)">
                       {cap}
                     </span>
                   </div>
@@ -496,7 +496,7 @@ export default function IndustriesPage() {
               </div>
               {/* <Link
                 href="/solutions/agriculture-robotics"
-                className="inline-flex items-center gap-2 font-mono text-[var(--color-primary-500)] hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 font-mono text-(color-primary-500) hover:gap-3 transition-all"
               >
                 Explore Agriculture Solutions <IoChevronForward size={14} />
               </Link> */}
@@ -520,7 +520,7 @@ export default function IndustriesPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
                 Embedded Systems & Intelligent Hardware
               </h2>
-              <p className="font-mono text-base text-[var(--color-text-secondary)] mb-6">
+              <p className="font-mono text-base text-(color-text-secondary) mb-6">
                 Embedded technologies supporting robotics, automation systems,
                 sensors, control systems, and future intelligent infrastructure.
               </p>
@@ -528,10 +528,10 @@ export default function IndustriesPage() {
                 {industryCards[4].capabilities.map((cap, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <IoCheckmarkCircle
-                      className="text-[var(--color-secondary-400)] flex-shrink-0"
+                      className="text-(color-secondary-400) shrink-0"
                       size={16}
                     />
-                    <span className="font-mono text-sm text-[var(--color-text-secondary)]">
+                    <span className="font-mono text-sm text-(color-text-secondary)">
                       {cap}
                     </span>
                   </div>
@@ -539,7 +539,7 @@ export default function IndustriesPage() {
               </div>
               {/* <Link
                 href="/solutions/embedded-systems"
-                className="inline-flex items-center gap-2 font-mono text-[var(--color-primary-500)] hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 font-mono text-(color-primary-500) hover:gap-3 transition-all"
               >
                 Explore Embedded Solutions <IoChevronForward size={14} />
               </Link> */}
@@ -571,14 +571,14 @@ export default function IndustriesPage() {
             alt="Industrial background"
             className="h-full w-full object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-dark-100)] via-transparent to-[var(--color-dark-100)]" />
+          <div className="absolute inset-0 bg-linear-to-r from-(color-dark-100) via-transparent to-(color-dark-100)" />
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-4">
             Let's Build Intelligent Industrial Systems Together
           </h2>
-          <p className="font-mono text-base text-[var(--color-text-secondary)] mb-8 max-w-2xl mx-auto">
+          <p className="font-mono text-base text-(color-text-secondary) mb-8 max-w-2xl mx-auto">
             Partner with VNX Robotics to transform your industrial operations
             with intelligent automation and robotics systems.
           </p>

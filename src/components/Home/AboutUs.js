@@ -61,7 +61,7 @@
 //               />
 
 //               {/* SUBTLE OVERLAY */}
-//               <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-100)]/50 to-transparent" />
+//               <div className="absolute inset-0 bg-linear-to-t from-[var(--color-dark-100)]/50 to-transparent" />
 //             </div>
 //           </motion.div>
 
@@ -199,7 +199,7 @@ export default function AboutUs() {
               />
 
               {/* SUBTLE OVERLAY */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-100)]/50 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-[var(--color-dark-100)]/50 to-transparent" />
             </div>
           </motion.div>
 

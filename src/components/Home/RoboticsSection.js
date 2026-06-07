@@ -190,11 +190,11 @@ export default function RoboticsSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0b1020] to-transparent"
+            className="overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-[#0b1020] to-transparent"
           >
             <div className="grid md:grid-cols-2">
               {/* Visual Side - Video/Image */}
-              <div className="relative aspect-video md:aspect-auto bg-gradient-to-br from-[#006db1]/10 to-transparent overflow-hidden">
+              <div className="relative aspect-video md:aspect-auto bg-linear-to-br from-[#006db1]/10 to-transparent overflow-hidden">
                 {/* Video Player */}
                 <video
                   autoPlay
@@ -217,7 +217,7 @@ export default function RoboticsSection() {
                 </video>
 
                 {/* Gradient Overlay for better text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
                 {/* Status Badge */}
                 <div className="absolute bottom-4 right-4">

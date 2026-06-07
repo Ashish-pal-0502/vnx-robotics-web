@@ -119,7 +119,7 @@ export default function RoboticsPage() {
         className="relative min-h-screen flex items-center overflow-hidden"
       >
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent z-10" />
           <img
             src="https://t4.ftcdn.net/jpg/08/71/75/11/360_F_871751180_OQ5s1vtuENqTMDdEIP6uUuCveboNAisn.jpg"
             alt="Robotics hero"
@@ -238,7 +238,7 @@ export default function RoboticsPage() {
                         e.target.src = "/images/placeholder-robot.jpg";
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent" />
                     <div className="absolute top-4 right-4">
                       <span className="rounded-full bg-[var(--color-secondary-400)]/20 backdrop-blur-sm px-3 py-1 font-mono text-xs text-[var(--color-secondary-400)] border border-[var(--color-secondary-400)]/30">
                         Active Development

@@ -347,19 +347,19 @@ const AddHero = ({ editData = null, onSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-linear-to-br from-[#0b1020] to-[#050816] p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-6 md:mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-xl shadow-lg">
+            <div className="p-3 bg-linear-to-br from-[#0088db] to-[#006db1] rounded-xl shadow-lg">
               <FiVideo className="text-white" size={24} />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+              <h1 className="text-2xl md:text-3xl font-heading font-bold text-[#f3f4f6]">
                 {editData ? "Update Hero Section" : "Create New Hero"}
               </h1>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-[#a1a1aa] mt-1">
                 {editData
                   ? "Update your hero videos for desktop and mobile devices"
                   : "Add hero videos for desktop and mobile devices to showcase your brand"}
@@ -369,20 +369,20 @@ const AddHero = ({ editData = null, onSuccess }) => {
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-[#111827] rounded-2xl shadow-xl border border-[#27324a] overflow-hidden">
           <div className="p-6 md:p-8">
             {/* Warning message if both videos not selected */}
             {!isBothVideosSelected() && (
-              <div className="mb-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg flex items-start gap-3">
+              <div className="mb-6 p-4 bg-amber-500/10 border-l-4 border-amber-500 rounded-lg flex items-start gap-3">
                 <FiAlertCircle
                   className="text-amber-500 mt-0.5 shrink-0"
                   size={20}
                 />
                 <div>
-                  <p className="text-amber-800 font-medium">
+                  <p className="text-amber-500 font-medium">
                     Both desktop and mobile videos are required!
                   </p>
-                  <p className="text-amber-600 text-sm mt-1">
+                  <p className="text-amber-500/70 text-sm mt-1">
                     Please select both videos to continue.
                   </p>
                 </div>
@@ -393,14 +393,14 @@ const AddHero = ({ editData = null, onSuccess }) => {
               {/* Desktop Video Section */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-lg text-white">
+                  <div className="p-2 bg-linear-to-br from-[#0088db] to-[#006db1] rounded-lg text-white">
                     <FiMonitor size={18} />
                   </div>
                   <div>
-                    <label className="font-semibold text-gray-800">
+                    <label className="font-heading font-semibold text-[#f3f4f6]">
                       Desktop Video <span className="text-red-500">*</span>
                     </label>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-[#71717a]">
                       MP4, WebM, MOV (Max 20MB)
                     </p>
                   </div>
@@ -411,21 +411,21 @@ const AddHero = ({ editData = null, onSuccess }) => {
                   type="file"
                   accept="video/*"
                   onChange={(e) => handleVideoChange(e, "desktop")}
-                  className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#1f3b57]/20 focus:border-[#1f3b57] outline-none transition"
+                  className="w-full border border-[#27324a] rounded-xl p-3 text-sm bg-[#0b1020] text-[#f3f4f6] focus:ring-2 focus:ring-[#0088db]/20 focus:border-[#0088db] outline-none transition"
                   disabled={loading}
                 />
 
                 {uploadProgress.desktop > 0 && uploadProgress.desktop < 100 && (
                   <div className="mt-3">
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600">Uploading...</span>
-                      <span className="font-medium text-[#1f3b57]">
+                      <span className="text-[#a1a1aa]">Uploading...</span>
+                      <span className="font-medium text-[#ffba22]">
                         {uploadProgress.desktop}%
                       </span>
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-2 bg-[#27324a] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] transition-all duration-300 rounded-full"
+                        className="h-full bg-linear-to-r from-[#ffba22] to-[#ffc93d] transition-all duration-300 rounded-full"
                         style={{ width: `${uploadProgress.desktop}%` }}
                       />
                     </div>
@@ -434,7 +434,7 @@ const AddHero = ({ editData = null, onSuccess }) => {
 
                 {desktopPreview && (
                   <div className="mt-3 relative group">
-                    <div className="relative rounded-xl overflow-hidden bg-black/5">
+                    <div className="relative rounded-xl overflow-hidden bg-black/20">
                       <video
                         src={desktopPreview}
                         controls
@@ -460,14 +460,14 @@ const AddHero = ({ editData = null, onSuccess }) => {
               {/* Mobile Video Section */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-lg text-white">
+                  <div className="p-2 bg-linear-to-br from-[#0088db] to-[#006db1] rounded-lg text-white">
                     <FiSmartphone size={18} />
                   </div>
                   <div>
-                    <label className="font-semibold text-gray-800">
+                    <label className="font-heading font-semibold text-[#f3f4f6]">
                       Mobile Video <span className="text-red-500">*</span>
                     </label>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-[#71717a]">
                       MP4, WebM, MOV (Max 20MB)
                     </p>
                   </div>
@@ -478,21 +478,21 @@ const AddHero = ({ editData = null, onSuccess }) => {
                   type="file"
                   accept="video/*"
                   onChange={(e) => handleVideoChange(e, "mobile")}
-                  className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#1f3b57]/20 focus:border-[#1f3b57] outline-none transition"
+                  className="w-full border border-[#27324a] rounded-xl p-3 text-sm bg-[#0b1020] text-[#f3f4f6] focus:ring-2 focus:ring-[#0088db]/20 focus:border-[#0088db] outline-none transition"
                   disabled={loading}
                 />
 
                 {uploadProgress.mobile > 0 && uploadProgress.mobile < 100 && (
                   <div className="mt-3">
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600">Uploading...</span>
-                      <span className="font-medium text-[#1f3b57]">
+                      <span className="text-[#a1a1aa]">Uploading...</span>
+                      <span className="font-medium text-[#ffba22]">
                         {uploadProgress.mobile}%
                       </span>
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-2 bg-[#27324a] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] transition-all duration-300 rounded-full"
+                        className="h-full bg-linear-to-r from-[#ffba22] to-[#ffc93d] transition-all duration-300 rounded-full"
                         style={{ width: `${uploadProgress.mobile}%` }}
                       />
                     </div>
@@ -501,7 +501,7 @@ const AddHero = ({ editData = null, onSuccess }) => {
 
                 {mobilePreview && (
                   <div className="mt-3 relative group">
-                    <div className="relative rounded-xl overflow-hidden bg-black/5">
+                    <div className="relative rounded-xl overflow-hidden bg-black/20">
                       <video
                         src={mobilePreview}
                         controls
@@ -526,12 +526,14 @@ const AddHero = ({ editData = null, onSuccess }) => {
             </div>
 
             {/* Guidelines Section */}
-            <div className="mt-8 p-4 bg-blue-50 rounded-xl">
+            <div className="mt-8 p-4 bg-[#0088db]/10 rounded-xl border border-[#0088db]/20">
               <div className="flex items-start gap-3">
-                <FiInfo className="text-blue-600 mt-0.5 shrink-0" size={18} />
-                <div className="text-sm text-blue-800">
-                  <p className="font-medium mb-2">Video Guidelines:</p>
-                  <ul className="space-y-1 text-blue-700">
+                <FiInfo className="text-[#0088db] mt-0.5 shrink-0" size={18} />
+                <div className="text-sm text-[#a1a1aa]">
+                  <p className="font-medium mb-2 text-[#f3f4f6]">
+                    Video Guidelines:
+                  </p>
+                  <ul className="space-y-1">
                     <li>
                       • Recommended resolution: Desktop (1920x1080), Mobile
                       (1080x1920)
@@ -548,15 +550,15 @@ const AddHero = ({ editData = null, onSuccess }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="border-t border-gray-100 bg-gray-50 px-6 md:px-8 py-6">
+          <div className="border-t border-[#27324a] bg-[#0b1020] px-6 md:px-8 py-6">
             <div className="flex flex-col sm:flex-row gap-3 justify-end">
               <button
                 onClick={handleSubmit}
                 disabled={loading || !isBothVideosSelected()}
-                className={`w-full sm:w-auto px-8 py-3 rounded-xl transition-all font-medium flex items-center justify-center gap-2 ${
+                className={`w-full sm:w-auto px-8 py-3 rounded-full transition-all font-heading font-medium flex items-center justify-center gap-2 ${
                   !isBothVideosSelected()
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] text-white hover:shadow-lg transform hover:scale-[1.02]"
+                    ? "bg-[#27324a] text-[#71717a] cursor-not-allowed"
+                    : "btn-primary"
                 }`}
               >
                 {loading ? (
@@ -593,14 +595,14 @@ const AddHero = ({ editData = null, onSuccess }) => {
         {/* Preview Section */}
         {(desktopPreview || mobilePreview) && (
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-heading font-semibold text-[#f3f4f6] mb-4 flex items-center gap-2">
               <FiVideo size={20} />
               Video Preview
             </h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {desktopPreview && (
-                <div className="bg-white rounded-xl overflow-hidden shadow-md">
-                  <div className="bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] px-4 py-2">
+                <div className="bg-[#111827] rounded-xl overflow-hidden shadow-lg border border-[#27324a]">
+                  <div className="bg-linear-to-r from-[#0088db] to-[#006db1] px-4 py-2">
                     <p className="text-sm font-medium text-white flex items-center gap-2">
                       <FiMonitor size={14} />
                       Desktop Preview
@@ -610,8 +612,8 @@ const AddHero = ({ editData = null, onSuccess }) => {
                 </div>
               )}
               {mobilePreview && (
-                <div className="bg-white rounded-xl overflow-hidden shadow-md">
-                  <div className="bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] px-4 py-2">
+                <div className="bg-[#111827] rounded-xl overflow-hidden shadow-lg border border-[#27324a]">
+                  <div className="bg-linear-to-r from-[#0088db] to-[#006db1] px-4 py-2">
                     <p className="text-sm font-medium text-white flex items-center gap-2">
                       <FiSmartphone size={14} />
                       Mobile Preview

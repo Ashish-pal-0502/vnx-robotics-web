@@ -177,9 +177,9 @@ export default function ContactPage() {
 
             {/* Decorative Line */}
             <div className="flex items-center justify-center gap-3 mt-8">
-              <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[var(--color-secondary-400)]" />
+              <div className="h-[1px] w-12 bg-linear-to-r from-transparent to-[var(--color-secondary-400)]" />
               <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-secondary-400)]" />
-              <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[var(--color-secondary-400)]" />
+              <div className="h-[1px] w-12 bg-linear-to-l from-transparent to-[var(--color-secondary-400)]" />
             </div>
           </motion.div>
         </div>
@@ -208,7 +208,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView.form ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-[var(--color-dark-200)] to-[var(--color-dark-300)] rounded-2xl border border-white/10 p-8 md:p-12"
+            className="bg-linear-to-br from-[var(--color-dark-200)] to-[var(--color-dark-300)] rounded-2xl border border-white/10 p-8 md:p-12"
           >
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               {/* NAME */}
