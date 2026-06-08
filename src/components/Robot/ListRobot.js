@@ -21,6 +21,9 @@ import {
   FiChevronUp,
   FiInfo,
   FiAlertTriangle,
+  FiVideo,
+  FiPlay,
+  FiXCircle,
 } from "react-icons/fi";
 
 const ITEMS_PER_PAGE = 5;
@@ -43,6 +46,8 @@ const ListRobot = ({ onEdit }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [expandedRobot, setExpandedRobot] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   /* =========================
      FETCH ROBOTS - Show all robots (including development)
@@ -95,6 +100,19 @@ const ListRobot = ({ onEdit }) => {
       console.error("Delete failed:", error);
       toast.error("Failed to delete robot");
     }
+  };
+
+  /* =========================
+     VIDEO MODAL HANDLERS
+  ========================= */
+  const openVideoModal = (video) => {
+    setSelectedVideo(video);
+    setVideoModalOpen(true);
+  };
+
+  const closeVideoModal = () => {
+    setSelectedVideo(null);
+    setVideoModalOpen(false);
   };
 
   /* =========================
@@ -157,6 +175,11 @@ const ListRobot = ({ onEdit }) => {
     (r) => r.is_development !== true,
   ).length;
 
+  // Count robots with videos
+  const robotsWithVideos = robots.filter(
+    (r) => r.video && r.video.length > 0,
+  ).length;
+
   /* =========================
      LOADING UI (Dark Theme)
   ========================= */
@@ -190,6 +213,38 @@ const ListRobot = ({ onEdit }) => {
   return (
     <div className="min-h-screen bg-linear-to-br from-[#0b1020] to-[#050816] p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
+        {/* Video Modal */}
+        {videoModalOpen && selectedVideo && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+            onClick={closeVideoModal}
+          >
+            <div
+              className="relative max-w-4xl w-full bg-[#111827] rounded-2xl overflow-hidden border border-[#27324a] shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={closeVideoModal}
+                className="absolute top-4 right-4 z-10 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition"
+              >
+                <FiXCircle size={24} />
+              </button>
+              <video
+                src={selectedVideo.url}
+                controls
+                autoPlay
+                className="w-full max-h-[80vh] object-contain"
+              />
+              <div className="p-4 bg-[#0b1020] border-t border-[#27324a]">
+                <p className="text-[#f3f4f6] font-medium">Video Preview</p>
+                <p className="text-sm text-[#71717a] mt-1">
+                  Click outside to close
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header Section */}
         <div className="mb-6 md:mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -207,7 +262,7 @@ const ListRobot = ({ onEdit }) => {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               {/* Total Robots Counter */}
               <div className="bg-[#111827] rounded-xl px-5 py-3 shadow-md border border-[#27324a]">
                 <p className="text-xs text-[#71717a] uppercase tracking-wide">
@@ -217,6 +272,19 @@ const ListRobot = ({ onEdit }) => {
                   {robots.length}
                 </h3>
               </div>
+
+              {/* Robots with Videos Counter */}
+              {robotsWithVideos > 0 && (
+                <div className="bg-[#111827] rounded-xl px-4 py-3 shadow-md border border-[#27324a]">
+                  <p className="text-xs text-[#71717a] uppercase tracking-wide flex items-center gap-1">
+                    <FiVideo size={10} />
+                    With Videos
+                  </p>
+                  <h3 className="text-2xl font-bold text-purple-400">
+                    {robotsWithVideos}
+                  </h3>
+                </div>
+              )}
 
               {/* Production Robots Counter */}
               {productionCount > 0 && (
@@ -341,26 +409,6 @@ const ListRobot = ({ onEdit }) => {
             </div>
           </div>
 
-          {/* Info Banner about Development Robots */}
-          {developmentCount > 0 && (
-            <div className="bg-[#ffba22]/10 border-l-4 border-[#ffba22] p-4 m-4 rounded-lg">
-              <div className="flex items-start gap-3">
-                <FiAlertTriangle className="text-[#ffba22] mt-0.5" size={18} />
-                <div>
-                  <p className="font-medium text-[#ffba22]">
-                    Development Robots Present
-                  </p>
-                  <p className="text-sm text-[#a1a1aa]">
-                    {developmentCount} robot
-                    {developmentCount !== 1 ? "s are" : " is"} currently in
-                    development mode. Development robots are marked with a
-                    warning badge.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Empty State - Dark Theme */}
           {filteredRobots.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
@@ -395,6 +443,7 @@ const ListRobot = ({ onEdit }) => {
                   const cleanDescription = stripHtml(robot.description);
                   const isExpanded = expandedRobot === robot._id;
                   const isDevelopment = robot.is_development === true;
+                  const robotVideos = robot.video || [];
 
                   return (
                     <div
@@ -443,6 +492,13 @@ const ListRobot = ({ onEdit }) => {
                                     {robot.category}
                                   </span>
                                 )}
+                                {robotVideos.length > 0 && (
+                                  <span className="inline-flex items-center gap-1 text-xs bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full">
+                                    <FiVideo size={10} />
+                                    {robotVideos.length} Video
+                                    {robotVideos.length !== 1 ? "s" : ""}
+                                  </span>
+                                )}
                                 {isDevelopment && (
                                   <span className="inline-flex items-center gap-1 text-xs bg-[#ffba22]/10 text-[#ffba22] px-2 py-1 rounded-full">
                                     <FiAlertTriangle size={10} />
@@ -483,6 +539,45 @@ const ListRobot = ({ onEdit }) => {
                               </button>
                             )}
                           </p>
+
+                          {/* Videos Section */}
+                          {robotVideos.length > 0 && (
+                            <div className="mb-3">
+                              <div className="flex items-center gap-2 text-xs font-semibold text-[#a1a1aa] mb-2">
+                                <FiVideo size={12} />
+                                <span>Videos ({robotVideos.length})</span>
+                              </div>
+                              <div className="flex flex-wrap gap-3">
+                                {robotVideos
+                                  .slice(0, isExpanded ? undefined : 2)
+                                  .map((video, idx) => (
+                                    <button
+                                      key={idx}
+                                      onClick={() => openVideoModal(video)}
+                                      className="flex items-center gap-2 px-3 py-2 bg-[#0b1020] border border-[#27324a] rounded-lg hover:border-purple-500/50 hover:bg-[#1f2638] transition group/video"
+                                    >
+                                      <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                                        <FiPlay
+                                          size={14}
+                                          className="text-purple-400"
+                                        />
+                                      </div>
+                                      <span className="text-sm text-[#a1a1aa] group-hover/video:text-purple-400">
+                                        Video {idx + 1}
+                                      </span>
+                                    </button>
+                                  ))}
+                                {!isExpanded && robotVideos.length > 2 && (
+                                  <button
+                                    onClick={() => toggleExpand(robot._id)}
+                                    className="text-xs text-[#0088db] hover:text-[#006db1]"
+                                  >
+                                    +{robotVideos.length - 2} more videos
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          )}
 
                           {/* Specifications */}
                           {robot.specifications &&
@@ -579,87 +674,132 @@ const ListRobot = ({ onEdit }) => {
                           </div>
 
                           {/* Expanded Content */}
-                          {isExpanded &&
-                            (robot.specifications?.length > 4 ||
-                              robot.keyPoints?.length > 3 ||
-                              robot.applications?.length > 3) && (
-                              <div className="mt-4 p-4 bg-[#0b1020] rounded-xl border border-[#27324a]">
-                                <div className="flex items-center gap-2 mb-3">
-                                  <FiInfo
-                                    size={14}
-                                    className="text-[#0088db]"
-                                  />
-                                  <span className="text-sm font-semibold text-[#f3f4f6]">
-                                    Additional Details
-                                  </span>
+                          {isExpanded && (
+                            <div className="mt-4 space-y-4">
+                              {/* All Videos in Expanded View */}
+                              {robotVideos.length > 2 && (
+                                <div className="p-4 bg-[#0b1020] rounded-xl border border-[#27324a]">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <FiVideo
+                                      size={14}
+                                      className="text-purple-400"
+                                    />
+                                    <span className="text-sm font-semibold text-[#f3f4f6]">
+                                      All Videos ({robotVideos.length})
+                                    </span>
+                                  </div>
+                                  <div className="flex flex-wrap gap-3">
+                                    {robotVideos.map((video, idx) => (
+                                      <button
+                                        key={idx}
+                                        onClick={() => openVideoModal(video)}
+                                        className="flex items-center gap-2 px-3 py-2 bg-[#1f2638] border border-[#27324a] rounded-lg hover:border-purple-500/50 transition"
+                                      >
+                                        <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                                          <FiPlay
+                                            size={14}
+                                            className="text-purple-400"
+                                          />
+                                        </div>
+                                        <span className="text-sm text-[#a1a1aa]">
+                                          Video {idx + 1}
+                                        </span>
+                                      </button>
+                                    ))}
+                                  </div>
                                 </div>
-                                {robot.specifications &&
-                                  robot.specifications.length > 4 && (
-                                    <div className="mb-3">
-                                      <div className="text-xs font-medium text-[#a1a1aa] mb-2">
-                                        More Specifications:
-                                      </div>
-                                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                        {robot.specifications
-                                          .slice(4)
-                                          .map((spec, idx) => (
-                                            <div
-                                              key={idx}
-                                              className="flex items-baseline gap-2 text-xs"
-                                            >
-                                              <span className="font-medium text-[#a1a1aa]">
-                                                {spec.label}:
-                                              </span>
-                                              <span className="text-[#71717a]">
-                                                {spec.value}
-                                              </span>
-                                            </div>
-                                          ))}
-                                      </div>
+                              )}
+
+                              {/* Extra Specifications */}
+                              {robot.specifications &&
+                                robot.specifications.length > 4 && (
+                                  <div className="p-4 bg-[#0b1020] rounded-xl border border-[#27324a]">
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <FiInfo
+                                        size={14}
+                                        className="text-[#0088db]"
+                                      />
+                                      <span className="text-sm font-semibold text-[#f3f4f6]">
+                                        Additional Specifications
+                                      </span>
                                     </div>
-                                  )}
-                                {robot.keyPoints &&
-                                  robot.keyPoints.length > 3 && (
-                                    <div className="mb-3">
-                                      <div className="text-xs font-medium text-[#a1a1aa] mb-2">
-                                        More Features:
-                                      </div>
-                                      <div className="flex flex-wrap gap-2">
-                                        {robot.keyPoints
-                                          .slice(3)
-                                          .map((point, idx) => (
-                                            <span
-                                              key={idx}
-                                              className="text-xs bg-[#1f2638] text-[#a1a1aa] px-2 py-1 rounded-full border border-[#27324a]"
-                                            >
-                                              {point}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                      {robot.specifications
+                                        .slice(4)
+                                        .map((spec, idx) => (
+                                          <div
+                                            key={idx}
+                                            className="flex items-baseline gap-2 text-xs"
+                                          >
+                                            <span className="font-medium text-[#a1a1aa]">
+                                              {spec.label}:
                                             </span>
-                                          ))}
-                                      </div>
-                                    </div>
-                                  )}
-                                {robot.applications &&
-                                  robot.applications.length > 3 && (
-                                    <div>
-                                      <div className="text-xs font-medium text-[#a1a1aa] mb-2">
-                                        More Applications:
-                                      </div>
-                                      <div className="flex flex-wrap gap-2">
-                                        {robot.applications
-                                          .slice(3)
-                                          .map((app, idx) => (
-                                            <span
-                                              key={idx}
-                                              className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full border border-emerald-500/20"
-                                            >
-                                              {app}
+                                            <span className="text-[#71717a]">
+                                              {spec.value}
                                             </span>
-                                          ))}
-                                      </div>
+                                          </div>
+                                        ))}
                                     </div>
-                                  )}
-                              </div>
-                            )}
+                                  </div>
+                                )}
+
+                              {/* Extra Key Features */}
+                              {robot.keyPoints &&
+                                robot.keyPoints.length > 3 && (
+                                  <div className="p-4 bg-[#0b1020] rounded-xl border border-[#27324a]">
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <FiList
+                                        size={14}
+                                        className="text-[#0088db]"
+                                      />
+                                      <span className="text-sm font-semibold text-[#f3f4f6]">
+                                        More Features
+                                      </span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                      {robot.keyPoints
+                                        .slice(3)
+                                        .map((point, idx) => (
+                                          <span
+                                            key={idx}
+                                            className="text-xs bg-[#1f2638] text-[#a1a1aa] px-2 py-1 rounded-full border border-[#27324a]"
+                                          >
+                                            {point}
+                                          </span>
+                                        ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                              {/* Extra Applications */}
+                              {robot.applications &&
+                                robot.applications.length > 3 && (
+                                  <div className="p-4 bg-[#0b1020] rounded-xl border border-[#27324a]">
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <FiTarget
+                                        size={14}
+                                        className="text-[#0088db]"
+                                      />
+                                      <span className="text-sm font-semibold text-[#f3f4f6]">
+                                        More Applications
+                                      </span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                      {robot.applications
+                                        .slice(3)
+                                        .map((app, idx) => (
+                                          <span
+                                            key={idx}
+                                            className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full border border-emerald-500/20"
+                                          >
+                                            {app}
+                                          </span>
+                                        ))}
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
+                          )}
 
                           {/* Actions */}
                           <div className="flex items-center gap-3 pt-3 border-t border-[#27324a] mt-2">

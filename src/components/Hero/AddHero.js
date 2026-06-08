@@ -438,12 +438,12 @@ const AddHero = ({ editData = null, onSuccess }) => {
                       <video
                         src={desktopPreview}
                         controls
-                        className="w-full rounded-xl max-h-[300px] object-contain"
+                        className="w-full rounded-xl max-h-75 object-contain"
                       />
                       {!loading && (
                         <button
                           onClick={() => removeVideo("desktop")}
-                          className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <FiTrash2 size={16} />
                         </button>
@@ -505,12 +505,12 @@ const AddHero = ({ editData = null, onSuccess }) => {
                       <video
                         src={mobilePreview}
                         controls
-                        className="w-full rounded-xl max-h-[300px] object-contain"
+                        className="w-full rounded-xl max-h-75 object-contain"
                       />
                       {!loading && (
                         <button
                           onClick={() => removeVideo("mobile")}
-                          className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <FiTrash2 size={16} />
                         </button>
@@ -622,7 +622,7 @@ const AddHero = ({ editData = null, onSuccess }) => {
                   <video
                     src={mobilePreview}
                     controls
-                    className="w-full max-h-[400px]"
+                    className="w-full max-h-100"
                   />
                 </div>
               )}

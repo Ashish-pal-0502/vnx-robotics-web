@@ -670,7 +670,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                 <div className="border border-[#27324a] rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#0088db]/20 focus-within:border-[#0088db] transition bg-[#0b1020]">
                   <EditorContent
                     editor={headingEditor}
-                    className="prose max-w-none p-4 min-h-[120px] text-[#f3f4f6]"
+                    className="prose max-w-none p-4 min-h-30 text-[#f3f4f6]"
                   />
                 </div>
                 <p className="text-xs text-[#71717a] mt-2">
@@ -687,7 +687,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                 <div className="border border-[#27324a] rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#0088db]/20 focus-within:border-[#0088db] transition bg-[#0b1020]">
                   <EditorContent
                     editor={contentEditor}
-                    className="prose max-w-none p-4 min-h-[500px] text-[#f3f4f6]"
+                    className="prose max-w-none p-4 min-h-125 text-[#f3f4f6]"
                   />
                 </div>
                 <p className="text-xs text-[#71717a] mt-2">

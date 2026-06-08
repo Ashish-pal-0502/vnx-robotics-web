@@ -468,7 +468,7 @@ const BlogList = ({ onEdit }) => {
 
                         {/* Content */}
                         <div className="p-4">
-                          <h3 className="font-heading font-semibold text-[#f3f4f6] mb-2 line-clamp-2 min-h-[3rem]">
+                          <h3 className="font-heading font-semibold text-[#f3f4f6] mb-2 line-clamp-2 min-h-12">
                             {searchQuery
                               ? highlightText(
                                   cleanHeading || "Untitled",
@@ -477,7 +477,7 @@ const BlogList = ({ onEdit }) => {
                               : cleanHeading || "Untitled"}
                           </h3>
 
-                          <p className="text-[#a1a1aa] text-sm leading-6 line-clamp-3 mb-4 min-h-[4.5rem]">
+                          <p className="text-[#a1a1aa] text-sm leading-6 line-clamp-3 mb-4 min-h-18">
                             {cleanDescription?.slice(0, 100) ||
                               "No description available"}
                           </p>

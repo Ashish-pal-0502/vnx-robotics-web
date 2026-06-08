@@ -40,9 +40,11 @@ const AddRobot = ({ editData = null, onSuccess }) => {
   const [applications, setApplications] = useState([]);
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
-  const [video, setVideo] = useState(null);
-  const [videoPreview, setVideoPreview] = useState("");
-  const [existingVideo, setExistingVideo] = useState(null);
+
+  // Video array state
+  const [videos, setVideos] = useState([]);
+  const [existingVideos, setExistingVideos] = useState([]);
+  const [uploadingVideos, setUploadingVideos] = useState({});
 
   // Temporary inputs for adding new items
   const [newSpec, setNewSpec] = useState({ label: "", value: "" });
@@ -52,10 +54,10 @@ const AddRobot = ({ editData = null, onSuccess }) => {
   // Category options
   const categoryOptions = ["Robots", "Controllers", "Equipment", "Software"];
 
-  // Constants
-  const MIN_FILE_SIZE = 30 * 1024;
-  const MAX_FILE_SIZE = 5 * 1024 * 1024;
-  const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
+  // Constants - Updated to 20MB
+  const MIN_FILE_SIZE = 30 * 1024; // 30KB minimum (unchanged)
+  const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB maximum
+  const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB maximum
 
   // Validation constants
   const MIN_NAME_LENGTH = 2;
@@ -109,13 +111,18 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       setPreviews(formattedImages.map((img) => img.preview));
     }
 
-    // Load existing video
-    if (editData?.video && editData.video.url) {
-      setExistingVideo({
-        url: editData.video.url,
-        key: editData.video.key,
-      });
-      setVideoPreview(editData.video.url);
+    // Load existing videos (array)
+    if (editData?.video && editData.video.length > 0) {
+      const formattedExistingVideos = editData.video.map(
+        (videoItem, index) => ({
+          id: index,
+          url: videoItem.url,
+          key: videoItem.key,
+          isExisting: true,
+          preview: videoItem.url,
+        }),
+      );
+      setExistingVideos(formattedExistingVideos);
     }
   }, [editData]);
 
@@ -221,7 +228,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
 
     if (file.size > MAX_FILE_SIZE) {
       errors.push(
-        `${file.name} is too large (${formatFileSize(file.size)}). Maximum size is 5MB`,
+        `${file.name} is too large (${formatFileSize(file.size)}). Maximum size is 20MB`,
       );
     }
 
@@ -229,7 +236,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
   };
 
   /* =========================
-     VALIDATE VIDEO (Optional)
+     VALIDATE VIDEO
   ========================= */
   const validateVideo = (file) => {
     const errors = [];
@@ -241,7 +248,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
 
     if (file.size > MAX_VIDEO_SIZE) {
       errors.push(
-        `${file.name} is too large (${formatFileSize(file.size)}). Maximum size is 100MB`,
+        `${file.name} is too large (${formatFileSize(file.size)}). Maximum size is 20MB`,
       );
     }
 
@@ -324,38 +331,58 @@ const AddRobot = ({ editData = null, onSuccess }) => {
      VIDEO SELECT WITH VALIDATION
   ========================= */
   const handleVideoUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
 
-    const videoErrors = validateVideo(file);
-    if (videoErrors.length > 0) {
-      videoErrors.forEach((err) => toast.error(err));
-      return;
+    const validFiles = [];
+    const errors = [];
+
+    for (const file of files) {
+      const videoErrors = validateVideo(file);
+      if (videoErrors.length > 0) {
+        errors.push(...videoErrors);
+      } else {
+        validFiles.push(file);
+      }
     }
+
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
+    }
+
+    if (validFiles.length === 0) return;
 
     setError("");
 
-    if (videoPreview && videoPreview.startsWith("blob:")) {
-      URL.revokeObjectURL(videoPreview);
-    }
+    const newVideos = validFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+      isExisting: false,
+      id: Date.now() + Math.random(),
+    }));
 
-    setVideo(file);
-    setVideoPreview(URL.createObjectURL(file));
-    setExistingVideo(null);
+    setVideos((prev) => [...prev, ...newVideos]);
 
-    toast.success("Video selected successfully");
+    toast.success(`${validFiles.length} video(s) selected successfully`);
   };
 
   /* =========================
      REMOVE VIDEO
   ========================= */
-  const removeVideo = () => {
-    if (videoPreview && videoPreview.startsWith("blob:")) {
-      URL.revokeObjectURL(videoPreview);
+  const removeNewVideo = (id) => {
+    const videoToRemove = videos.find((v) => v.id === id);
+    if (
+      videoToRemove &&
+      videoToRemove.preview &&
+      videoToRemove.preview.startsWith("blob:")
+    ) {
+      URL.revokeObjectURL(videoToRemove.preview);
     }
-    setVideo(null);
-    setVideoPreview("");
-    setExistingVideo(null);
+    setVideos((prev) => prev.filter((v) => v.id !== id));
+  };
+
+  const removeExistingVideo = (index) => {
+    setExistingVideos((prev) => prev.filter((_, i) => i !== index));
   };
 
   /* =========================
@@ -464,13 +491,15 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       }
     }
 
-    // Only validate video if a video file is selected
-    if (video) {
-      const videoErrors = validateVideo(video);
-      if (videoErrors.length > 0) {
-        setError(videoErrors[0]);
-        toast.error(videoErrors[0]);
-        return;
+    // Validate new videos
+    for (const videoItem of videos) {
+      if (videoItem.file) {
+        const videoErrors = validateVideo(videoItem.file);
+        if (videoErrors.length > 0) {
+          setError(videoErrors[0]);
+          toast.error(videoErrors[0]);
+          return;
+        }
       }
     }
 
@@ -511,36 +540,43 @@ const AddRobot = ({ editData = null, onSuccess }) => {
       }
 
       setUploadingImage(false);
-      
-      // Handle video upload (optional)
-      let videoData = null;
 
-      if (video) {
-        setUploadingVideo(true);
-        toast.loading("Uploading video...", { id: "video-upload-progress" });
+      // Handle video uploads (multiple videos)
+      setUploadingVideo(true);
+      const uploadedVideos = [];
 
-        const { uploadURL, fileUrl, key } = await getPresignedUrl(
-          video,
-          "video",
-        );
-        await uploadToS3(video, uploadURL);
+      // Upload new videos
+      for (let i = 0; i < videos.length; i++) {
+        const videoItem = videos[i];
 
-        videoData = {
-          url: fileUrl || uploadURL.split("?")[0],
-          key,
-        };
-
-        toast.success("Video uploaded successfully", {
+        toast.loading(`Uploading video ${i + 1} of ${videos.length}...`, {
           id: "video-upload-progress",
         });
-      } else if (existingVideo) {
-        // Keep existing video
-        videoData = {
-          url: existingVideo.url,
-          key: existingVideo.key,
-        };
+
+        const { uploadURL, fileUrl, key } = await getPresignedUrl(
+          videoItem.file,
+          "video",
+        );
+        await uploadToS3(videoItem.file, uploadURL);
+
+        uploadedVideos.push({
+          url: fileUrl || uploadURL.split("?")[0],
+          key,
+        });
+
+        toast.success(`Video ${i + 1} uploaded`, {
+          id: "video-upload-progress",
+        });
       }
-      // If no video and no existing video, videoData remains null (don't send video field)
+
+      // Keep existing videos
+      const keptExistingVideos = existingVideos.map((video) => ({
+        url: video.url,
+        key: video.key,
+      }));
+
+      // Combine existing and new videos
+      const allVideos = [...keptExistingVideos, ...uploadedVideos];
 
       const payload = {
         name: robotForm.name.trim(),
@@ -551,15 +587,12 @@ const AddRobot = ({ editData = null, onSuccess }) => {
         keyPoints: keyPoints,
         applications: applications,
         images: uploadedImages,
+        video: allVideos,
       };
-
-      // Only add video to payload if it exists
-      if (videoData) {
-        payload.video = videoData;
-      }
 
       console.log("=== FINAL PAYLOAD BEING SENT ===");
       console.log("is_development value:", payload.is_development);
+      console.log("videos count:", payload.video.length);
       console.log("Full payload:", JSON.stringify(payload, null, 2));
 
       if (editData?._id) {
@@ -586,9 +619,8 @@ const AddRobot = ({ editData = null, onSuccess }) => {
         setApplications([]);
         setImages([]);
         setPreviews([]);
-        setVideo(null);
-        setVideoPreview("");
-        setExistingVideo(null);
+        setVideos([]);
+        setExistingVideos([]);
       }
 
       if (onSuccess) {
@@ -1025,7 +1057,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
                   </li>
                   <li>
                     • Maximum file size:{" "}
-                    <strong className="text-[#ffba22]">5MB</strong>
+                    <strong className="text-[#ffba22]">20MB</strong>
                   </li>
                   <li>• Supported formats: PNG, JPG, JPEG, WEBP</li>
                   <li>• Recommended resolution: 1080x1080 or higher</li>
@@ -1053,7 +1085,7 @@ const AddRobot = ({ editData = null, onSuccess }) => {
                       Click to upload robot images
                     </p>
                     <p className="text-xs text-[#71717a] mt-2">
-                      PNG, JPG, WEBP (Min 30KB, Max 5MB)
+                      PNG, JPG, WEBP (Min 30KB, Max 20MB)
                     </p>
                   </div>
                 )}
@@ -1102,11 +1134,11 @@ const AddRobot = ({ editData = null, onSuccess }) => {
               )}
             </div>
 
-            {/* Video Section - Optional */}
+            {/* Videos Section - Multiple Videos */}
             <div className="mb-8">
               <h3 className="text-lg font-heading font-semibold text-[#f3f4f6] mb-4 flex items-center gap-2">
                 <FiVideo size={18} className="text-[#0088db]" />
-                Robot Video (Optional)
+                Robot Videos (Optional)
               </h3>
 
               <div className="mb-4 p-4 bg-[#0088db]/10 rounded-lg border border-[#0088db]/20">
@@ -1116,71 +1148,111 @@ const AddRobot = ({ editData = null, onSuccess }) => {
                 </p>
                 <ul className="text-xs text-[#a1a1aa] mt-2 space-y-1">
                   <li>
-                    • Maximum file size:{" "}
-                    <strong className="text-[#ffba22]">100MB</strong>
+                    • Maximum file size per video:{" "}
+                    <strong className="text-[#ffba22]">20MB</strong>
                   </li>
                   <li>• Supported formats: MP4, MOV, AVI, WEBM</li>
                   <li>• Recommended resolution: 1920x1080 or higher</li>
-                  <li>• This field is optional - you can skip it</li>
+                  <li>• You can upload multiple videos</li>
                 </ul>
               </div>
 
-              {!videoPreview ? (
-                <div
-                  className="relative border-2 border-dashed border-[#27324a] rounded-xl p-8 text-center cursor-pointer hover:border-[#0088db] hover:bg-[#1f2638] transition-all group"
-                  onClick={() => document.getElementById("robotVideo").click()}
-                >
-                  {uploadingVideo ? (
-                    <div className="text-center">
-                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#0088db] mb-3"></div>
-                      <p className="text-[#a1a1aa]">Uploading video...</p>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <div className="w-16 h-16 mx-auto bg-[#1f2638] rounded-full flex items-center justify-center mb-3 group-hover:bg-[#0088db]/10 transition">
-                        <FiVideo
-                          size={28}
-                          className="text-[#71717a] group-hover:text-[#0088db]"
+              {/* Existing Videos */}
+              {existingVideos.length > 0 && (
+                <div className="mb-5">
+                  <h4 className="text-sm font-medium text-[#a1a1aa] mb-3">
+                    Existing Videos ({existingVideos.length})
+                  </h4>
+                  <div className="space-y-4">
+                    {existingVideos.map((videoItem, index) => (
+                      <div
+                        key={`existing-${index}`}
+                        className="relative rounded-xl overflow-hidden border border-[#27324a] bg-[#0b1020]"
+                      >
+                        <video
+                          src={videoItem.url}
+                          controls
+                          className="w-full max-h-75 object-contain"
                         />
+                        <button
+                          type="button"
+                          onClick={() => removeExistingVideo(index)}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition transform hover:scale-110 shadow-lg"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
                       </div>
-                      <p className="text-[#a1a1aa] font-medium">
-                        Click to upload robot video (Optional)
-                      </p>
-                      <p className="text-xs text-[#71717a] mt-2">
-                        MP4, MOV, AVI, WEBM (Max 100MB)
-                      </p>
-                    </div>
-                  )}
-
-                  <input
-                    id="robotVideo"
-                    type="file"
-                    accept="video/*"
-                    hidden
-                    onChange={handleVideoUpload}
-                  />
-                </div>
-              ) : (
-                <div className="mt-5">
-                  <div className="relative rounded-xl overflow-hidden border border-[#27324a] bg-[#0b1020]">
-                    <video
-                      src={videoPreview}
-                      controls
-                      className="w-full max-h-[400px] object-contain"
-                    />
-                    <button
-                      type="button"
-                      onClick={removeVideo}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition transform hover:scale-110 shadow-lg"
-                    >
-                      <FiTrash2 size={16} />
-                    </button>
+                    ))}
                   </div>
-                  <p className="text-xs text-[#a1a1aa] text-center mt-2">
-                    Video preview (Click remove to delete)
-                  </p>
                 </div>
               )}
+
+              {/* New Videos */}
+              {videos.length > 0 && (
+                <div className="mb-5">
+                  <h4 className="text-sm font-medium text-[#a1a1aa] mb-3">
+                    New Videos ({videos.length})
+                  </h4>
+                  <div className="space-y-4">
+                    {videos.map((videoItem) => (
+                      <div
+                        key={videoItem.id}
+                        className="relative rounded-xl overflow-hidden border border-[#27324a] bg-[#0b1020]"
+                      >
+                        <video
+                          src={videoItem.preview}
+                          controls
+                          className="w-full max-h-75 object-contain"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeNewVideo(videoItem.id)}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition transform hover:scale-110 shadow-lg"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Upload Button */}
+              <div
+                className="relative border-2 border-dashed border-[#27324a] rounded-xl p-8 text-center cursor-pointer hover:border-[#0088db] hover:bg-[#1f2638] transition-all group"
+                onClick={() => document.getElementById("robotVideo").click()}
+              >
+                {uploadingVideo ? (
+                  <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#0088db] mb-3"></div>
+                    <p className="text-[#a1a1aa]">Uploading videos...</p>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <div className="w-16 h-16 mx-auto bg-[#1f2638] rounded-full flex items-center justify-center mb-3 group-hover:bg-[#0088db]/10 transition">
+                      <FiVideo
+                        size={28}
+                        className="text-[#71717a] group-hover:text-[#0088db]"
+                      />
+                    </div>
+                    <p className="text-[#a1a1aa] font-medium">
+                      Click to upload robot videos (Optional)
+                    </p>
+                    <p className="text-xs text-[#71717a] mt-2">
+                      MP4, MOV, AVI, WEBM (Max 20MB each)
+                    </p>
+                  </div>
+                )}
+
+                <input
+                  id="robotVideo"
+                  type="file"
+                  multiple
+                  accept="video/*"
+                  hidden
+                  onChange={handleVideoUpload}
+                />
+              </div>
             </div>
           </div>
 
