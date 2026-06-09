@@ -194,10 +194,10 @@ export default function IndustriesSection() {
               />
 
               {/* DARK OVERLAY */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/35 to-transparent" />
 
               {/* HOVER BLUE OVERLAY */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[rgba(0,109,177,0.96)] via-[rgba(0,136,219,0.82)] to-[rgba(5,8,22,0.95)] opacity-0 transition-all duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-linear-to-br from-[rgba(0,109,177,0.96)] via-[rgba(0,136,219,0.82)] to-[rgba(5,8,22,0.95)] opacity-0 transition-all duration-500 group-hover:opacity-100" />
 
               {/* TOP LINE */}
               <div className="absolute left-0 top-0 h-[3px] w-0 bg-[var(--color-secondary-400)] transition-all duration-500 group-hover:w-full" />

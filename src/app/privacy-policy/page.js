@@ -2,9 +2,14 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { IoArrowBack } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 export default function PrivacyPolicyPage() {
+  const { t } = useTranslation();
+  const router = useRouter();
+
   return (
     <main className="bg-[var(--color-dark-100)] min-h-screen">
       {/* Hero Section */}
@@ -33,27 +38,28 @@ export default function PrivacyPolicyPage() {
             transition={{ duration: 0.6 }}
           >
             {/* Back Button */}
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-[var(--color-secondary-400)] transition-colors mb-8 font-mono text-sm group"
+            <button
+              onClick={() => router.back()}
+              className="inline-flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-[var(--color-secondary-400)] transition-colors mb-8 font-mono text-sm group cursor-pointer"
             >
               <IoArrowBack
                 size={16}
                 className="group-hover:-translate-x-1 transition-transform"
               />
-              Back to Home
-            </Link>
+              {t("privacyPolicyPage.backToHome")}
+            </button>
 
             {/* Title */}
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
-              Privacy Policy
+              {t("privacyPolicyPage.title")}
             </h1>
             <p className="font-body text-[var(--color-text-secondary)] mb-8">
-              Last updated:{" "}
-              {new Date().toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
+              {t("privacyPolicyPage.lastUpdated", {
+                date: new Date().toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                }),
               })}
             </p>
           </motion.div>
@@ -72,154 +78,129 @@ export default function PrivacyPolicyPage() {
             {/* 1. Introduction */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                1. Introduction
+                {t("privacyPolicyPage.introductionTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                At VNX Robotics, we take your privacy seriously. This Privacy
-                Policy explains how we collect, use, disclose, and safeguard
-                your information when you visit our website or use our services.
+                {t("privacyPolicyPage.introductionText")}
               </p>
             </div>
 
             {/* 2. Information We Collect */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                2. Information We Collect
+                {t("privacyPolicyPage.infoCollectTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed mb-3">
-                We may collect the following types of information:
+                {t("privacyPolicyPage.infoCollectText")}
               </p>
               <ul className="list-disc pl-6 space-y-2 font-body text-[var(--color-text-secondary)]">
-                <li>
-                  Personal identification information (name, email address,
-                  phone number)
-                </li>
-                <li>Company information (company name, industry, position)</li>
-                <li>
-                  Technical data (IP address, browser type, device information)
-                </li>
-                <li>Usage data (pages visited, time spent, interactions)</li>
+                <li>{t("privacyPolicyPage.infoCollectItem1")}</li>
+                <li>{t("privacyPolicyPage.infoCollectItem2")}</li>
+                <li>{t("privacyPolicyPage.infoCollectItem3")}</li>
+                <li>{t("privacyPolicyPage.infoCollectItem4")}</li>
               </ul>
             </div>
 
             {/* 3. How We Use Your Information */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                3. How We Use Your Information
+                {t("privacyPolicyPage.howWeUseTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed mb-3">
-                We use the collected information for:
+                {t("privacyPolicyPage.howWeUseText")}
               </p>
               <ul className="list-disc pl-6 space-y-2 font-body text-[var(--color-text-secondary)]">
-                <li>Providing and maintaining our services</li>
-                <li>
-                  Communicating with you about updates, promotions, or support
-                </li>
-                <li>Improving our website and user experience</li>
-                <li>Analyzing usage patterns and trends</li>
-                <li>Protecting against unauthorized or illegal activity</li>
+                <li>{t("privacyPolicyPage.howWeUseItem1")}</li>
+                <li>{t("privacyPolicyPage.howWeUseItem2")}</li>
+                <li>{t("privacyPolicyPage.howWeUseItem3")}</li>
+                <li>{t("privacyPolicyPage.howWeUseItem4")}</li>
+                <li>{t("privacyPolicyPage.howWeUseItem5")}</li>
               </ul>
             </div>
 
             {/* 4. Cookies & Tracking */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                4. Cookies & Tracking Technologies
+                {t("privacyPolicyPage.cookiesTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                We use cookies and similar tracking technologies to enhance your
-                experience. You can control cookie preferences through your
-                browser settings. However, disabling cookies may affect certain
-                features of our website.
+                {t("privacyPolicyPage.cookiesText")}
               </p>
             </div>
 
             {/* 5. Data Sharing */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                5. Data Sharing & Disclosure
+                {t("privacyPolicyPage.dataSharingTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                We do not sell your personal information. We may share your data
-                with trusted third-party service providers who assist in
-                operating our website, conducting business, or serving you, as
-                long as they agree to keep your information confidential.
+                {t("privacyPolicyPage.dataSharingText")}
               </p>
             </div>
 
             {/* 6. Data Security */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                6. Data Security
+                {t("privacyPolicyPage.dataSecurityTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                We implement industry-standard security measures to protect your
-                information. However, no method of transmission over the
-                internet is 100% secure, and we cannot guarantee absolute
-                security.
+                {t("privacyPolicyPage.dataSecurityText")}
               </p>
             </div>
 
             {/* 7. Your Rights */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                7. Your Privacy Rights
+                {t("privacyPolicyPage.privacyRightsTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed mb-3">
-                Depending on your location, you may have the right to:
+                {t("privacyPolicyPage.privacyRightsText")}
               </p>
               <ul className="list-disc pl-6 space-y-2 font-body text-[var(--color-text-secondary)]">
-                <li>Access the personal information we hold about you</li>
-                <li>Request correction of inaccurate information</li>
-                <li>Request deletion of your information</li>
-                <li>Opt-out of marketing communications</li>
+                <li>{t("privacyPolicyPage.privacyRightsItem1")}</li>
+                <li>{t("privacyPolicyPage.privacyRightsItem2")}</li>
+                <li>{t("privacyPolicyPage.privacyRightsItem3")}</li>
+                <li>{t("privacyPolicyPage.privacyRightsItem4")}</li>
               </ul>
             </div>
 
             {/* 8. Third-Party Links */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                8. Third-Party Links
+                {t("privacyPolicyPage.thirdPartyTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                Our website may contain links to third-party sites. We are not
-                responsible for the privacy practices or content of those sites.
-                We encourage you to read their privacy policies.
+                {t("privacyPolicyPage.thirdPartyText")}
               </p>
             </div>
 
             {/* 9. Children's Privacy */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                9. Children's Privacy
+                {t("privacyPolicyPage.childrenPrivacyTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                Our services are not intended for individuals under 16 years of
-                age. We do not knowingly collect personal information from
-                children under 16.
+                {t("privacyPolicyPage.childrenPrivacyText")}
               </p>
             </div>
 
             {/* 10. Changes to Policy */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                10. Changes to This Privacy Policy
+                {t("privacyPolicyPage.changesTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                We may update this Privacy Policy from time to time. Changes
-                will be posted on this page with an updated revision date. We
-                encourage you to review this policy periodically.
+                {t("privacyPolicyPage.changesText")}
               </p>
             </div>
 
             {/* 11. Contact Us */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-white mb-3">
-                11. Contact Us
+                {t("privacyPolicyPage.contactTitle")}
               </h2>
               <p className="font-body text-[var(--color-text-secondary)] leading-relaxed">
-                If you have questions about this Privacy Policy or how we handle
-                your data, please contact us at:{" "}
+                {t("privacyPolicyPage.contactText")}{" "}
                 <a
                   href="mailto:info@vnxrobotics.com"
                   target="_blank"
@@ -233,7 +214,9 @@ export default function PrivacyPolicyPage() {
             {/* Divider */}
             <div className="pt-8 border-t border-white/10">
               <p className="font-mono text-xs text-[var(--color-text-muted)] text-center">
-                © {new Date().getFullYear()} VNX Robotics. All rights reserved.
+                {t("privacyPolicyPage.copyright", {
+                  year: new Date().getFullYear(),
+                })}
               </p>
             </div>
           </motion.div>

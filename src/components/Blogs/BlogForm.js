@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -25,7 +24,6 @@ import {
   FiSave,
   FiEdit2,
   FiX,
-  FiPlus,
   FiTrash2,
   FiMinimize2,
   FiMaximize2,
@@ -64,7 +62,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: "text-blue-600 underline hover:text-blue-800",
+          class: "text-[#0088db] underline hover:text-[#006db1]",
         },
       }),
       Placeholder.configure({
@@ -97,7 +95,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: "text-blue-600 underline hover:text-blue-800",
+          class: "text-[#0088db] underline hover:text-[#006db1]",
         },
       }),
       TextAlign.configure({
@@ -191,7 +189,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
       throw new Error(
         err?.response?.data?.message ||
           err?.message ||
-          "Failed to get upload URL"
+          "Failed to get upload URL",
       );
     }
   };
@@ -237,7 +235,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
   };
 
   /* =========================
-     IMAGE SELECT
+     IMAGE SELECT WITH VALIDATION (30KB - 20MB)
   ========================= */
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
@@ -246,15 +244,21 @@ const BlogForm = ({ editData = null, onSuccess }) => {
 
     const validFiles = files.filter((file) => {
       const isValidType = file.type.startsWith("image/");
-      const isValidSize = file.size <= 5 * 1024 * 1024;
+      const minSize = 30 * 1024; // 30KB in bytes
+      const maxSize = 20 * 1024 * 1024; // 20MB in bytes
 
       if (!isValidType) {
         toast.error("Only image files are allowed");
         return false;
       }
 
-      if (!isValidSize) {
-        toast.error("Image size should be less than 5MB");
+      if (file.size < minSize) {
+        toast.error(`"${file.name}" is too small. Minimum size is 30KB`);
+        return false;
+      }
+
+      if (file.size > maxSize) {
+        toast.error(`"${file.name}" is too large. Maximum size is 20MB`);
         return false;
       }
 
@@ -279,6 +283,10 @@ const BlogForm = ({ editData = null, onSuccess }) => {
      REMOVE IMAGE
   ========================= */
   const removeImage = (index) => {
+    // Revoke object URL to prevent memory leaks
+    if (images[index] && images[index].preview) {
+      URL.revokeObjectURL(images[index].preview);
+    }
     setImages((prev) => prev.filter((_, i) => i !== index));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
@@ -381,7 +389,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
   };
 
   /* =========================
-     TOOLBAR BUTTON
+     TOOLBAR BUTTON (Dark Theme)
   ========================= */
   const ToolbarButton = ({ onClick, active, children, icon: Icon, title }) => (
     <button
@@ -390,8 +398,8 @@ const BlogForm = ({ editData = null, onSuccess }) => {
       title={title}
       className={`p-2 rounded-lg transition-all text-sm font-medium ${
         active
-          ? "bg-[#1f3b57] text-white shadow-md"
-          : "text-gray-600 hover:bg-gray-100"
+          ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white shadow-md"
+          : "text-[#a1a1aa] hover:bg-[#1f2638] hover:text-[#f3f4f6]"
       }`}
     >
       {Icon ? <Icon size={18} /> : children}
@@ -405,22 +413,28 @@ const BlogForm = ({ editData = null, onSuccess }) => {
     if (!headingEditor) return null;
 
     return (
-      <div className="flex flex-wrap gap-1 mb-3 p-2 border border-gray-200 rounded-xl bg-gray-50/50">
-        <div className="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1">
+      <div className="flex flex-wrap gap-1 mb-3 p-2 border border-[#27324a] rounded-xl bg-[#0b1020]">
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
           <ToolbarButton
-            onClick={() => headingEditor.chain().focus().toggleHeading({ level: 1 }).run()}
+            onClick={() =>
+              headingEditor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
             active={headingEditor.isActive("heading", { level: 1 })}
             children="H1"
             title="Heading 1"
           />
           <ToolbarButton
-            onClick={() => headingEditor.chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={() =>
+              headingEditor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
             active={headingEditor.isActive("heading", { level: 2 })}
             children="H2"
             title="Heading 2"
           />
           <ToolbarButton
-            onClick={() => headingEditor.chain().focus().toggleHeading({ level: 3 }).run()}
+            onClick={() =>
+              headingEditor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
             active={headingEditor.isActive("heading", { level: 3 })}
             children="H3"
             title="Heading 3"
@@ -455,15 +469,15 @@ const BlogForm = ({ editData = null, onSuccess }) => {
   };
 
   /* =========================
-     ENHANCED CONTENT TOOLBAR
+     ENHANCED CONTENT TOOLBAR (Dark Theme)
   ========================= */
   const ContentToolbar = () => {
     if (!contentEditor) return null;
 
     return (
-      <div className="flex flex-wrap gap-1 mb-3 p-2 border border-gray-200 rounded-xl bg-gray-50/50 sticky top-0 z-10">
+      <div className="flex flex-wrap gap-1 mb-3 p-2 border border-[#27324a] rounded-xl bg-[#0b1020] sticky top-0 z-10">
         {/* Text Formatting */}
-        <div className="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1">
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
           <ToolbarButton
             onClick={() => contentEditor.chain().focus().toggleBold().run()}
             active={contentEditor.isActive("bold")}
@@ -477,7 +491,9 @@ const BlogForm = ({ editData = null, onSuccess }) => {
             title="Italic"
           />
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleUnderline().run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleUnderline().run()
+            }
             active={contentEditor.isActive("underline")}
             icon={FiUnderline}
             title="Underline"
@@ -485,21 +501,27 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         </div>
 
         {/* Headings */}
-        <div className="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1">
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleHeading({ level: 1 }).run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
             active={contentEditor.isActive("heading", { level: 1 })}
             children="H1"
             title="Heading 1"
           />
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
             active={contentEditor.isActive("heading", { level: 2 })}
             children="H2"
             title="Heading 2"
           />
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleHeading({ level: 3 }).run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
             active={contentEditor.isActive("heading", { level: 3 })}
             children="H3"
             title="Heading 3"
@@ -507,21 +529,27 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         </div>
 
         {/* Alignment */}
-        <div className="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1">
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().setTextAlign("left").run()}
+            onClick={() =>
+              contentEditor.chain().focus().setTextAlign("left").run()
+            }
             active={contentEditor.isActive({ textAlign: "left" })}
             icon={FiAlignLeft}
             title="Align Left"
           />
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().setTextAlign("center").run()}
+            onClick={() =>
+              contentEditor.chain().focus().setTextAlign("center").run()
+            }
             active={contentEditor.isActive({ textAlign: "center" })}
             icon={FiAlignCenter}
             title="Align Center"
           />
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().setTextAlign("right").run()}
+            onClick={() =>
+              contentEditor.chain().focus().setTextAlign("right").run()
+            }
             active={contentEditor.isActive({ textAlign: "right" })}
             icon={FiAlignRight}
             title="Align Right"
@@ -529,15 +557,19 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         </div>
 
         {/* Lists */}
-        <div className="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1">
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleBulletList().run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleBulletList().run()
+            }
             active={contentEditor.isActive("bulletList")}
             icon={FiList}
             title="Bullet List"
           />
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleOrderedList().run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleOrderedList().run()
+            }
             active={contentEditor.isActive("orderedList")}
             children="1."
             title="Numbered List"
@@ -547,13 +579,17 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         {/* Advanced */}
         <div className="flex items-center gap-1">
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleCodeBlock().run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleCodeBlock().run()
+            }
             active={contentEditor.isActive("codeBlock")}
             icon={FiCode}
             title="Code Block"
           />
           <ToolbarButton
-            onClick={() => contentEditor.chain().focus().toggleBlockquote().run()}
+            onClick={() =>
+              contentEditor.chain().focus().toggleBlockquote().run()
+            }
             active={contentEditor.isActive("blockquote")}
             children="Quote"
             title="Blockquote"
@@ -573,20 +609,22 @@ const BlogForm = ({ editData = null, onSuccess }) => {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 lg:p-8 ${fullscreen ? 'fixed inset-0 z-50 overflow-auto' : ''}`}>
+    <div
+      className={`min-h-screen bg-linear-to-br from-[#0b1020] to-[#050816] p-4 md:p-6 lg:p-8 ${fullscreen ? "fixed inset-0 z-50 overflow-auto" : ""}`}
+    >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-6 md:mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-[#1f3b57] to-[#2c4d6e] rounded-xl shadow-lg">
+              <div className="p-3 bg-linear-to-br from-[#0088db] to-[#006db1] rounded-xl shadow-lg">
                 <FiEdit2 className="text-white" size={24} />
               </div>
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+                <h1 className="text-2xl md:text-3xl font-heading font-bold text-[#f3f4f6]">
                   {editData ? "Update Blog Post" : "Create New Blog"}
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-[#a1a1aa] mt-1">
                   {editData
                     ? "Edit your existing blog post"
                     : "Write an engaging blog post with rich formatting"}
@@ -595,34 +633,38 @@ const BlogForm = ({ editData = null, onSuccess }) => {
             </div>
             <button
               onClick={() => setFullscreen(!fullscreen)}
-              className="p-2 text-gray-600 hover:text-[#1f3b57] hover:bg-gray-100 rounded-lg transition"
+              className="p-2 text-[#a1a1aa] hover:text-[#0088db] hover:bg-[#1f2638] rounded-lg transition"
               title={fullscreen ? "Exit Fullscreen" : "Fullscreen"}
             >
-              {fullscreen ? <FiMinimize2 size={20} /> : <FiMaximize2 size={20} />}
+              {fullscreen ? (
+                <FiMinimize2 size={20} />
+              ) : (
+                <FiMaximize2 size={20} />
+              )}
             </button>
           </div>
         </div>
 
         {/* Main Form */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-[#111827] rounded-2xl shadow-xl border border-[#27324a] overflow-hidden">
           <div className="p-6 md:p-8">
             {/* Alerts */}
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg flex items-start gap-3">
+              <div className="mb-6 p-4 bg-red-500/10 border-l-4 border-red-500 rounded-lg flex items-start gap-3">
                 <FiX className="text-red-500 mt-0.5" size={20} />
                 <div>
-                  <p className="font-medium text-red-800">Error</p>
-                  <p className="text-sm text-red-700">{error}</p>
+                  <p className="font-medium text-red-400">Error</p>
+                  <p className="text-sm text-red-300">{error}</p>
                 </div>
               </div>
             )}
 
             {message && (
-              <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg flex items-start gap-3">
+              <div className="mb-6 p-4 bg-green-500/10 border-l-4 border-green-500 rounded-lg flex items-start gap-3">
                 <FiSave className="text-green-500 mt-0.5" size={20} />
                 <div>
-                  <p className="font-medium text-green-800">Success</p>
-                  <p className="text-sm text-green-700">{message}</p>
+                  <p className="font-medium text-green-400">Success</p>
+                  <p className="text-sm text-green-300">{message}</p>
                 </div>
               </div>
             )}
@@ -630,47 +672,48 @@ const BlogForm = ({ editData = null, onSuccess }) => {
             <div className="space-y-8">
               {/* Heading Section */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-[#f3f4f6] mb-2">
                   Blog Heading <span className="text-red-500">*</span>
                 </label>
                 <HeadingToolbar />
-                <div className="border border-gray-300 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57]/20 focus-within:border-[#1f3b57] transition">
+                <div className="border border-[#27324a] rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#0088db]/20 focus-within:border-[#0088db] transition bg-[#0b1020]">
                   <EditorContent
                     editor={headingEditor}
-                    className="prose max-w-none p-4 min-h-[120px]"
+                    className="prose max-w-none p-4 min-h-30 text-[#f3f4f6]"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-[#71717a] mt-2">
                   Tip: Use a compelling heading that grabs attention
                 </p>
               </div>
 
               {/* Content Section */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-[#f3f4f6] mb-2">
                   Blog Content <span className="text-red-500">*</span>
                 </label>
                 <ContentToolbar />
-                <div className="border border-gray-300 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#1f3b57]/20 focus-within:border-[#1f3b57] transition">
+                <div className="border border-[#27324a] rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#0088db]/20 focus-within:border-[#0088db] transition bg-[#0b1020]">
                   <EditorContent
                     editor={contentEditor}
-                    className="prose max-w-none p-4 min-h-[500px]"
+                    className="prose max-w-none p-4 min-h-125 text-[#f3f4f6]"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  Tip: Use the toolbar above to format your content. Add headings, lists, links, and more!
+                <p className="text-xs text-[#71717a] mt-2">
+                  Tip: Use the toolbar above to format your content. Add
+                  headings, lists, links, and more!
                 </p>
               </div>
 
               {/* SEO Section */}
-              <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-5">
-                <h3 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <FiType size={18} />
+              <div className="bg-linear-to-r from-[#0b1020] to-[#050816] rounded-xl p-5 border border-[#27324a]">
+                <h3 className="text-md font-heading font-semibold text-[#f3f4f6] mb-4 flex items-center gap-2">
+                  <FiType size={18} className="text-[#0088db]" />
                   SEO & Meta Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-[#a1a1aa] mb-2">
                       Meta Title
                     </label>
                     <input
@@ -683,15 +726,15 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                           mtitle: e.target.value,
                         }))
                       }
-                      className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57]/20 focus:border-[#1f3b57] transition"
+                      className="w-full border border-[#27324a] rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#0088db]/20 focus:border-[#0088db] transition bg-[#0b1020] text-[#f3f4f6] placeholder:text-[#71717a]"
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-[#71717a] mt-1">
                       Recommended: 50-60 characters
                     </p>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-[#a1a1aa] mb-2">
                       Meta Description
                     </label>
                     <input
@@ -704,38 +747,43 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                           mdesc: e.target.value,
                         }))
                       }
-                      className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1f3b57]/20 focus:border-[#1f3b57] transition"
+                      className="w-full border border-[#27324a] rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#0088db]/20 focus:border-[#0088db] transition bg-[#0b1020] text-[#f3f4f6] placeholder:text-[#71717a]"
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-[#71717a] mt-1">
                       Recommended: 150-160 characters
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Images Section */}
+              {/* Images Section with Updated Size Info */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-[#f3f4f6] mb-2">
                   Blog Images <span className="text-red-500">*</span>
                 </label>
 
                 <div
-                  className="relative border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#1f3b57] hover:bg-gray-50 transition-all group"
+                  className="relative border-2 border-dashed border-[#27324a] rounded-xl p-8 text-center cursor-pointer hover:border-[#0088db] hover:bg-[#1f2638] transition-all group"
                   onClick={() => document.getElementById("blogImages").click()}
                 >
                   {uploadingImage ? (
                     <div className="text-center">
-                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#1f3b57] mb-3"></div>
-                      <p className="text-gray-500">Uploading images...</p>
+                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#0088db] mb-3"></div>
+                      <p className="text-[#a1a1aa]">Uploading images...</p>
                     </div>
                   ) : (
                     <div className="text-center">
-                      <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-3 group-hover:bg-[#1f3b57]/10 transition">
-                        <FiImage size={28} className="text-gray-400 group-hover:text-[#1f3b57]" />
+                      <div className="w-16 h-16 mx-auto bg-[#1f2638] rounded-full flex items-center justify-center mb-3 group-hover:bg-[#0088db]/10 transition">
+                        <FiImage
+                          size={28}
+                          className="text-[#71717a] group-hover:text-[#0088db]"
+                        />
                       </div>
-                      <p className="text-gray-600 font-medium">Click to upload images</p>
-                      <p className="text-xs text-gray-400 mt-2">
-                        PNG, JPG, WEBP up to 5MB each
+                      <p className="text-[#a1a1aa] font-medium">
+                        Click to upload images
+                      </p>
+                      <p className="text-xs text-[#71717a] mt-2">
+                        PNG, JPG, WEBP • 30KB - 20MB each
                       </p>
                     </div>
                   )}
@@ -753,19 +801,19 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                 {/* Image Gallery */}
                 {previews.length > 0 && (
                   <div className="mt-5">
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    <h4 className="text-sm font-medium text-[#a1a1aa] mb-3">
                       Image Gallery ({previews.length})
                     </h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                       {previews.map((src, index) => (
                         <div key={index} className="relative group">
-                          <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-square">
+                          <div className="relative rounded-xl overflow-hidden border border-[#27324a] bg-[#0b1020] aspect-square">
                             <img
                               src={src}
                               alt={`Preview ${index + 1}`}
                               className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                               <button
                                 type="button"
                                 onClick={() => removeImage(index)}
@@ -775,7 +823,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                               </button>
                             </div>
                           </div>
-                          <p className="text-xs text-gray-500 text-center mt-2 truncate">
+                          <p className="text-xs text-[#71717a] text-center mt-2 truncate">
                             Image {index + 1}
                           </p>
                         </div>
@@ -788,16 +836,16 @@ const BlogForm = ({ editData = null, onSuccess }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="border-t border-gray-100 bg-gray-50 px-6 md:px-8 py-6">
+          <div className="border-t border-[#27324a] bg-[#0b1020] px-6 md:px-8 py-6">
             <div className="flex flex-col sm:flex-row gap-3 justify-end">
               <button
                 onClick={handleSubmit}
                 disabled={submitting || uploadingImage}
-                className="px-8 py-3 bg-gradient-to-r from-[#1f3b57] to-[#2c4d6e] text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-semibold flex items-center justify-center gap-2"
+                className="px-8 py-3 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#050816]"></div>
                     Publishing...
                   </>
                 ) : (
@@ -812,15 +860,17 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         </div>
       </div>
 
-      {/* Link Modal */}
+      {/* Link Modal - Dark Theme */}
       {showLinkModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-[#111827] rounded-2xl p-6 max-w-md w-full shadow-2xl border border-[#27324a]">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-gray-800">Add Link</h3>
+              <h3 className="text-xl font-heading font-semibold text-[#f3f4f6]">
+                Add Link
+              </h3>
               <button
                 onClick={() => setShowLinkModal(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-[#71717a] hover:text-[#a1a1aa]"
               >
                 <FiX size={24} />
               </button>
@@ -830,19 +880,16 @@ const BlogForm = ({ editData = null, onSuccess }) => {
               placeholder="Enter URL (e.g., https://example.com)"
               value={linkUrl}
               onChange={(e) => setLinkUrl(e.target.value)}
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 mb-4 outline-none focus:ring-2 focus:ring-[#1f3b57]/20"
+              className="w-full border border-[#27324a] rounded-xl px-4 py-3 mb-4 outline-none focus:ring-2 focus:ring-[#0088db]/20 bg-[#0b1020] text-[#f3f4f6] placeholder:text-[#71717a]"
               autoFocus
             />
             <div className="flex gap-3">
-              <button
-                onClick={addLink}
-                className="flex-1 bg-[#1f3b57] text-white py-3 rounded-xl hover:bg-[#2a4d72] transition font-medium"
-              >
+              <button onClick={addLink} className="flex-1 btn-primary py-3">
                 Add Link
               </button>
               <button
                 onClick={() => setShowLinkModal(false)}
-                className="flex-1 border border-gray-300 text-gray-700 py-3 rounded-xl hover:bg-gray-50 transition font-medium"
+                className="flex-1 border border-[#27324a] text-[#a1a1aa] py-3 rounded-xl hover:bg-[#1f2638] transition font-medium"
               >
                 Cancel
               </button>
@@ -851,7 +898,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         </div>
       )}
 
-      {/* Global Styles */}
+      {/* Global Styles - Dark Theme */}
       <style jsx global>{`
         .ProseMirror {
           outline: none;
@@ -861,6 +908,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         .ProseMirror p {
           margin: 0 0 0.75rem 0;
           line-height: 1.6;
+          color: #f3f4f6;
         }
 
         .ProseMirror h1 {
@@ -868,7 +916,10 @@ const BlogForm = ({ editData = null, onSuccess }) => {
           font-weight: 700;
           margin: 1rem 0;
           line-height: 1.2;
-          color: #1f3b57;
+          background: linear-gradient(135deg, #0088db 0%, #ffba22 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .ProseMirror h2 {
@@ -876,7 +927,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
           font-weight: 700;
           margin: 0.8rem 0;
           line-height: 1.3;
-          color: #1f3b57;
+          color: #0088db;
         }
 
         .ProseMirror h3 {
@@ -884,33 +935,38 @@ const BlogForm = ({ editData = null, onSuccess }) => {
           font-weight: 700;
           margin: 0.6rem 0;
           line-height: 1.4;
+          color: #ffba22;
         }
 
         .ProseMirror ul,
         .ProseMirror ol {
           padding-left: 1.5rem;
           margin: 0.75rem 0;
+          color: #f3f4f6;
         }
 
         .ProseMirror li {
           margin-bottom: 0.25rem;
+          color: #a1a1aa;
         }
 
         .ProseMirror code {
-          background: #f3f4f6;
+          background: #1f2638;
           padding: 0.2rem 0.4rem;
           border-radius: 4px;
           font-size: 0.9rem;
           font-family: monospace;
+          color: #ffba22;
         }
 
         .ProseMirror pre {
-          background: #111827;
+          background: #050816;
           color: #f9fafb;
           padding: 1rem;
           border-radius: 0.5rem;
           overflow-x: auto;
           margin: 1rem 0;
+          border: 1px solid #27324a;
         }
 
         .ProseMirror pre code {
@@ -923,24 +979,24 @@ const BlogForm = ({ editData = null, onSuccess }) => {
           max-width: 100%;
           border-radius: 10px;
           margin: 1rem 0;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
         .ProseMirror blockquote {
-          border-left: 4px solid #1f3b57;
+          border-left: 4px solid #ffba22;
           padding-left: 1rem;
-          color: #4b5563;
+          color: #a1a1aa;
           margin: 1rem 0;
           font-style: italic;
         }
 
         .ProseMirror a {
-          color: #2563eb;
+          color: #0088db;
           text-decoration: underline;
         }
 
         .ProseMirror a:hover {
-          color: #1d4ed8;
+          color: #ffba22;
         }
 
         .ProseMirror:focus {
@@ -950,7 +1006,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
         .ProseMirror p.is-editor-empty:first-child::before {
           content: attr(data-placeholder);
           float: left;
-          color: #9ca3af;
+          color: #71717a;
           pointer-events: none;
           height: 0;
         }

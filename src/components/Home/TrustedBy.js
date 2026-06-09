@@ -68,10 +68,10 @@ export default function TrustedBy() {
         {/* LOGO STRIP */}
         <div className="relative overflow-hidden rounded-[32px] border border-white/8 bg-white/[0.02] backdrop-blur-xl">
           {/* FADE LEFT */}
-          <div className="absolute left-0 top-0 z-10 h-full w-28 bg-gradient-to-r from-[var(--color-dark-100)] to-transparent" />
+          <div className="absolute left-0 top-0 z-10 h-full w-28 bg-linear-to-r from-[var(--color-dark-100)] to-transparent" />
 
           {/* FADE RIGHT */}
-          <div className="absolute right-0 top-0 z-10 h-full w-28 bg-gradient-to-l from-[var(--color-dark-100)] to-transparent" />
+          <div className="absolute right-0 top-0 z-10 h-full w-28 bg-linear-to-l from-[var(--color-dark-100)] to-transparent" />
 
           <motion.div
             className="flex w-max items-center gap-10 py-5"

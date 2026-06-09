@@ -2,8 +2,11 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 function BlogCard({ blog, index }) {
+  const { t } = useTranslation();
+
   return (
     <Link href={`/blogs/${blog?.slug}`}>
       <motion.div
@@ -86,7 +89,7 @@ function BlogCard({ blog, index }) {
 
           {/* READ MORE LINK */}
           <div className="mt-4 flex items-center gap-2 text-xs font-mono text-[var(--color-secondary-400)] opacity-0 transition-all duration-300 group-hover:opacity-100">
-            Read more <span className="text-sm">→</span>
+            {t("blogCard.readMore")} <span className="text-sm">→</span>
           </div>
         </div>
       </motion.div>

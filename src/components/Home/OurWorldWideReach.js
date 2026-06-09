@@ -18,15 +18,33 @@ const Globe = dynamic(() => import("react-globe.gl"), {
 
 const points = [
   {
-    lat: 28.6139,
-    lng: 77.209,
-    label: "India",
+    lat: 10.8231,
+    lng: 106.6297,
+    label: "VNX Robotics JSC",
+    location: "HCM, Vietnam",
+    role: "R&D, Innovation, Talent Hub",
   },
 
   {
-    lat: 10.8231,
-    lng: 106.6297,
-    label: "Ho Chi Minh City",
+    lat: 35.4437,
+    lng: 139.638,
+    label: "VNX Robotics K.K",
+    location: "Kanagawa, Japan",
+    role: "Sales & On-site Hub",
+  },
+  {
+    lat: 12.9716,
+    lng: 77.5946,
+    label: "VNX Innovation India Pvt Ltd",
+    location: "Bangalore, India",
+    role: "Training & R&D",
+  },
+  {
+    lat: -25.2744,
+    lng: 133.7751,
+    label: "Australia",
+    location: "Planned legal entity in 2026",
+    role: "Market Operations",
   },
 ];
 
@@ -328,9 +346,9 @@ function OurWorldWideReach() {
             labelsData={points}
             labelLat="lat"
             labelLng="lng"
-            labelText="label"
-            labelSize={2.5}
-            labelDotRadius={0.4}
+            labelText={(d) => `${d.label}\n ${d.location}\n ${d.role}`}
+            labelSize={1.5}
+            labelDotRadius={0.2}
             labelColor={() => "#ffc93d"}
             labelResolution={3}
             labelAltitude={0.015}
@@ -350,7 +368,7 @@ function OurWorldWideReach() {
       </div>
 
       {/* BOTTOM FADE */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32 bg-gradient-to-t from-[#050816] to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 md:h-32 bg-linear-to-t from-[#050816] to-transparent pointer-events-none" />
 
       {/* Cursor glow element */}
       <div
