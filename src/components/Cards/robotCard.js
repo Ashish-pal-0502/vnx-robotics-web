@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { IoArrowForward } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const stripHtml = (html) => {
   if (!html) return "";
@@ -12,6 +13,8 @@ const stripHtml = (html) => {
 };
 
 export default function RobotCard({ robot, index, isInView }) {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       key={robot._id || index}
@@ -40,7 +43,7 @@ export default function RobotCard({ robot, index, isInView }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
         <div className="absolute top-4 right-4">
           <span className="rounded-full bg-[var(--color-secondary-400)]/20 backdrop-blur-sm px-3 py-1 font-mono text-xs text-[var(--color-secondary-400)] border border-[var(--color-secondary-400)]/30">
-            Active Development
+            {t("robotCard.activeDevelopment")}
           </span>
         </div>
       </div>
@@ -50,13 +53,10 @@ export default function RobotCard({ robot, index, isInView }) {
           {stripHtml(robot.name)}
         </h3>
         <p className="font-mono text-sm text-[var(--color-secondary-400)] mb-3">
-          {robot.category || "Robotics Platform"}
+          {robot.category || t("robotCard.roboticsPlatform")}
         </p>
         <p className="font-mono text-sm text-[var(--color-text-secondary)] mb-4 line-clamp-2 flex-1">
-          {stripHtml(
-            robot.description ||
-              "Advanced robotics platform under development for industrial and commercial applications.",
-          )}
+          {stripHtml(robot.description || t("robotCard.defaultDescription"))}
         </p>
 
         <div className="flex flex-wrap gap-2 mb-4">
@@ -71,10 +71,10 @@ export default function RobotCard({ robot, index, isInView }) {
           {(!robot.keyPoints || robot.keyPoints.length === 0) && (
             <>
               <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-muted)]">
-                Robotics Platform
+                {t("robotCard.roboticsPlatform")}
               </span>
               <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-muted)]">
-                Intelligent Systems
+                {t("robotCard.intelligentSystems")}
               </span>
             </>
           )}
@@ -84,7 +84,7 @@ export default function RobotCard({ robot, index, isInView }) {
           href={`/robotics/${robot.slug || robot._id}`}
           className="inline-flex items-center gap-2 font-mono text-sm text-[var(--color-secondary-400)] hover:gap-3 transition-all mt-auto"
         >
-          Learn more <IoArrowForward size={14} />
+          {t("robotCard.learnMore")} <IoArrowForward size={14} />
         </Link>
       </div>
     </motion.div>

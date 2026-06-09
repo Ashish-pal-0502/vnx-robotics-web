@@ -25,11 +25,13 @@ export default function Footer() {
     try {
       const response = await apiClient.post("/user/logout");
 
+      console.log("logout respo", response);
+
       if (response?.ok) {
         toast.success(t("footer.logoutSuccess") || "Logged out successfully");
 
         logOut();
-        router.replace("/");
+        // router.replace("/");
       } else {
         toast.error(
           response?.data?.message ||

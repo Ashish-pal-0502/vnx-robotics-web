@@ -15,13 +15,13 @@ const ClientOnly = ({ children }) => {
   useEffect(() => {
     setHasMounted(true);
     // Restore user from localStorage only on client
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token) {
       try {
         setUser(jwtDecode(token));
       } catch (error) {
         console.error("Error decoding token:", error);
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
       }
     }
   }, []);

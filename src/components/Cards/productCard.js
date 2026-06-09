@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { IoArrowForward } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 export default function ProductCard({ product, index }) {
+  const { t } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0, y: 25 }}
@@ -30,7 +32,7 @@ export default function ProductCard({ product, index }) {
       {/* Image */}
       <div className="aspect-[4/3] overflow-hidden">
         <img
-          src={product.image}
+          src={product.image?.[0]?.url || "https://placehold.co/800x600"}
           alt={product.title}
           className="
             h-full
@@ -80,7 +82,7 @@ export default function ProductCard({ product, index }) {
             cursor-pointer
           "
         >
-          Learn More
+          {t("productCard.learnMore")}
           <IoArrowForward />
         </Link>
       </div>
