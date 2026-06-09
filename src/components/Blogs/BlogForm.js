@@ -24,7 +24,6 @@ import {
   FiSave,
   FiEdit2,
   FiX,
-  FiPlus,
   FiTrash2,
   FiMinimize2,
   FiMaximize2,
@@ -236,7 +235,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
   };
 
   /* =========================
-     IMAGE SELECT
+     IMAGE SELECT WITH VALIDATION (30KB - 20MB)
   ========================= */
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
@@ -245,15 +244,21 @@ const BlogForm = ({ editData = null, onSuccess }) => {
 
     const validFiles = files.filter((file) => {
       const isValidType = file.type.startsWith("image/");
-      const isValidSize = file.size <= 5 * 1024 * 1024;
+      const minSize = 30 * 1024; // 30KB in bytes
+      const maxSize = 20 * 1024 * 1024; // 20MB in bytes
 
       if (!isValidType) {
         toast.error("Only image files are allowed");
         return false;
       }
 
-      if (!isValidSize) {
-        toast.error("Image size should be less than 5MB");
+      if (file.size < minSize) {
+        toast.error(`"${file.name}" is too small. Minimum size is 30KB`);
+        return false;
+      }
+
+      if (file.size > maxSize) {
+        toast.error(`"${file.name}" is too large. Maximum size is 20MB`);
         return false;
       }
 
@@ -278,6 +283,10 @@ const BlogForm = ({ editData = null, onSuccess }) => {
      REMOVE IMAGE
   ========================= */
   const removeImage = (index) => {
+    // Revoke object URL to prevent memory leaks
+    if (images[index] && images[index].preview) {
+      URL.revokeObjectURL(images[index].preview);
+    }
     setImages((prev) => prev.filter((_, i) => i !== index));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
@@ -747,7 +756,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                 </div>
               </div>
 
-              {/* Images Section */}
+              {/* Images Section with Updated Size Info */}
               <div>
                 <label className="block text-sm font-semibold text-[#f3f4f6] mb-2">
                   Blog Images <span className="text-red-500">*</span>
@@ -774,7 +783,7 @@ const BlogForm = ({ editData = null, onSuccess }) => {
                         Click to upload images
                       </p>
                       <p className="text-xs text-[#71717a] mt-2">
-                        PNG, JPG, WEBP up to 5MB each
+                        PNG, JPG, WEBP • 30KB - 20MB each
                       </p>
                     </div>
                   )}
