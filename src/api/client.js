@@ -1,9 +1,9 @@
 import { create } from "apisauce";
 
 const apiClient = create({
-  baseURL: "http://13.233.80.197:7071/api/v1",
+  // baseURL: "http://13.233.80.197:7071/api/v1",
   // baseURL: "http://localhost:7071/api/v1",
-  // baseURL: "https://vnx-robotics-server.onrender.com/api/v1",
+  baseURL: "https://vnx-robotics-server.onrender.com/api/v1",
 
   withCredentials: false,
   headers: { Accept: "application/json" },
