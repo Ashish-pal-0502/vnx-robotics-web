@@ -1,8 +1,11 @@
+
+
 // "use client";
 
 // import { motion } from "framer-motion";
 // import Link from "next/link";
 // import { useEffect, useState } from "react";
+// import { useTranslation } from "react-i18next";
 // import apiClient from "./../../api/client";
 // import {
 //   IoArrowForward,
@@ -13,6 +16,7 @@
 // } from "react-icons/io5";
 
 // export default function CareersPage() {
+//   const { t } = useTranslation();
 //   const [searchTerm, setSearchTerm] = useState("");
 //   const [selectedDepartment, setSelectedDepartment] = useState("All");
 //   const [visibleJobs, setVisibleJobs] = useState([]);
@@ -79,20 +83,19 @@
 //             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--color-secondary-400)]/20 bg-[var(--color-secondary-400)]/5 mb-6">
 //               <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-secondary-400)]" />
 //               <span className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--color-secondary-400)]">
-//                 Join Our Team
+//                 {t("careersPage.badge")}
 //               </span>
 //             </div>
 
 //             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-//               Build the Future of{" "}
+//               {t("careersPage.heading")}{" "}
 //               <span className="text-[var(--color-secondary-400)]">
-//                 Robotics
+//                 {t("careersPage.headingHighlight")}
 //               </span>
 //             </h1>
 
 //             <p className="font-body text-base text-[var(--color-text-secondary)] max-w-2xl mx-auto">
-//               Join us in developing intelligent automation and robotics systems
-//               that transform industrial operations worldwide.
+//               {t("careersPage.description")}
 //             </p>
 //           </motion.div>
 //         </div>
@@ -109,7 +112,7 @@
 //               />
 //               <input
 //                 type="text"
-//                 placeholder="Search positions..."
+//                 placeholder={t("careersPage.searchPlaceholder")}
 //                 value={searchTerm}
 //                 onChange={(e) => setSearchTerm(e.target.value)}
 //                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-secondary-400)]/50 transition-colors"
@@ -172,7 +175,7 @@
 //                             className="text-[var(--color-text-muted)]"
 //                           />
 //                           <span className="font-mono text-xs text-[var(--color-text-muted)]">
-//                             Posted:{" "}
+//                             {t("careersPage.posted")}:{" "}
 //                             {new Date(job.createdAt).toLocaleDateString(
 //                               "en-US",
 //                               {
@@ -190,7 +193,7 @@
 //                       target="_blank"
 //                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-white hover:bg-[var(--color-secondary-400)] hover:text-black hover:border-transparent transition-all whitespace-nowrap"
 //                     >
-//                       Apply Now <IoArrowForward size={14} />
+//                       {t("careersPage.applyNow")} <IoArrowForward size={14} />
 //                     </Link>
 //                   </div>
 //                 </motion.div>
@@ -198,7 +201,7 @@
 //             ) : (
 //               <div className="text-center py-12">
 //                 <p className="font-body text-[var(--color-text-secondary)]">
-//                   No positions found matching your criteria.
+//                   {t("careersPage.noPositionsFound")}
 //                 </p>
 //               </div>
 //             )}
@@ -217,29 +220,29 @@
 //             className="text-center mb-10"
 //           >
 //             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
-//               Why Join{" "}
+//               {t("careersPage.whyJoinTitle")}{" "}
 //               <span className="text-[var(--color-secondary-400)]">
-//                 VNX Robotics?
+//                 {t("careersPage.whyJoinHighlight")}
 //               </span>
 //             </h2>
 //             <p className="font-body text-sm text-[var(--color-text-secondary)]">
-//               Be part of something extraordinary
+//               {t("careersPage.whyJoinSubtitle")}
 //             </p>
 //           </motion.div>
 
 //           <div className="grid gap-6 md:grid-cols-3">
 //             {[
 //               {
-//                 title: "Innovative Technology",
-//                 desc: "Work on cutting-edge robotics and AI systems",
+//                 title: t("careersPage.innovativeTech"),
+//                 desc: t("careersPage.innovativeTechDesc"),
 //               },
 //               {
-//                 title: "Growth Culture",
-//                 desc: "Continuous learning and career development",
+//                 title: t("careersPage.growthCulture"),
+//                 desc: t("careersPage.growthCultureDesc"),
 //               },
 //               {
-//                 title: "Global Impact",
-//                 desc: "Build solutions that transform industries worldwide",
+//                 title: t("careersPage.globalImpact"),
+//                 desc: t("careersPage.globalImpactDesc"),
 //               },
 //             ].map((item, idx) => (
 //               <motion.div
@@ -266,23 +269,24 @@
 //       <section className="relative py-16 border-t border-white/5">
 //         <div className="max-w-4xl mx-auto px-6 text-center">
 //           <h3 className="font-heading text-2xl md:text-3xl font-semibold text-white mb-3">
-//             Don't see the perfect role?
+//             {t("careersPage.ctaTitle")}
 //           </h3>
 //           <p className="font-body text-[var(--color-text-secondary)] mb-6">
-//             Send us your resume and we'll reach out when opportunities match
-//             your skills.
+//             {t("careersPage.ctaDescription")}
 //           </p>
 //           <Link
 //             href="/contact"
 //             className="btn-secondary inline-flex items-center gap-2"
 //           >
-//             Contact Us <IoArrowForward size={16} />
+//             {t("careersPage.contactUs")} <IoArrowForward size={16} />
 //           </Link>
 //         </div>
 //       </section>
 //     </main>
 //   );
 // }
+
+
 
 "use client";
 
@@ -297,6 +301,8 @@ import {
   IoLocationOutline,
   IoSearchOutline,
   IoTimeOutline,
+  IoChevronDown,
+  IoChevronUp,
 } from "react-icons/io5";
 
 export default function CareersPage() {
@@ -305,6 +311,14 @@ export default function CareersPage() {
   const [selectedDepartment, setSelectedDepartment] = useState("All");
   const [visibleJobs, setVisibleJobs] = useState([]);
   const [careers, setCareers] = useState([]);
+  const [expandedJobs, setExpandedJobs] = useState({});
+
+  const toggleExpand = (jobId) => {
+    setExpandedJobs(prev => ({
+      ...prev,
+      [jobId]: !prev[jobId]
+    }));
+  };
 
   useEffect(() => {
     if (careers.length > 0) {
@@ -335,6 +349,7 @@ export default function CareersPage() {
       setCareers(response.data.data || []);
     }
   };
+  
   useEffect(() => {
     getAllCareers();
   }, []);
@@ -407,81 +422,163 @@ export default function CareersPage() {
           {/* Jobs Grid */}
           <div className="grid gap-4">
             {visibleJobs.length > 0 ? (
-              visibleJobs.map((job, idx) => (
-                <motion.div
-                  key={job._id || idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 hover:border-[var(--color-secondary-400)]/30 transition-all duration-300"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="px-2 py-0.5 rounded-full bg-[var(--color-secondary-400)]/10 text-[var(--color-secondary-400)] font-mono text-xs">
-                          {job.category}
-                        </span>
-                        <span className="px-2 py-0.5 rounded-full border border-white/10 font-mono text-xs text-[var(--color-text-muted)]">
-                          {job.jobType}
-                        </span>
-                      </div>
+              visibleJobs.map((job, idx) => {
+                const isExpanded = expandedJobs[job._id];
+                const description = job.description;
+                const shouldTruncate = description.length > 150;
+                const displayDescription = isExpanded || !shouldTruncate 
+                  ? description 
+                  : description.slice(0, 150) + "...";
 
-                      <h3 className="font-heading text-xl font-semibold text-white mb-2 group-hover:text-[var(--color-secondary-400)] transition-colors">
-                        {job.title}
-                      </h3>
-
-                      <p className="font-body text-sm text-[var(--color-text-secondary)] mb-3 line-clamp-2">
-                        {job.description}
-                      </p>
-
-                      <div className="flex flex-wrap items-center gap-4">
-                        <div className="flex items-center gap-1.5">
-                          <IoLocationOutline
-                            size={14}
-                            className="text-[var(--color-text-muted)]"
-                          />
-                          <span className="font-mono text-xs text-[var(--color-text-muted)]">
-                            {job.location}
+                return (
+                  <motion.div
+                    key={job._id || idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: idx * 0.05 }}
+                    className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 hover:border-[var(--color-secondary-400)]/30 transition-all duration-300"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2 flex-wrap">
+                          <span className="px-2 py-0.5 rounded-full bg-[var(--color-secondary-400)]/10 text-[var(--color-secondary-400)] font-mono text-xs">
+                            {job.category}
                           </span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <IoBriefcaseOutline
-                            size={14}
-                            className="text-[var(--color-text-muted)]"
-                          />
-                          <span className="font-mono text-xs text-[var(--color-text-muted)]">
+                          <span className="px-2 py-0.5 rounded-full border border-white/10 font-mono text-xs text-[var(--color-text-muted)]">
                             {job.jobType}
                           </span>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          <IoTimeOutline
-                            size={14}
-                            className="text-[var(--color-text-muted)]"
-                          />
-                          <span className="font-mono text-xs text-[var(--color-text-muted)]">
-                            {t("careersPage.posted")}:{" "}
-                            {new Date(job.createdAt).toLocaleDateString(
-                              "en-US",
-                              {
-                                month: "short",
-                                day: "numeric",
-                              },
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
 
-                    <Link
-                      href={job.applyLink}
-                      target="_blank"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-white hover:bg-[var(--color-secondary-400)] hover:text-black hover:border-transparent transition-all whitespace-nowrap"
-                    >
-                      {t("careersPage.applyNow")} <IoArrowForward size={14} />
-                    </Link>
-                  </div>
-                </motion.div>
-              ))
+                        <h3 className="font-heading text-xl font-semibold text-white mb-2 group-hover:text-[var(--color-secondary-400)] transition-colors">
+                          {job.title}
+                        </h3>
+
+                        <div className="font-body text-sm text-[var(--color-text-secondary)] mb-3">
+                          <p className="whitespace-pre-wrap">
+                            {displayDescription}
+                          </p>
+                          {shouldTruncate && (
+                            <button
+                              onClick={() => toggleExpand(job._id)}
+                              className="inline-flex items-center cursor-pointer gap-1 mt-2 text-[var(--color-secondary-400)] hover:text-[var(--color-secondary-300)] transition-colors font-mono text-xs"
+                            >
+                              {isExpanded ? (
+                                <>
+                                  <IoChevronUp size={14} />
+                                  {t("careersPage.showLess") || "Show Less"}
+                                </>
+                              ) : (
+                                <>
+                                  <IoChevronDown size={14} />
+                                  {t("careersPage.readMore") || "Read More"}
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-4">
+                          <div className="flex items-center gap-1.5">
+                            <IoLocationOutline
+                              size={14}
+                              className="text-[var(--color-text-muted)]"
+                            />
+                            <span className="font-mono text-xs text-[var(--color-text-muted)]">
+                              {job.location}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <IoBriefcaseOutline
+                              size={14}
+                              className="text-[var(--color-text-muted)]"
+                            />
+                            <span className="font-mono text-xs text-[var(--color-text-muted)]">
+                              {job.jobType}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <IoTimeOutline
+                              size={14}
+                              className="text-[var(--color-text-muted)]"
+                            />
+                            <span className="font-mono text-xs text-[var(--color-text-muted)]">
+                              {t("careersPage.posted")}:{" "}
+                              {new Date(job.createdAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                },
+                              )}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Additional Details - Collapsible Section */}
+                        {job.requirements && (
+                          <div className="mt-4">
+                            <button
+                              onClick={() => toggleExpand(`${job._id}-details`)}
+                              className="inline-flex items-center gap-1 text-[var(--color-text-muted)] hover:text-[var(--color-secondary-400)] transition-colors font-mono text-xs mb-2"
+                            >
+                              {expandedJobs[`${job._id}-details`] ? (
+                                <IoChevronUp size={14} />
+                              ) : (
+                                <IoChevronDown size={14} />
+                              )}
+                              {t("careersPage.viewDetails") || "View Details"}
+                            </button>
+                            
+                            {expandedJobs[`${job._id}-details`] && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-2 p-4 rounded-lg bg-white/[0.04] border border-white/5"
+                              >
+                                <h4 className="font-heading text-sm font-semibold text-white mb-2">
+                                  {t("careersPage.requirements") || "Requirements"}
+                                </h4>
+                                <ul className="list-disc list-inside space-y-1">
+                                  {job.requirements.map((req, idx) => (
+                                    <li key={idx} className="font-body text-xs text-[var(--color-text-secondary)]">
+                                      {req}
+                                    </li>
+                                  ))}
+                                </ul>
+                                
+                                {job.responsibilities && (
+                                  <>
+                                    <h4 className="font-heading text-sm font-semibold text-white mt-3 mb-2">
+                                      {t("careersPage.responsibilities") || "Responsibilities"}
+                                    </h4>
+                                    <ul className="list-disc list-inside space-y-1">
+                                      {job.responsibilities.map((resp, idx) => (
+                                        <li key={idx} className="font-body text-xs text-[var(--color-text-secondary)]">
+                                          {resp}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </>
+                                )}
+                              </motion.div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <Link
+                        href={job.applyLink}
+                        target="_blank"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/10 bg-white/[0.02] font-mono text-sm text-white hover:bg-[var(--color-secondary-400)] hover:text-black hover:border-transparent transition-all whitespace-nowrap self-start"
+                      >
+                        {t("careersPage.applyNow")} <IoArrowForward size={14} />
+                      </Link>
+                    </div>
+                  </motion.div>
+                );
+              })
             ) : (
               <div className="text-center py-12">
                 <p className="font-body text-[var(--color-text-secondary)]">

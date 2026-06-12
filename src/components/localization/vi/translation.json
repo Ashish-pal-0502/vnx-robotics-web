@@ -365,7 +365,12 @@
     "globalImpactDesc": "Xây dựng các giải pháp chuyển đổi ngành công nghiệp trên toàn thế giới",
     "ctaTitle": "Không thấy vai trò phù hợp?",
     "ctaDescription": "Hãy gửi cho chúng tôi hồ sơ của bạn và chúng tôi sẽ liên hệ khi có cơ hội phù hợp với kỹ năng của bạn.",
-    "contactUs": "Liên hệ"
+    "contactUs": "Liên hệ",
+        "readMore": "Đọc thêm",
+    "showLess": "Thu gọn",
+    "viewDetails": "Xem chi tiết",
+    "requirements": "Yêu cầu",
+    "responsibilities": "Trách nhiệm công việc"
   },
   "industriesPage": {
     "badge": "Ngành nghề Chúng tôi Phục vụ",
@@ -534,7 +539,7 @@
     "robotInAction": "Robot Hoạt động",
     "videoSubtitle": "Xem video trình diễn ({{count}} video)",
     "video": "Video",
-    "programOverview": "Tổng quan Chương trình",
+    "programOverview": "Tổng quan",
     "keySpecifications": "Thông số Kỹ thuật Chính",
     "noSpecifications": "Không có thông số kỹ thuật",
     "potentialApplications": "Ứng dụng Tiềm năng",

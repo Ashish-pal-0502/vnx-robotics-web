@@ -371,7 +371,12 @@
     "globalImpactDesc": "世界中の産業を変革するソリューションを構築",
     "ctaTitle": "ぴったりの役割が見つかりませんか？",
     "ctaDescription": "履歴書をお送りください。あなたのスキルに合った機会があり次第、ご連絡いたします。",
-    "contactUs": "お問い合わせ"
+    "contactUs": "お問い合わせ",
+       "readMore": "続きを読む",
+    "showLess": "折りたたむ",
+    "viewDetails": "詳細を見る",
+    "requirements": "応募条件",
+    "responsibilities": "職務内容"
   },
   "industriesPage": {
     "badge": "対応産業",
@@ -540,7 +545,7 @@
     "robotInAction": "稼働中のロボット",
     "videoSubtitle": "デモ動画を見る（{{count}}本の動画）",
     "video": "動画",
-    "programOverview": "プログラム概要",
+    "programOverview": "概要",
     "keySpecifications": "主要仕様",
     "noSpecifications": "仕様はありません",
     "potentialApplications": "潜在的なアプリケーション",

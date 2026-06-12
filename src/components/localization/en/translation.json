@@ -371,7 +371,12 @@
     "globalImpactDesc": "Build solutions that transform industries worldwide",
     "ctaTitle": "Don't see the perfect role?",
     "ctaDescription": "Send us your resume and we'll reach out when opportunities match your skills.",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "readMore": "Read More",
+    "showLess": "Show Less",
+    "viewDetails": "View Details",
+    "requirements": "Requirements",
+    "responsibilities": "Responsibilities"
   },
   "industriesPage": {
     "badge": "Industries We Enable",
@@ -540,7 +545,7 @@
     "robotInAction": "Robot in Action",
     "videoSubtitle": "Watch demonstration videos ({{count}} video{{suffix}})",
     "video": "Video",
-    "programOverview": "Program Overview",
+    "programOverview": "Overview",
     "keySpecifications": "Key Specifications",
     "noSpecifications": "No specifications available",
     "potentialApplications": "Potential Applications",
