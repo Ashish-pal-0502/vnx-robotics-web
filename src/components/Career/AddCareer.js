@@ -1,5 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import Underline from "@tiptap/extension-underline";
 import apiClient from "@/api/client";
 import toast from "react-hot-toast";
 import {
@@ -8,12 +14,20 @@ import {
   FiFileText,
   FiLink,
   FiAlertCircle,
-  FiCheckCircle,
   FiPlus,
   FiEdit2,
   FiClock,
   FiGrid,
   FiX,
+  FiBold,
+  FiItalic,
+  FiUnderline,
+  FiAlignLeft,
+  FiAlignCenter,
+  FiAlignRight,
+  FiList,
+  FiCode,
+  FiType,
 } from "react-icons/fi";
 
 function AddCareer({ onSuccess, editingCareer, onCancel }) {
@@ -37,6 +51,37 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
     "Remote",
   ];
 
+  // Initialize TipTap editor for description
+  const descriptionEditor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3],
+        },
+      }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: "text-[#0088db] underline hover:text-[#006db1]",
+        },
+      }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+      Underline,
+      Placeholder.configure({
+        placeholder: "Write detailed job description including responsibilities, requirements, and benefits...",
+      }),
+    ],
+    content: "",
+    onUpdate: ({ editor }) => {
+      setFormData((prev) => ({
+        ...prev,
+        description: editor.getHTML(),
+      }));
+    },
+  });
+
   // Load edit data
   useEffect(() => {
     if (editingCareer) {
@@ -48,8 +93,13 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
         category: editingCareer?.category || "",
         applyLink: editingCareer?.applyLink || "",
       });
+
+      // Set editor content if editing
+      if (descriptionEditor && editingCareer?.description) {
+        descriptionEditor.commands.setContent(editingCareer.description);
+      }
     }
-  }, [editingCareer]);
+  }, [editingCareer, descriptionEditor]);
 
   // Clear error after 5 seconds
   useEffect(() => {
@@ -77,10 +127,14 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
       setError("Job title is required.");
       return false;
     }
-    if (!formData.description || formData.description.trim() === "") {
+    
+    // Check description - handle empty or just empty tags
+    const descText = formData.description.replace(/<[^>]*>/g, '').trim();
+    if (!descText || descText === "") {
       setError("Job description is required.");
       return false;
     }
+    
     if (!formData.location || formData.location.trim() === "") {
       setError("Job location is required.");
       return false;
@@ -114,6 +168,13 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
       return false;
     }
 
+    // Check description length (stripping HTML tags)
+    const plainText = formData.description.replace(/<[^>]*>/g, '');
+    if (plainText.length < 50) {
+      setError("Job description must be at least 50 characters.");
+      return false;
+    }
+
     return true;
   };
 
@@ -128,6 +189,9 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
       applyLink: "",
     });
     setError("");
+    if (descriptionEditor) {
+      descriptionEditor.commands.clearContent();
+    }
   };
 
   // Submit form
@@ -139,7 +203,7 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
 
     const payload = {
       title: formData.title.trim(),
-      description: formData.description.trim(),
+      description: formData.description,
       location: formData.location.trim(),
       jobType: formData.jobType,
       category: formData.category.trim(),
@@ -195,6 +259,119 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
   const handleCancel = () => {
     resetForm();
     if (onCancel) onCancel();
+  };
+
+  // Toolbar Button Component
+  const ToolbarButton = ({ onClick, active, children, icon: Icon, title }) => (
+    <button
+      onClick={onClick}
+      type="button"
+      title={title}
+      className={`p-2 rounded-lg transition-all text-sm font-medium ${
+        active
+          ? "bg-linear-to-r from-[#0088db] to-[#006db1] text-white shadow-md"
+          : "text-[#a1a1aa] hover:bg-[#1f2638] hover:text-[#f3f4f6]"
+      }`}
+    >
+      {Icon ? <Icon size={18} /> : children}
+    </button>
+  );
+
+  // Description Editor Toolbar
+  const DescriptionToolbar = () => {
+    if (!descriptionEditor) return null;
+
+    return (
+      <div className="flex flex-wrap gap-1 mb-3 p-2 border border-[#27324a] rounded-xl bg-[#0b1020]">
+        {/* Text Formatting */}
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleBold().run()}
+            active={descriptionEditor.isActive("bold")}
+            icon={FiBold}
+            title="Bold"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleItalic().run()}
+            active={descriptionEditor.isActive("italic")}
+            icon={FiItalic}
+            title="Italic"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleUnderline().run()}
+            active={descriptionEditor.isActive("underline")}
+            icon={FiUnderline}
+            title="Underline"
+          />
+        </div>
+
+        {/* Headings */}
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleHeading({ level: 1 }).run()}
+            active={descriptionEditor.isActive("heading", { level: 1 })}
+            children="H1"
+            title="Heading 1"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleHeading({ level: 2 }).run()}
+            active={descriptionEditor.isActive("heading", { level: 2 })}
+            children="H2"
+            title="Heading 2"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleHeading({ level: 3 }).run()}
+            active={descriptionEditor.isActive("heading", { level: 3 })}
+            children="H3"
+            title="Heading 3"
+          />
+        </div>
+
+        {/* Alignment */}
+        <div className="flex items-center gap-1 border-r border-[#27324a] pr-2 mr-1">
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().setTextAlign("left").run()}
+            active={descriptionEditor.isActive({ textAlign: "left" })}
+            icon={FiAlignLeft}
+            title="Align Left"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().setTextAlign("center").run()}
+            active={descriptionEditor.isActive({ textAlign: "center" })}
+            icon={FiAlignCenter}
+            title="Align Center"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().setTextAlign("right").run()}
+            active={descriptionEditor.isActive({ textAlign: "right" })}
+            icon={FiAlignRight}
+            title="Align Right"
+          />
+        </div>
+
+        {/* Lists */}
+        <div className="flex items-center gap-1">
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleBulletList().run()}
+            active={descriptionEditor.isActive("bulletList")}
+            icon={FiList}
+            title="Bullet List"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleOrderedList().run()}
+            active={descriptionEditor.isActive("orderedList")}
+            children="1."
+            title="Numbered List"
+          />
+          <ToolbarButton
+            onClick={() => descriptionEditor.chain().focus().toggleCodeBlock().run()}
+            active={descriptionEditor.isActive("codeBlock")}
+            icon={FiCode}
+            title="Code Block"
+          />
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -403,35 +580,33 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
                   </div>
                 </div>
 
-                {/* Right Column */}
+                {/* Right Column - Description with Rich Editor */}
                 <div className="space-y-6">
-                  {/* DESCRIPTION */}
+                  {/* DESCRIPTION with Rich Editor */}
                   <div>
                     <label className="block text-sm font-semibold text-[#f3f4f6] mb-2">
                       Job Description <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
-                      <div className="absolute top-3 left-3 pointer-events-none">
-                        <FiFileText className="text-[#71717a]" size={18} />
-                      </div>
-                      <textarea
-                        value={formData.description}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            description: e.target.value,
-                          }))
-                        }
-                        placeholder="Write detailed job description including responsibilities, requirements, and benefits..."
-                        rows={12}
-                        className="w-full border border-[#27324a] rounded-xl pl-10 pr-4 py-3 outline-none focus:ring-2 focus:ring-[#0088db]/20 focus:border-[#0088db] transition resize-y bg-[#0b1020] text-[#f3f4f6] placeholder:text-[#71717a] disabled:bg-[#1f2638] disabled:cursor-not-allowed"
-                        disabled={loading}
+                    
+                    {/* Toolbar */}
+                    <DescriptionToolbar />
+                    
+                    {/* Editor */}
+                    <div className="border border-[#27324a] rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#0088db]/20 focus-within:border-[#0088db] transition bg-[#0b1020]">
+                      <EditorContent
+                        editor={descriptionEditor}
+                        className="prose max-w-none p-4 min-h-80 text-[#f3f4f6]"
                       />
                     </div>
-                    <p className="text-xs text-[#71717a] mt-1">
-                      Tip: Include key responsibilities, requirements, and
-                      benefits (Minimum 50 characters recommended)
-                    </p>
+                    
+                    <div className="flex items-center justify-between mt-2">
+                      <p className="text-xs text-[#71717a]">
+                        Tip: Include key responsibilities, requirements, and benefits. Use formatting for better readability.
+                      </p>
+                      <span className="text-xs text-[#71717a]">
+                        {formData.description.replace(/<[^>]*>/g, '').length} chars
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -447,15 +622,13 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
                     <p className="font-medium mb-2 text-[#f3f4f6]">
                       Job Posting Tips:
                     </p>
-                    <ul className="space-y-1">
-                      <li>✓ Use clear and descriptive job titles</li>
-                      <li>
-                        ✓ Include specific requirements and qualifications
-                      </li>
-                      <li>✓ Mention salary range if possible (optional)</li>
-                      <li>✓ Add company culture and benefits information</li>
-                      <li>✓ Provide a valid application link for candidates</li>
-                      <li>✓ Proofread before posting</li>
+                    <ul className="space-y-1 list-disc list-inside">
+                      <li>Use clear and descriptive job titles</li>
+                      <li>Include specific requirements and qualifications</li>
+                      <li>Mention salary range if possible (optional)</li>
+                      <li>Add company culture and benefits information</li>
+                      <li>Provide a valid application link for candidates</li>
+                      <li>Use formatting to make the description scannable</li>
                     </ul>
                   </div>
                 </div>
@@ -528,7 +701,109 @@ function AddCareer({ onSuccess, editingCareer, onCancel }) {
         </div>
       </div>
 
-      <style jsx>{`
+      {/* Global Styles */}
+      <style jsx global>{`
+        .ProseMirror {
+          outline: none;
+          min-height: 200px;
+        }
+
+        .ProseMirror p {
+          margin: 0 0 0.75rem 0;
+          line-height: 1.6;
+          color: #f3f4f6;
+        }
+
+        .ProseMirror h1 {
+          font-size: 2rem;
+          font-weight: 700;
+          margin: 1rem 0;
+          line-height: 1.2;
+          color: #0088db;
+        }
+
+        .ProseMirror h2 {
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin: 0.8rem 0;
+          line-height: 1.3;
+          color: #ffba22;
+        }
+
+        .ProseMirror h3 {
+          font-size: 1.25rem;
+          font-weight: 700;
+          margin: 0.6rem 0;
+          line-height: 1.4;
+          color: #a1a1aa;
+        }
+
+        .ProseMirror ul,
+        .ProseMirror ol {
+          padding-left: 1.5rem;
+          margin: 0.75rem 0;
+          color: #f3f4f6;
+        }
+
+        .ProseMirror li {
+          margin-bottom: 0.25rem;
+          color: #a1a1aa;
+        }
+
+        .ProseMirror code {
+          background: #1f2638;
+          padding: 0.2rem 0.4rem;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          font-family: monospace;
+          color: #ffba22;
+        }
+
+        .ProseMirror pre {
+          background: #050816;
+          color: #f9fafb;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          overflow-x: auto;
+          margin: 1rem 0;
+          border: 1px solid #27324a;
+        }
+
+        .ProseMirror pre code {
+          background: transparent;
+          padding: 0;
+          color: inherit;
+        }
+
+        .ProseMirror blockquote {
+          border-left: 4px solid #ffba22;
+          padding-left: 1rem;
+          color: #a1a1aa;
+          margin: 1rem 0;
+          font-style: italic;
+        }
+
+        .ProseMirror a {
+          color: #0088db;
+          text-decoration: underline;
+        }
+
+        .ProseMirror a:hover {
+          color: #ffba22;
+        }
+
+        .ProseMirror:focus {
+          outline: none;
+        }
+
+        .ProseMirror p.is-editor-empty:first-child::before {
+          content: attr(data-placeholder);
+          float: left;
+          color: #71717a;
+          pointer-events: none;
+          height: 0;
+        }
+
         @keyframes shake {
           0%,
           100% {
