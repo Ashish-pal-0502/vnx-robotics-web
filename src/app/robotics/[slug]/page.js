@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { motion } from "framer-motion";
@@ -14,6 +12,7 @@ import {
   IoClose,
   IoChevronBack,
   IoChevronForward,
+  IoPause,
 } from "react-icons/io5";
 import apiClient from "./../../../api/client";
 import { useRouter } from "next/navigation";
@@ -131,6 +130,81 @@ export default function RobotDetailPage() {
   const videos = robot.video || [];
   const images = robot.images || [];
 
+  // Video Card Component with hover play functionality
+  // Video Card Component with hover play functionality
+  const VideoCard = ({ video, index, onVideoClick }) => {
+    const videoRef = useRef(null);
+    const [isHovering, setIsHovering] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+      const videoElement = videoRef.current;
+      if (!videoElement) return;
+
+      if (isHovering) {
+        // Play video on hover
+        videoElement
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch((err) => {
+            // Autoplay might be prevented by browser
+            console.log("Autoplay prevented:", err);
+          });
+      } else {
+        // Pause and reset on hover out
+        videoElement.pause();
+        videoElement.currentTime = 0;
+        setIsPlaying(false);
+      }
+    }, [isHovering]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+      return () => {
+        const videoElement = videoRef.current;
+        if (videoElement) {
+          videoElement.pause();
+          videoElement.currentTime = 0;
+          setIsPlaying(false);
+        }
+      };
+    }, []);
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        className="group cursor-pointer"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        onClick={onVideoClick}
+      >
+        <div className="relative rounded-xl overflow-hidden border border-white/10 bg-black/50 aspect-video">
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            muted
+            loop
+            playsInline
+          >
+            <source src={video.url} type="video/mp4" />
+          </video>
+
+          {/* Play/Pause Overlay */}
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-[var(--color-secondary-400)]/90 flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-300">
+              {isPlaying ? (
+                <IoPause size={32} className="text-white" />
+              ) : (
+                <IoPlay size={32} className="text-white ml-1" />
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
   return (
     <main className="bg-[var(--color-dark-100)]">
       {/* Hero Section */}
@@ -217,10 +291,7 @@ export default function RobotDetailPage() {
               className="text-center mb-8"
             >
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
-                {t("robotDetailPage.imageGallery")}{" "}
-                <span className="text-[var(--color-secondary-400)]">
-                  {t("robotDetailPage.imageGallery").split(" ").pop()}
-                </span>
+                {t("robotDetailPage.imageGallery")}
               </h2>
               <p className="font-mono text-sm text-[var(--color-text-secondary)]">
                 {t("robotDetailPage.imageGallerySubtitle")}
@@ -260,15 +331,16 @@ export default function RobotDetailPage() {
                     key={idx}
                     className="flex-shrink-0 w-[300px] md:w-[400px] lg:w-[500px]"
                   >
-                <div className="rounded-xl overflow-hidden border border-white/10 bg-black/50 h-full">
-                     <img
-  src={image.url}
-  alt={`${stripHtml(robot.name)} - Image ${idx + 1}`}
-  className="w-full h-auto max-h-[400px] object-contain hover:scale-105 transition-transform duration-300"
-  onError={(e) => {
-    e.target.src = "https://placehold.co/800x600/1a1a2e/white?text=No+Image";
-  }}
-/>
+                    <div className="rounded-xl overflow-hidden border border-white/10 bg-black/50 h-full">
+                      <img
+                        src={image.url}
+                        alt={`${stripHtml(robot.name)} - Image ${idx + 1}`}
+                        className="w-full h-auto max-h-[400px] object-contain hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.src =
+                            "https://placehold.co/800x600/1a1a2e/white?text=No+Image";
+                        }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -278,7 +350,7 @@ export default function RobotDetailPage() {
         </section>
       )}
 
-      {/* Video Grid Section - Multiple Videos */}
+      {/* Video Grid Section - Multiple Videos with Hover Play */}
       {videos.length > 0 && (
         <section className="relative py-16 px-6 md:px-12 bg-[var(--color-dark-100)] border-t border-white/5">
           <div className="max-w-7xl mx-auto">
@@ -289,10 +361,7 @@ export default function RobotDetailPage() {
               className="text-center mb-8"
             >
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
-                {t("robotDetailPage.robotInAction")}{" "}
-                <span className="text-[var(--color-secondary-400)]">
-                  {t("robotDetailPage.robotInAction").split(" ").pop()}
-                </span>
+                {t("robotDetailPage.robotInAction")}
               </h2>
               <p className="font-mono text-sm text-[var(--color-text-secondary)]">
                 {t("robotDetailPage.videoSubtitle", {
@@ -305,68 +374,74 @@ export default function RobotDetailPage() {
             {/* Video Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {videos.map((video, idx) => (
-                <motion.div
+                <VideoCard
                   key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="group cursor-pointer"
-                  onClick={() => {
+                  video={video}
+                  index={idx}
+                  onVideoClick={() => {
                     setSelectedVideo(video);
                     setShowVideoModal(true);
                   }}
-                >
-                  <div className="relative rounded-xl overflow-hidden border border-white/10 bg-black/50 aspect-video">
-                    <video
-                      className="w-full h-full object-cover"
-                      poster="/icons/videoplaceholder.webp"
-                      muted
-                    >
-                      <source src={video.url} type="video/mp4" />
-                    </video>
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-[var(--color-secondary-400)]/90 flex items-center justify-center">
-                        <IoPlay size={32} className="text-white ml-1" />
-                      </div>
-                    </div>
-                  </div>
-                  <p className="font-mono text-sm text-[var(--color-text-secondary)] mt-2 text-center">
-                    {t("robotDetailPage.video")} {idx + 1}
-                  </p>
-                </motion.div>
+                />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Video Modal */}
+      {/* Video Modal - Full Screen */}
       {showVideoModal && selectedVideo && (
         <div
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
-          onClick={() => setShowVideoModal(false)}
+          onClick={() => {
+            // Pause video when closing
+            const videoElement = document.querySelector(".modal-video");
+            if (videoElement) {
+              videoElement.pause();
+              videoElement.currentTime = 0;
+            }
+            setShowVideoModal(false);
+          }}
         >
           <div
             className="relative w-full max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              onClick={() => setShowVideoModal(false)}
-              className="absolute -top-12 right-0 text-white hover:text-[var(--color-secondary-400)] transition-colors"
+              onClick={() => {
+                const videoElement = document.querySelector(".modal-video");
+                if (videoElement) {
+                  videoElement.pause();
+                  videoElement.currentTime = 0;
+                }
+                setShowVideoModal(false);
+              }}
+              className="absolute -top-12 right-0 text-white hover:text-[var(--color-secondary-400)] transition-colors cursor-pointer z-10"
             >
               <IoClose size={32} />
             </button>
-            <div className="aspect-video rounded-xl overflow-hidden">
+            <div className="aspect-video rounded-xl overflow-hidden bg-black">
               <video
+                className="modal-video w-full h-full"
                 controls
                 autoPlay
-                className="w-full h-full"
+                loop
+                playsInline
                 poster={images[0]?.url}
               >
                 <source src={selectedVideo.url} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
+
+            {/* Optional: Video title/description in modal */}
+            {selectedVideo.title && (
+              <div className="mt-4 text-center">
+                <h3 className="text-white font-heading text-xl">
+                  {selectedVideo.title}
+                </h3>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -462,9 +537,9 @@ export default function RobotDetailPage() {
           >
             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white mb-2">
               {t("robotDetailPage.potentialApplications")}{" "}
-              <span className="text-[var(--color-secondary-400)]">
+              {/* <span className="text-[var(--color-secondary-400)]">
                 {t("robotDetailPage.potentialApplications").split(" ").pop()}
-              </span>
+              </span> */}
             </h2>
             <p className="font-mono text-sm text-[var(--color-text-secondary)]">
               {t("robotDetailPage.applicationsSubtitle")}
@@ -482,7 +557,7 @@ export default function RobotDetailPage() {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <IoCheckmarkCircle
-                    className="text-[var(--color-secondary-400)]"
+                    className="text-[var(--color-secondary-400)] shrink-0"
                     size={18}
                   />
                   <h4 className="font-heading text-base font-semibold text-white">

@@ -15,20 +15,6 @@ export default function RoboticsSection() {
 
   const programs = [
     {
-      title: t("roboticsSection.programs.quadruped.title"),
-      subtitle: t("roboticsSection.programs.quadruped.subtitle"),
-      description: t("roboticsSection.programs.quadruped.description"),
-      tags: [
-        t("roboticsSection.programs.quadruped.tags.mobilitySystems"),
-        t("roboticsSection.programs.quadruped.tags.embeddedControl"),
-        t("roboticsSection.programs.quadruped.tags.roboticsMiddleware"),
-        t("roboticsSection.programs.quadruped.tags.intelligentLocomotion"),
-      ],
-      status: t("roboticsSection.programs.quadruped.status"),
-      videoSrc: "/roboVideos/Industrial_automation.mp4",
-      imageSrc: "/images/quadruped.jpeg",
-    },
-    {
       title: t("roboticsSection.programs.reception.title"),
       subtitle: t("roboticsSection.programs.reception.subtitle"),
       description: t("roboticsSection.programs.reception.description"),
@@ -39,8 +25,22 @@ export default function RoboticsSection() {
         t("roboticsSection.programs.reception.tags.embeddedSystems"),
       ],
       status: t("roboticsSection.programs.reception.status"),
-      videoSrc: "/mp4/HeroV1.mp4",
+      videoSrc: "/mp4/receptionHome.mp4",
       imageSrc: "/roboImages/quadruped.jpeg",
+    },
+    {
+      title: t("roboticsSection.programs.quadruped.title"),
+      subtitle: t("roboticsSection.programs.quadruped.subtitle"),
+      description: t("roboticsSection.programs.quadruped.description"),
+      tags: [
+        t("roboticsSection.programs.quadruped.tags.mobilitySystems"),
+        t("roboticsSection.programs.quadruped.tags.embeddedControl"),
+        t("roboticsSection.programs.quadruped.tags.roboticsMiddleware"),
+        t("roboticsSection.programs.quadruped.tags.intelligentLocomotion"),
+      ],
+      status: t("roboticsSection.programs.quadruped.status"),
+      videoSrc: "/mp4/quadRobo.mp4",
+      imageSrc: "/images/quadruped.jpeg",
     },
   ];
 

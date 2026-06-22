@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { motion, useInView } from "framer-motion";
@@ -93,8 +91,7 @@ export default function IndustriesPage() {
         t("industriesPage.capabilities.humanInteractionSystems"),
         t("industriesPage.capabilities.intelligentRoboticsSoftware"),
       ],
-      image:
-        "https://thumbs.dreamstime.com/b/real-humanoid-robot-working-factory-warehouse-concept-industrial-real-humanoid-robot-working-factory-445309770.jpg",
+      image: "/images/robotIndus.jpeg",
     },
     {
       icon: <IoTrendingUpOutline size={28} />,
